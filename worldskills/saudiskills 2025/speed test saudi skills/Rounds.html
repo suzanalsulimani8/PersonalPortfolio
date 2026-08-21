@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B3: Moving Rounds</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #f8f9fa;
+      font-family: Arial, sans-serif;
+    }
+
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #ffffff;
+      font-weight: bold;
+      user-select: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      will-change: transform, left, top;
+    }
+
+    .dark-text {
+      color: #1F2041;
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  const data = [
+    { text: "Web", color: "#1F2041" },
+    { text: "PHP", color: "#4B3F72" },
+    { text: "Javascript", color: "#417B5A" },
+    { text: "HTML", color: "#D0CEBA" },
+    { text: "CSS", color: "#E9D2C0" }
+  ];
+
+  const OFFSET = 20;
+  const circles = [];
+
+  function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  // إنشاء الدوائر وتحديد المواقع والسرعات الابتدائية
+  function init() {
+    data.forEach((item) => {
+      const size = getRandomInt(200, 300);
+      const radius = size / 2;
+      let x, y, cx, cy, overlapping;
+      let attempts = 0;
+
+      // التأكد من عدم التداخل عند البداية
+      do {
+        overlapping = false;
+        const maxX = Math.max(OFFSET, window.innerWidth - OFFSET - size);
+        const maxY = Math.max(OFFSET, window.innerHeight - OFFSET - size);
+
+        x = getRandomInt(OFFSET, maxX);
+        y = getRandomInt(OFFSET, maxY);
+        cx = x + radius;
+        cy = y + radius;
+
+        for (let c of circles) {
+          const dx = cx - c.cx;
+          const dy = cy - c.cy;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < radius + c.radius) {
+            overlapping = true;
+            break;
+          }
+        }
+        attempts++;
+      } while (overlapping && attempts < 2000);
+
+      // إضافة سرعة حركة عشوائية (vx, vy)
+      const speed = 2;
+      const angle = Math.random() * Math.PI * 2;
+      const vx = Math.cos(angle) * speed;
+      const vy = Math.sin(angle) * speed;
+
+      // إنشاء عنصر HTML
+      const el = document.createElement('div');
+      el.className = 'circle';
+      if (item.color === '#D0CEBA' || item.color === '#E9D2C0') {
+        el.classList.add('dark-text');
+      }
+      el.textContent = item.text;
+      el.style.width = `${size}px`;
+      el.style.height = `${size}px`;
+      el.style.backgroundColor = item.color;
+      el.style.fontSize = `${Math.round(size / 10)}px`;
+      document.body.appendChild(el);
+
+      circles.push({ el, x, y, cx, cy, vx, vy, radius, size });
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  // حلقة الحركة والاصطدامات
+  function animate() {
+    // 1. تحديث المواقع والارتداد من الجدران
+    circles.forEach(c => {
+      c.x += c.vx;
+      c.y += c.vy;
+
+      // الارتداد الأفقي مع الهامش 20px
+      if (c.x < OFFSET) {
+        c.x = OFFSET;
+        c.vx *= -1;
+      } else if (c.x + c.size > window.innerWidth - OFFSET) {
+        c.x = window.innerWidth - OFFSET - c.size;
+        c.vx *= -1;
+      }
+
+      // الارتداد العمودي مع الهامش 20px
+      if (c.y < OFFSET) {
+        c.y = OFFSET;
+        c.vy *= -1;
+      } else if (c.y + c.size > window.innerHeight - OFFSET) {
+        c.y = window.innerHeight - OFFSET - c.size;
+        c.vy *= -1;
+      }
+
+      c.cx = c.x + c.radius;
+      c.cy = c.y + c.radius;
+    });
+
+    // 2. معالجة اصطدام الدوائر ببعضها (Elastic Collision)
+    for (let i = 0; i < circles.length; i++) {
+      for (let j = i + 1; j < circles.length; j++) {
+        const c1 = circles[i];
+        const c2 = circles[j];
+
+        const dx = c2.cx - c1.cx;
+        const dy = c2.cy - c1.cy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const minDist = c1.radius + c2.radius;
+
+        if (dist < minDist) {
+          // الفصل الفيزيائي لمنع الالتصاق
+          const overlap = 0.5 * (minDist - dist);
+          const nx = dx / (dist || 1);
+          const ny = dy / (dist || 1);
+
+          c1.x -= nx * overlap;
+          c1.y -= ny * overlap;
+          c2.x += nx * overlap;
+          c2.y += ny * overlap;
+
+          c1.cx = c1.x + c1.radius;
+          c1.cy = c1.y + c1.radius;
+          c2.cx = c2.x + c2.radius;
+          c2.cy = c2.y + c2.radius;
+
+          // تبادل السرعات الناتجة عن الاصطدام
+          const kx = c1.vx - c2.vx;
+          const ky = c1.vy - c2.vy;
+          const p = 2 * (nx * kx + ny * ky) / 2;
+
+          c1.vx -= p * nx;
+          c1.vy -= p * ny;
+          c2.vx += p * nx;
+          c2.vy += p * ny;
+        }
+      }
+    }
+
+    // 3. تطبيق الإحداثيات على عناصر الصفحة
+    circles.forEach(c => {
+      c.el.style.left = `${c.x}px`;
+      c.el.style.top = `${c.y}px`;
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

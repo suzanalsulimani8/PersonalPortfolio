@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Loading Animation Level 1 - Full Circle Pulsate</title>
+<style>
+  /* Full viewport black background and center the loader */
+  body, html {
+    margin: 0; padding: 0; height: 100%;
+    display: flex; justify-content: center; align-items: center;
+    background: black;
+  }
+
+  .loader {
+    position: relative;
+    width: 120px;
+    height: 120px;
+  }
+
+  /* Common style for rings */
+  .ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid;
+    box-sizing: border-box;
+  }
+
+  /* Rings sizes and positions (centered inside loader) */
+  .ring:nth-child(1) {
+    width: 120px;
+    height: 120px;
+    top: 0; left: 0;
+    border-color: #432274;
+    animation: scalePulse 2.5s ease-in-out infinite;
+    animation-delay: 0s;
+  }
+
+  .ring:nth-child(2) {
+    width: 92px;
+    height: 92px;
+    top: 14px; left: 14px;
+    border-color: #683478;
+    animation: scalePulse 2.5s ease-in-out infinite;
+    animation-delay: 0.3s;
+  }
+
+  .ring:nth-child(3) {
+    width: 64px;
+    height: 64px;
+    top: 28px; left: 28px;
+    border-color: #8e3b8d;
+    animation: scalePulse 2.5s ease-in-out infinite;
+    animation-delay: 0.6s;
+  }
+
+  .ring:nth-child(4) {
+    width: 36px;
+    height: 36px;
+    top: 42px; left: 42px;
+    border-color: #bc429f;
+    animation: scalePulse 2.5s ease-in-out infinite;
+    animation-delay: 0.9s;
+  }
+
+  .ring:nth-child(5) {
+    width: 8px;
+    height: 8px;
+    top: 56px; left: 56px;
+    border-color: #d340a8;
+    animation: scalePulse 2.5s ease-in-out infinite;
+    animation-delay: 1.2s;
+  }
+
+  /* Pulsating scale animation */
+  @keyframes scalePulse {
+    0%, 100% {
+      transform: scale(0.6);
+      opacity: 0.4;
+    }
+    50% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="loader">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+</body>
+</html>

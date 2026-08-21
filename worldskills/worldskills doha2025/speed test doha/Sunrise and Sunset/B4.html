@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    /* إزالة الهوامش والمسافات لجميع العناصر */
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    
+    /* إخفاء مدخلات الراديو التي تمثل النهار والليل */
+    input{
+        visibility: hidden;
+    }
+    
+    /* تعيين خلفية الصفحة بلون أسود افتراضي */
+    html,body{
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: #080818;
+    }
+    
+    /* تنسيق الخلفية الأساسية التي تحتوي على الجبال والسماء */
+    .bgi{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 5; /* تحديد ترتيب العناصر فوق بعضها */
+        transition: all 1s linear; /* إضافة تأثير التحول عند التبديل */
+    }
+    
+    /* حاوية الشمس والقمر للتحكم في دوران العناصر */
+    .dayOrNight{
+        width: 100vh;
+        height: 100vh;
+        position: absolute;
+        top: 50%;                         
+        left: 50%;
+        transform-origin: 50% 50%;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+        transition: all 1s linear; /* إضافة تأثير التحول عند التبديل */
+    }
+    
+    /* تنسيق مشترك لكل من الشمس والقمر */
+    .dayOrNight>img{
+        width: 300px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%); /* تمركز الصور بشكل أفقي */
+    }
+    
+    /* تحديد موقع القمر في الأعلى */
+    .n{
+        top: 20px;
+    }
+    
+    /* تحديد موقع الشمس في الأسفل */
+    .d{
+        bottom: 20px;
+    }
+    
+    /* تنسيق مشترك للأزرار */
+    label{
+        width: 120px;
+        height: 50px;
+        position: absolute;
+        bottom: 20px;
+        transition: all 0.5s linear;
+        line-height: 50px;
+        cursor: pointer; /* تغيير شكل المؤشر عند التمرير */
+        text-align: center; /* محاذاة النص في الوسط */
+    }
+    
+    /* زر التبديل إلى النهار */
+    .day{
+        left: 20px;
+        color: #080818;
+        background-color: #FFDA7E;
+        z-index: 6; /* الترتيب فوق العناصر الأخرى */
+    }
+    
+    /* زر التبديل إلى الليل */
+    .night{
+        right: 20px;
+        color: #FFDA7E;
+        background-color: #080818;
+        z-index: 6;
+    }
+    
+    /* الخلفية الأساسية التي تتغير حسب التبديل بين النهار والليل */
+    .bgc{
+        width: 100%;
+        height: 100%;
+        background-color: #080818;
+        transition: all 1s linear;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    
+    /* تأثير عند تمرير المؤشر فوق زر النهار */
+    .day:hover{
+        background-color: #080818;
+        color: #FFDA7E;
+    }
+    
+    /* تأثير عند تمرير المؤشر فوق زر الليل */
+    .night:hover{
+        background-color: #FFDA7E;
+        color: #080818;
+    }
+    
+    /* التأثير عند تحديد وضع النهار */
+    #day:checked~.dayOrNight{
+        transform: translate(-50%, -50%) rotateZ(180deg); /* تدوير الحاوية */
+    }
+    
+    /* تغيير لون الصور عند تحديد وضع النهار */
+    #day:checked~.bgi{
+        filter: sepia(100%); /* إضافة فلتر لتغيير الألوان */
+    }
+    
+    /* تغيير لون الخلفية إلى لون النهار */
+    #day:checked~.bgc{
+        background-color: #FFDA7E;
+    }
+    
+    /* التأثير عند تحديد وضع الليل */
+    #night:checked~.dayOrNight{
+        transform: translate(-50%, -50%) rotateZ(0deg); /* إعادة التدوير إلى الصفر */
+    }
+     
+    /* إزالة الفلتر عند تحديد وضع الليل */
+    #night:checked~.bgi{
+        filter: sepia(0%);
+    }
+    
+    /* تغيير لون الخلفية إلى لون الليل */
+    #night:checked~.bgc{
+        background-color: #080818;
+    }
+    
+    /* تنسيق السحابة الكبيرة */
+    .cld1{
+        width: 170px;
+        position: absolute;
+        top: 50px;
+        z-index: 1;
+        opacity: 0.5; /* نصف شفافة */
+        animation: cld1 14s linear infinite; /* حركة مستمرة للسحابة */
+    }
+    
+    /* تنسيق السحابة الصغيرة */
+    .cld2{
+        width: 100px;
+        position: absolute;
+        top: 150px;
+        z-index: 1;
+        opacity: 0.8; /* أكثر شفافية */
+        animation: cld2 20s linear infinite;
+    }
+    
+    /* تنسيق السحابة المتوسطة */
+    .cld3{
+        width: 150px;
+        position: absolute;
+        top: 100px;
+        z-index: 1;
+        opacity: 0.65; /* شفافية متوسطة */
+        animation: cld3 17s linear infinite;
+    }
+    
+    /* حركة السحابة الكبيرة */
+    @keyframes cld1 {
+        0%{
+            right: -200px;
+        }
+        100%{
+            right: 2000px;
+        }
+    }
+    
+    /* حركة السحابة الصغيرة */
+    @keyframes cld2 {
+        0%{
+            right: -600px;
+        }
+        100%{
+            right: 2000px;
+        }
+    }
+    
+    /* حركة السحابة المتوسطة */
+    @keyframes cld3 {
+        0%{
+            right: -1600px;
+        }
+        100%{
+            right: 2000px;
+        }
+    }
+    </style>
+</head>
+<body>
+    <!-- الغيوم -->
+    <!-- تم وضع ثلاث صور للسحاب تتحرك باستخدام الرسوم المتحركة CSS -->
+    <img src="cloud1.webp" class="cld1" alt="سحابة كبيرة">
+
+    <img src="cloud2.webp" class="cld2" alt="سحابة صغيرة">
+
+    <img src="cloud3.webp" class="cld3" alt="سحابة متوسطة">
+
+    <!-- خيارات التبديل بين النهار والليل -->
+    <!-- زر لتحديد وضع النهار -->
+    <input type="radio" name="sun" id="day">
+    <!-- زر لتحديد وضع الليل -->
+    <input type="radio" id="night" name="sun">
+
+    <!-- أزرار النهار والليل -->
+    <label for="day" class="day">نهار</label>
+    <label for="night" class="night">ليل</label>
+
+    <!-- خلفية السماء الصافية -->
+    <div class="bgc"></div>
+
+    <!-- صورة الخلفية الجبلية -->
+    <img src="bgi1.webp" class="bgi" alt="الخلفية الجبلية">
+
+    <!-- حاوية الشمس والقمر -->
+    <!-- يتم وضع صورة القمر والشمس للتحكم في التحويل بين النهار والليل -->
+    <div class="dayOrNight">
+        <!-- صورة القمر -->
+        <img src="123.webp" alt="قمر" class="n">
+        <!-- صورة الشمس -->
+        <img src="123d.webp" alt="شمس" class="d">
+    </div>
+</body>
+</html>

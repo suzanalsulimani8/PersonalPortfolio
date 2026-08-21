@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body { display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; }
+.barcode { display: flex; border: 2px solid black; padding: 10px; position: relative; }
+.bar { width: 10px; background: black; margin: 0 2px; height: 100px; }
+.scanner { position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: red; animation: scan 2s linear infinite; }
+@keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+</style>
+</head>
+<body>
+<div class="barcode">
+  <div class="bar" style="width:5px;"></div>
+  <div class="bar" style="width:15px;"></div>
+  <div class="bar" style="width:10px;"></div>
+  <div class="bar" style="width:20px;"></div>
+  <div class="bar" style="width:8px;"></div>
+  <div class="bar" style="width:12px;"></div>
+  <div class="bar" style="width:6px;"></div>
+  <div class="bar" style="width:18px;"></div>
+  <div class="scanner"></div>
+</div>
+<div>162956944404</div>
+</body>
+</html>

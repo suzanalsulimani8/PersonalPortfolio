@@ -1,0 +1,29 @@
+/* Theme D: fade+scale in, blur+slide out */
+.themeD .imgWrap.in {
+  animation: fadeScaleIn var(--speed) ease both;
+}
+.themeD .imgWrap.out {
+  animation: blurSlideOut var(--speed) ease both;
+}
+@keyframes fadeScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes blurSlideOut {
+  from {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(-8%);
+  }
+}

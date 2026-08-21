@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CSS Inspector Tool</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+h1 { margin-bottom: 10px; }
+p.instructions { margin-bottom: 20px; }
+#sample-box {
+  width: 200px;
+  height: 120px;
+  background-color: lightblue;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+button {
+  background-color: green;
+  color: white;
+  font-size: 13.33px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+ul {
+  max-width: 250px;
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+ul li { margin-bottom: 5px; }
+.highlight-hover {
+  outline: 3px solid #0099ff;
+  transition: outline-color 0.3s;
+}
+#css-tooltip {
+  position: absolute;
+  background: #222;
+  color: #ddd;
+  font-family: monospace;
+  font-size: 0.85rem;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.7);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 10000;
+}
+#css-tooltip.visible { pointer-events: auto; opacity: 1; }
+#css-tooltip div { margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<h1>CSS Inspector</h1>
+<p class="instructions">Hover elements to highlight. Click to see styles.</p>
+
+<div id="sample-box">Sample Box</div>
+<button>Button</button>
+<ul>
+  <li>List item 1</li>
+  <li>List item 2</li>
+  <li>List item 3</li>
+</ul>
+
+<div id="css-tooltip"></div>
+
+<script>
+const tooltip = document.getElementById('css-tooltip');
+let lastHovered = null;
+const inspectProps = ['color','background-color','font-size','width','height','margin','padding'];
+
+document.body.addEventListener('mouseover', e => {
+  const target = e.target;
+  if (lastHovered && lastHovered !== target) lastHovered.classList.remove('highlight-hover');
+  if (target !== tooltip) { target.classList.add('highlight-hover'); lastHovered = target; }
+});
+
+document.body.addEventListener('mouseout', e => {
+  if (e.target === lastHovered) { lastHovered.classList.remove('highlight-hover'); lastHovered = null; }
+});
+
+function getSelectedStyles(element) {
+  const computed = window.getComputedStyle(element);
+  return inspectProps.map(prop => {
+    const val = computed.getPropertyValue(prop);
+    return val && val !== '0px' && val !== 'none' && val !== '' ? `<div><strong>${prop}</strong>: ${val}</div>` : '';
+  }).join('');
+}
+
+function positionTooltip(element) {
+  const rect = element.getBoundingClientRect();
+  const scrollY = window.scrollY;
+  const scrollX = window.scrollX;
+  tooltip.style.display = 'block';
+  const tooltipRect = tooltip.getBoundingClientRect();
+  let top = rect.bottom + scrollY + 6;
+  let left = rect.left + scrollX;
+  if (left + tooltipRect.width > window.innerWidth) left = window.innerWidth - tooltipRect.width - 10;
+  if (top + tooltipRect.height > window.innerHeight + scrollY) top = rect.top + scrollY - tooltipRect.height - 6;
+  tooltip.style.left = `${left}px`;
+  tooltip.style.top = `${top}px`;
+}
+
+document.body.addEventListener('click', e => {
+  if (e.target === tooltip) return;
+  const stylesHTML = getSelectedStyles(e.target);
+  if (!stylesHTML) return;
+  tooltip.innerHTML = stylesHTML;
+  tooltip.classList.add('visible');
+  tooltip.style.opacity = '0';
+  tooltip.style.display = 'block';
+  requestAnimationFrame(() => {
+    positionTooltip(e.target);
+    tooltip.style.opacity = '1';
+  });
+  e.stopPropagation();
+});
+
+document.addEventListener('click', e => {
+  if (!tooltip.contains(e.target)) {
+    tooltip.classList.remove('visible');
+    tooltip.style.opacity = '0';
+    setTimeout(() => { tooltip.style.display = 'none'; }, 150);
+  }
+});
+</script>
+
+</body>
+</html>

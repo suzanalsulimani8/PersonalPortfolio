@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Photo Slideshow (Module 2)</title>
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <link rel="stylesheet" href="css/theme-a.css" />
+    <link rel="stylesheet" href="css/theme-b.css" />
+    <link rel="stylesheet" href="css/theme-c.css" />
+    <link rel="stylesheet" href="css/theme-d.css" />
+  </head>
+  <body>
+    <header>
+      <div class="bar">
+        <h1>📽️ Photo Slideshow</h1>
+
+        <label class="btn secondary">
+          <input id="fileInput" type="file" accept="image/*" multiple />
+          Select Photos
+        </label>
+        <button id="loadSamples" class="btn secondary">Load Samples</button>
+        <button id="openReorder" class="btn secondary">Reorder</button>
+        <button id="shuffleBtn" class="btn secondary">Shuffle</button>
+
+        <!-- Quick controls (better UX for duration) -->
+        <div class="quick" title="Slide duration in seconds">
+          <label>⏱</label>
+          <input
+            id="quickDur"
+            type="number"
+            min="1"
+            max="30"
+            step="1"
+            value="5"
+          />
+        </div>
+
+        <div class="btn-group">
+          <button id="playPause" class="btn accent">Play</button>
+          <button id="fullscreen" class="btn">Fullscreen</button>
+          <button id="openConfig" class="btn">⚙️ Config</button>
+          <button id="toggleDark" class="btn ghost">🌙</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div id="drop">Drop photos here or click to select (multi-file)</div>
+      <div class="status" id="status">Ready. Load or drop photos to start.</div>
+      <div id="stage" class="stage themeA">
+        <div id="hint" class="hint">
+          <span class="key">←</span>
+          <span class="key">→</span> Navigate &nbsp;•&nbsp;
+          <span class="key">Space</span> Play/Pause &nbsp;•&nbsp;
+          <span class="key">F</span> Fullscreen &nbsp;•&nbsp;
+          <span class="key">Ctrl</span> + <span class="key">K</span> or
+          <span class="key">/</span> Commands
+        </div>
+
+        <div id="caption" class="caption">
+          <span
+            class="editable"
+            contenteditable="true"
+            spellcheck="false"
+          ></span>
+        </div>
+      </div>
+    </main>
+
+    <!-- Config panel -->
+    <div id="panel" class="panel">
+      <div class="scrim" data-close="panel"></div>
+      <div class="sheet">
+        <h3>Configuration</h3>
+        <div class="group">
+          <label for="selTheme">Theme</label>
+          <select id="selTheme">
+            <option value="A">Theme A (no transitions)</option>
+            <option value="B">Theme B (left→right)</option>
+            <option value="C">Theme C (bottom→top)</option>
+            <option value="D">Theme D (fade+scale)</option>
+          </select>
+        </div>
+        <div class="group">
+          <label for="selMode">Mode</label>
+          <select id="selMode">
+            <option value="manual">Manual</option>
+            <option value="auto">Auto-play</option>
+            <option value="random">Random</option>
+          </select>
+        </div>
+        <div class="group">
+          <label>Slide Duration (1–30 sec)</label>
+          <div class="row">
+            <input type="range" id="durRange" min="1" max="30" value="5" />
+            <input type="number" id="durNum" min="1" max="30" value="5" />
+          </div>
+        </div>
+        <div class="group">
+          <label>Transition Speed (0.2–1.5 s)</label>
+          <div class="row">
+            <input
+              type="range"
+              id="speedRange"
+              min="0.2"
+              max="1.5"
+              step="0.1"
+              value="0.6"
+            />
+            <input
+              type="number"
+              id="speedNum"
+              min="0.2"
+              max="1.5"
+              step="0.1"
+              value="0.6"
+            />
+          </div>
+          <div class="note">Affects transitions in Themes B, C and D.</div>
+        </div>
+        <div class="group switch">
+          <input type="checkbox" id="darkChk" />
+          <label for="darkChk">Dark Mode</label>
+        </div>
+        <div class="actions">
+          <button id="resetSettings" class="btn">Reset</button>
+          <button id="closeConfig" class="btn accent">Done</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reorder dialog -->
+    <div id="dlgReorder" class="dialog">
+      <div class="scrim" data-close="reorder"></div>
+      <div class="card">
+        <div class="flex-head">
+          <h3>Reorder Photos (drag & drop)</h3>
+          <div class="note">Drag tiles to reorder, then Apply.</div>
+        </div>
+        <div id="grid" class="grid"></div>
+        <div class="actions">
+          <button id="cancelReorder" class="btn">Cancel</button>
+          <button id="applyReorder" class="btn accent">Apply</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Command bar -->
+    <div id="cmd" class="cmd">
+      <div class="scrim" data-close="cmd"></div>
+      <div class="box">
+        <input
+          id="cmdInput"
+          placeholder='Type a command (e.g., "switch to theme B", "random", "shuffle photos")'
+          autocomplete="off"
+        />
+        <ul id="cmdList"></ul>
+        <ul class="shortcuts">
+          <li>
+            <span class="label">Shortcuts:</span>
+            <span class="key">⌘</span> + <span class="key">K</span>,
+            <span class="key">/</span>, <span class="key">↑</span>/<span
+              class="key"
+              >↓</span
+            >, <span class="key">Enter</span>,
+            <span class="key">Esc</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <script src="js/script.js"></script>
+  </body>
+</html>

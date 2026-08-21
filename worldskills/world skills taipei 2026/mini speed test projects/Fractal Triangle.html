@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sierpinski Gasket Fractal</title>
+    <style>
+        
+        #fractalCanvas {
+            border: 2px solid #000000;
+            background-color: #f8fafc; 
+            display: block;
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4 font-sans">
+
+    <div class="w-full max-w-4xl bg-white p-6 rounded-xl shadow-2xl">
+        <h1 class="text-3xl font-extrabold text-gray-800 text-center mb-6 border-b pb-2">
+            Fractal Triangle Generator
+        </h1>
+
+        
+        <div class="flex flex-col sm:flex-row gap-4 mb-6 justify-center">
+            <input 
+                type="number" 
+                id="iterationsInput" 
+                placeholder="Enter iterations (e.g., 1 to 8)" 
+                value="5"
+                min="0"
+                max="8"
+                class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm transition duration-150"
+            />
+            <button 
+                id="drawButton" 
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
+            >
+                Draw Fractal
+            </button>
+        </div>
+
+       
+        <div class="flex justify-center">
+            <canvas id="fractalCanvas" width="800" height="693" role="img" aria-label="A dynamically generated fractal triangle structure."></canvas>
+        </div>
+
+        
+        <div id="messageBox" class="mt-4 text-center p-3 rounded-lg text-sm text-blue-700 bg-blue-100 hidden"></div>
+    </div>
+
+    <script>
+        
+        const CANVAS_WIDTH = 800;
+        const CANVAS_HEIGHT = Math.round(CANVAS_WIDTH * (Math.sqrt(3) / 2)); 
+
+        const canvas = document.getElementById('fractalCanvas');
+        const ctx = canvas.getContext('2d');
+        const input = document.getElementById('iterationsInput');
+        const button = document.getElementById('drawButton');
+        const messageBox = document.getElementById('messageBox');
+
+       
+        canvas.width = CANVAS_WIDTH;
+        canvas.height = CANVAS_HEIGHT;
+
+        
+        class Point {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+        }
+
+    
+        function showMessage(msg, type = 'info') {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            messageBox.textContent = msg;
+            messageBox.className = `mt-4 text-center p-3 rounded-lg text-sm ${type === 'error' ? 'text-red-700 bg-red-100' : 'text-blue-700 bg-blue-100'}`;
+            messageBox.style.display = 'block';
+        }
+
+
+        function getMidpoint(p1, p2) {
+            return new Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
+        }
+
+
+        function drawSierpinski(p1, p2, p3, level) {
+            if (level === 0) {
+
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.lineTo(p3.x, p3.y);
+                ctx.closePath();
+                
+
+                ctx.fillStyle = '#1d4ed8'; 
+                ctx.fill();
+            } else {
+
+                const m1 = getMidpoint(p1, p2); 
+                const m2 = getMidpoint(p2, p3); 
+                const m3 = getMidpoint(p3, p1); 
+
+              
+                drawSierpinski(p1, m1, m3, level - 1); 
+                drawSierpinski(m1, p2, m2, level - 1); 
+                drawSierpinski(m3, m2, p3, level - 1); 
+            }
+        }
+
+
+        function drawFractal() {
+            const iterations = parseInt(input.value);
+
+            if (isNaN(iterations) || iterations < 0 || iterations > 8) {
+                showMessage("Please enter a number of iterations between 0 and 8.", 'error');
+                return;
+            }
+            
+            
+            messageBox.style.display = 'none';
+            
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            
+            const margin = 20;
+            const h = canvas.height - 2 * margin; 
+            const w = canvas.width - 2 * margin; 
+            
+            
+            const p1 = new Point(canvas.width / 2, margin); 
+            
+           
+            const base = 2 * h / Math.sqrt(3);
+            const p2 = new Point((canvas.width / 2) - (base / 2), canvas.height - margin);
+            
+            const p3 = new Point((canvas.width / 2) + (base / 2), canvas.height - margin);
+     
+            drawSierpinski(p1, p2, p3, iterations);
+        }
+
+
+        button.addEventListener('click', drawFractal);
+
+     
+        window.onload = () => {
+    
+            input.value = 5;
+            drawFractal();
+        };
+
+
+        input.max = 8; 
+    </script>
+</body>
+</html>

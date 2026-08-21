@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background: #f9f9f9;
+            display: flex;
+            justify-content: center;
+        }
+        #app {
+            max-width: 640px;
+            width: 100%;
+            text-align: center;
+        }
+        input#wordInput {
+            font-size: 24px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 2px solid #555;
+            width: 60%;
+            margin-bottom: 16px;
+            outline-offset: 3px;
+            transition: border-color 0.2s ease;
+        }
+        input#wordInput:focus {
+            border-color: #007BFF;
+        }
+        button#shuffleBtn {
+            font-size: 18px;
+            padding: 8px 20px;
+            margin-left: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        button#shuffleBtn:hover {
+            background-color: #0056b3;
+        }
+        #lettersContainer {
+            margin-top: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            perspective: 800px;
+            min-height: 70px;
+        }
+        .letterBox {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #4a90e2, #357ABD);
+            color: white;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 38px;
+            line-height: 64px;
+            user-select: none;
+            cursor: default;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                        background-color 0.3s ease, 
+                        box-shadow 0.3s ease;
+            box-shadow: 0 6px 12px rgba(53,122,189,0.4);
+            position: relative;
+            will-change: transform;
+        }
+        .letterBox:hover {
+            background: linear-gradient(135deg, #6ba6ff, #4a90e2);
+            box-shadow: 0 10px 20px rgba(53,122,189,0.7);
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <input type="text" id="wordInput" placeholder="Type a word..." autocomplete="off" />
+        <button id="shuffleBtn">Shuffle</button>
+        <div id="lettersContainer"></div>
+    </div>
+    <script>
+        (() => {
+            const input = document.getElementById('wordInput');
+            const shuffleBtn = document.getElementById('shuffleBtn');
+            const lettersContainer = document.getElementById('lettersContainer');
+            let currentLetters = [];
+            function shuffleArray(arr) {
+                for (let i = arr.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+                return arr;
+            }
+            function renderLetters(newLetters) {
+                const oldPositions = new Map();
+                lettersContainer.querySelectorAll('.letterBox').forEach(box => {
+                    const rect = box.getBoundingClientRect();
+                    oldPositions.set(box, rect);
+                });
+                lettersContainer.innerHTML = '';
+                newLetters.forEach((letter) => {
+                    const box = document.createElement('div');
+                    box.className = 'letterBox';
+                    box.textContent = letter;
+                    lettersContainer.appendChild(box);
+                });
+                const newBoxes = Array.from(lettersContainer.children);
+                newBoxes.forEach(box => {
+                    const oldRect = oldPositions.get(box);
+                    const newRect = box.getBoundingClientRect();
+                    if (oldRect) {
+                        const dx = oldRect.left - newRect.left;
+                        const dy = oldRect.top - newRect.top;
+                        box.style.transform = `translate(${dx}px, ${dy}px)`;
+                        box.offsetHeight;
+                        box.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                        box.style.transform = '';
+                    } else {
+                        box.style.transform = 'scale(0.8)';
+                        box.offsetHeight;
+                        box.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                        box.style.transform = 'scale(1)';
+                    }
+                    box.addEventListener('transitionend', () => {
+                        box.style.transition = '';
+                    }, { once: true });
+                });
+            }
+            function onInputChange() {
+                const value = input.value.trim();
+                const filtered = value.replace(/\s/g, '');
+                currentLetters = filtered.split('');
+                renderLetters(currentLetters);
+            }
+            input.addEventListener('input', onInputChange);
+            shuffleBtn.addEventListener('click', () => {
+                if (currentLetters.length < 2) return;
+                const shuffled = [...currentLetters];
+                shuffleArray(shuffled);
+                currentLetters = shuffled;
+                renderLetters(currentLetters);
+            });
+            renderLetters([]);
+        })();
+    </script>
+</body>
+</html>

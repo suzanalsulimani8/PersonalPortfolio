@@ -1,0 +1,70 @@
+<!-- 5min -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #fff;
+        }
+        .chart{
+            display: flex;
+            gap: 15px;
+            height: 200px;
+            width: 250px;
+            background: #fff;
+            align-items: flex-end;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .bar{
+            width: 70px;
+            height: 0;
+            border-radius: 4px 4px 0 0;
+            background-color: aquamarine;
+            transition: height 0.5s ease-out;
+        }
+        .bar:nth-child(1){
+            background-color: rgb(239, 205, 205);
+        }
+        .bar:nth-child(2){
+            background-color: rgb(145, 154, 206);
+        }
+        .bar:nth-child(3){
+            background-color: rgb(248, 188, 207);
+        }
+        .chart:hover .bar{
+            animation: rise 0.5 ease-out forwards;
+        }
+        .chart:hover .bar:nth-child(1){
+            animation-delay: 0.2s; --h:190px
+        }
+        .chart:hover .bar:nth-child(2){
+            animation-delay: 0.3s; --h:150px
+        }
+        .chart:hover .bar:nth-child(3){
+            animation-delay: 0.4s; --h:90px
+        }
+        @keyframes rise{ to{
+            height: var(--h);
+        }}
+    </style>
+</head>
+<body>
+    <div class="chart">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+</body>
+</html>

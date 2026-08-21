@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Made in France - Product Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f6f9; }
+        .navbar-brand { font-weight: bold; color: #002395 !important; }
+        .badge-france { background-color: #ED2939; color: white; }
+        .card-header { background-color: #002395; color: white; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">🇫🇷 MadeInFrance GTIN System</a>
+        <div>
+            <button class="btn btn-outline-light btn-sm me-2" onclick="showPublicView()">Public Verification</button>
+            <button class="btn btn-primary btn-sm" id="adminNavBtn" onclick="showAdminView()">Admin Portal</button>
+        </div>
+    </div>
+</nav>
+
+<div class="container my-4">
+
+    <!-- PUBLIC VIEW -->
+    <div id="publicSection">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header">
+                        <h5 class="m-0">Public Bulk GTIN Verification</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted">Enter multiple GTIN numbers (one per line) to verify their authenticity and country of origin.</p>
+                        <textarea id="bulkGtinInput" class="form-control" rows="5" placeholder="3012345678901&#10;1234567890123"></textarea>
+                        <button class="btn btn-success mt-3 w-100" onclick="verifyBulkGTIN()">Verify GTINs</button>
+                    </div>
+                </div>
+
+                <div id="bulkResults" class="card shadow-sm d-none">
+                    <div class="card-body">
+                        <h5>Verification Results</h5>
+                        <table class="table table-bordered mt-3">
+                            <thead>
+                                <tr>
+                                    <th>GTIN</th>
+                                    <th>Format Check</th>
+                                    <th>Status</th>
+                                    <th>Product Details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN LOGIN FORM -->
+    <div id="adminLoginSection" class="d-none">
+        <div class="row">
+            <div class="col-md-4 mx-auto mt-5">
+                <div class="card shadow">
+                    <div class="card-header text-center"><h5>Admin Login</h5></div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label>Username</label>
+                            <input type="text" id="adminUser" class="form-control" value="admin">
+                        </div>
+                        <div class="mb-3">
+                            <label>Password</label>
+                            <input type="password" id="adminPass" class="form-control" value="admin123password">
+                        </div>
+                        <button class="btn btn-primary w-100" onclick="loginAdmin()">Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD -->
+    <div id="adminDashboardSection" class="d-none">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Admin Control Panel</h2>
+            <button class="btn btn-danger btn-sm" onclick="logoutAdmin()">Logout</button>
+        </div>
+
+        <ul class="nav nav-tabs" id="adminTab">
+            <li class="nav-item">
+                <button class="nav-link active" onclick="switchTab('products')">Products</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" onclick="switchTab('companies')">Companies</button>
+            </li>
+        </ul>
+
+        <div class="tab-content bg-white p-4 border border-top-0 shadow-sm">
+            <!-- PRODUCTS TAB -->
+            <div id="productsTab">
+                <button class="btn btn-success mb-3" onclick="openProductModal()">+ Add New Product</button>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>GTIN</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Category</th>
+                            <th>Origin</th>
+                            <th>Company</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTableBody"></tbody>
+                </table>
+            </div>
+
+            <!-- COMPANIES TAB -->
+            <div id="companiesTab" class="d-none">
+                <button class="btn btn-success mb-3" onclick="openCompanyModal()">+ Register Company</button>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Company Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="companiesTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let authToken = localStorage.getItem('adminToken') || '';
+
+    function showPublicView() {
+        document.getElementById('publicSection').classList.remove('d-none');
+        document.getElementById('adminLoginSection').classList.add('d-none');
+        document.getElementById('adminDashboardSection').classList.add('d-none');
+    }
+
+    function showAdminView() {
+        document.getElementById('publicSection').classList.add('d-none');
+        if (authToken) {
+            document.getElementById('adminDashboardSection').classList.remove('d-none');
+            loadAdminData();
+        } else {
+            document.getElementById('adminLoginSection').classList.remove('d-none');
+        }
+    }
+
+    async function loginAdmin() {
+        const username = document.getElementById('adminUser').value;
+        const password = document.getElementById('adminPass').value;
+
+        const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            authToken = data.token;
+            localStorage.setItem('adminToken', authToken);
+            showAdminView();
+        } else {
+            alert(data.error);
+        }
+    }
+
+    function logoutAdmin() {
+        authToken = '';
+        localStorage.removeItem('adminToken');
+        showPublicView();
+    }
+
+    async function verifyBulkGTIN() {
+        const rawInput = document.getElementById('bulkGtinInput').value;
+        const gtins = rawInput.split('\n').filter(g => g.trim() !== '');
+
+        const res = await fetch('/api/public/verify-gtin-bulk', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ gtins })
+        });
+        const results = await res.json();
+
+        const tbody = document.getElementById('resultsTableBody');
+        tbody.innerHTML = '';
+        results.forEach(r => {
+            let statusBadge = r.foundInSystem 
+                ? `<span class="badge bg-success">Verified (${r.details.country_of_origin})</span>` 
+                : `<span class="badge bg-warning text-dark">Not Registered</span>`;
+            
+            let formatBadge = r.validFormat 
+                ? `<span class="badge bg-primary">Valid Checksum</span>` 
+                : `<span class="badge bg-danger">Invalid Format</span>`;
+
+            let details = r.foundInSystem 
+                ? `<strong>${r.details.name}</strong> (${r.details.company_name || 'N/A'})` 
+                : '-';
+
+            tbody.innerHTML += `
+                <tr>
+                    <td><code>${r.gtin}</code></td>
+                    <td>${formatBadge}</td>
+                    <td>${statusBadge}</td>
+                    <td>${details}</td>
+                </tr>
+            `;
+        });
+        document.getElementById('bulkResults').classList.remove('d-none');
+    }
+
+    async function loadAdminData() {
+        // Load products
+        const pRes = await fetch('/api/admin/products', { headers: { 'Authorization': 'Bearer ' + authToken } });
+        const products = await pRes.json();
+        const pTbody = document.getElementById('productsTableBody');
+        pTbody.innerHTML = '';
+        products.forEach(p => {
+            pTbody.innerHTML += `
+                <tr>
+                    <td><code>${p.gtin}</code></td>
+                    <td>${p.name}</td>
+                    <td>€${p.price}</td>
+                    <td>${p.category}</td>
+                    <td><span class="badge badge-france">${p.country_of_origin}</span></td>
+                    <td>${p.company_name || 'Unassigned'}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="deleteProduct('${p.gtin}')">Delete</button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        // Load companies
+        const cRes = await fetch('/api/admin/companies', { headers: { 'Authorization': 'Bearer ' + authToken } });
+        const companies = await cRes.json();
+        const cTbody = document.getElementById('companiesTableBody');
+        cTbody.innerHTML = '';
+        companies.forEach(c => {
+            cTbody.innerHTML += `
+                <tr>
+                    <td>${c.id}</td>
+                    <td>${c.name}</td>
+                    <td>${c.contact_email}</td>
+                    <td>${c.phone}</td>
+                    <td>${c.address}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="deleteCompany(${c.id})">Delete</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    async function deleteProduct(gtin) {
+        if (!confirm('Are you sure you want to delete product ' + gtin + '?')) return;
+        await fetch('/api/admin/products/' + gtin, {
+            method: 'DELETE',
+            headers: { 'Authorization': 'Bearer ' + authToken }
+        });
+        loadAdminData();
+    }
+
+    async function deleteCompany(id) {
+        if (!confirm('Deleting this company will unlink associated products. Continue?')) return;
+        await fetch('/api/admin/companies/' + id, {
+            method: 'DELETE',
+            headers: { 'Authorization': 'Bearer ' + authToken }
+        });
+        loadAdminData();
+    }
+
+    function switchTab(tab) {
+        if (tab === 'products') {
+            document.getElementById('productsTab').classList.remove('d-none');
+            document.getElementById('companiesTab').classList.add('d-none');
+        } else {
+            document.getElementById('productsTab').classList.add('d-none');
+            document.getElementById('companiesTab').classList.remove('d-none');
+        }
+    }
+</script>
+</body>
+</html>

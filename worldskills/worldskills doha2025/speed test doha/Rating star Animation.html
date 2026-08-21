@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> </title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+    .stars-container { display: flex; justify-content: center; gap: 5px; }
+    .star {
+      font-size: 40px;
+      cursor: pointer;
+      position: relative;
+      color: #ddd;
+      display: inline-block;
+      width: 40px;
+    }
+    .star .full-star, .star .half-star {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+      color: #f39c12;
+      display: none;
+    }
+    .star .half-star {
+      width: 50%;
+      overflow: hidden;
+    }
+    .star.full .full-star { display: block; }
+    .star.half .half-star { display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="stars-container">
+    <div class="star" data-value="1">
+      <span class="half-star">★</span>
+      <span class="full-star">★</span>
+      <span class="empty-star">★</span>
+    </div>
+    <div class="star" data-value="2">
+      <span class="half-star">★</span>
+      <span class="full-star">★</span>
+      <span class="empty-star">★</span>
+    </div>
+    <div class="star" data-value="3">
+      <span class="half-star">★</span>
+      <span class="full-star">★</span>
+      <span class="empty-star">★</span>
+    </div>
+    <div class="star" data-value="4">
+      <span class="half-star">★</span>
+      <span class="full-star">★</span>
+      <span class="empty-star">★</span>
+    </div>
+    <div class="star" data-value="5">
+      <span class="half-star">★</span>
+      <span class="full-star">★</span>
+      <span class="empty-star">★</span>
+    </div>
+  </div>
+
+  <script>
+    const stars = document.querySelectorAll('.star');
+    let currentRating = 0;
+
+    stars.forEach(star => {
+      star.addEventListener('mousemove', (event) => {
+        let rect = star.getBoundingClientRect();
+        let mouseX = event.clientX - rect.left;
+        let halfStar = mouseX < rect.width / 2;
+        let value = parseFloat(star.getAttribute('data-value'));
+
+        highlightStars(value - (halfStar ? 0.5 : 0));
+      });
+
+      star.addEventListener('click', (event) => {
+        let rect = star.getBoundingClientRect();
+        let mouseX = event.clientX - rect.left;
+        let halfStar = mouseX < rect.width / 2;
+        let value = parseFloat(star.getAttribute('data-value'));
+
+        currentRating = value - (halfStar ? 0.5 : 0);
+        updateStars();
+      });
+
+      star.addEventListener('mouseout', () => {
+        highlightStars(currentRating);
+      });
+    });
+
+    function updateStars() {
+      stars.forEach(star => {
+        const value = parseFloat(star.getAttribute('data-value'));
+        star.classList.toggle('full', value <= Math.floor(currentRating));
+        star.classList.toggle('half', value === Math.ceil(currentRating) && currentRating % 1 !== 0);
+      });
+    }
+
+    function highlightStars(rating) {
+      stars.forEach(star => {
+        const value = parseFloat(star.getAttribute('data-value'));
+        star.classList.toggle('full', value <= Math.floor(rating));
+        star.classList.toggle('half', value === Math.ceil(rating) && rating % 1 !== 0);
+      });
+    }
+  </script>
+
+</body>
+</html>

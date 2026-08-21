@@ -1,0 +1,257 @@
+/* ---------- Global responsive helpers ---------- */
+html {
+  /* Slightly fluid base size */
+  font-size: clamp(14px, 0.9vw + 12px, 16px);
+}
+
+:root {
+  /* Let animations feel a bit snappier on mobile */
+  --speed-mobile: 0.45s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Safe-area friendly height */
+main {
+  height: calc(100vh - 64px - env(safe-area-inset-top, 0px));
+  padding-left: clamp(16px, 6vw, 106px);
+  padding-right: clamp(16px, 6vw, 106px);
+}
+
+/* Make stage always usable on short viewports */
+.stage {
+  min-height: 340px;
+}
+
+/* Inputs: make targets comfy on touch */
+select,
+input[type="number"],
+input[type="text"],
+input[type="range"] {
+  min-height: 40px;
+}
+
+/* Command box & dialog: scale on narrow screens */
+.cmd .box {
+  width: min(720px, 94vw);
+  top: 10%;
+}
+.dialog .card {
+  top: 5%;
+  bottom: 5%;
+  left: 4%;
+  right: 4%;
+}
+
+/* Panel sheet fills mobile width */
+.panel .sheet {
+  width: min(380px, 96vw);
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+/* Grid tiles adapt */
+.grid {
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+}
+
+/* Hint & caption scale */
+.hint {
+  font-size: clamp(0.8rem, 1.2vw, 0.95rem);
+  bottom: 44px;
+}
+.caption {
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+}
+
+/* Drop zone stays visible but compact */
+#drop {
+  min-height: clamp(84px, 14vh, 140px);
+}
+
+/* ---------- Breakpoints ---------- */
+
+/* ≤ 1200px (laptops) */
+@media (max-width: 1200px) {
+  .bar {
+    padding: 0.6rem 0.8rem;
+    gap: 0.5rem;
+  }
+  .bar h1 {
+    font-size: 0.95rem;
+  }
+  .quick {
+    padding: 0.2rem 0.45rem;
+  }
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}
+
+/* ≤ 992px (small laptops/tablets landscape) */
+@media (max-width: 992px) {
+  .bar {
+    flex-wrap: wrap;
+  }
+  .btn-group {
+    margin-left: 0;
+    flex: 1 1 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .btn-group > * {
+    margin-top: 0.25rem;
+  }
+  .row {
+    flex-direction: column;
+  }
+  .panel .sheet {
+    width: min(360px, 96vw);
+  }
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  }
+}
+
+/* ≤ 768px (tablets/large phones) */
+@media (max-width: 768px) {
+  main {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .bar h1 {
+    font-size: 0.9rem;
+  }
+  button.btn,
+  label.btn {
+    padding: 0.45rem 0.7rem;
+    font-size: 0.92rem;
+  }
+  #drop {
+    margin: 0.75rem;
+  }
+  .status {
+    margin: 0.35rem 0.75rem;
+    font-size: 0.78rem;
+  }
+  .cmd .box {
+    top: 12%;
+    width: 92vw;
+  }
+  .dialog .card {
+    top: 6%;
+    bottom: 6%;
+    left: 3%;
+    right: 3%;
+  }
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.6rem;
+  }
+  .tile .ttl {
+    font-size: 0.72rem;
+  }
+  .hint {
+    bottom: 40px;
+    padding: 6px 12px;
+  }
+  .hint .key {
+    font-size: 0.78rem;
+    padding: 2px 6px;
+  }
+  .caption {
+    padding: 0.55rem 0.85rem;
+  }
+  .caption span.editable {
+    border-bottom-width: 1px;
+  }
+  /* Speed up theme animations slightly on mobile */
+  .themeB .imgWrap.in,
+  .themeB .imgWrap.out,
+  .themeC .imgWrap.in,
+  .themeC .imgWrap.out,
+  .themeD .imgWrap.in,
+  .themeD .imgWrap.out {
+    animation-duration: var(--speed-mobile);
+  }
+}
+
+/* ≤ 600px (phones) */
+@media (max-width: 600px) {
+  header {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+  }
+  .bar {
+    gap: 0.4rem;
+  }
+  .quick {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .quick label {
+    font-size: 0.78rem;
+  }
+  .quick input[type="number"] {
+    width: 4.5rem;
+    font-size: 0.9rem;
+  }
+  .panel .sheet {
+    width: 100vw;
+    right: 0;
+    border-radius: 0;
+  }
+  .cmd input {
+    padding: 0.85rem;
+    font-size: 0.95rem;
+  }
+  .cmd li {
+    padding: 0.65rem 0.85rem;
+    font-size: 0.92rem;
+  }
+  .shortcuts {
+    font-size: 0.82rem;
+  }
+  .shortcuts .key {
+    font-size: 0.78rem;
+  }
+  .tile {
+    border-radius: 0.5rem;
+  }
+  .tile .ttl {
+    font-size: 0.7rem;
+  }
+}
+
+/* ≤ 420px (small phones) */
+@media (max-width: 420px) {
+  .bar h1 {
+    flex: 1 1 100%;
+    margin: 0;
+  }
+  .btn-group {
+    gap: 0.4rem;
+  }
+  button.btn,
+  label.btn {
+    flex: 1 1 auto;
+  }
+  #drop {
+    padding: 0.75rem;
+  }
+  .hint {
+    bottom: 36px;
+    font-size: 0.8rem;
+  }
+  .caption {
+    font-size: 0.85rem;
+  }
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

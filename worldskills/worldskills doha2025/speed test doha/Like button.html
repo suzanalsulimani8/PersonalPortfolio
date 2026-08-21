@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments with Ratings</title>
+    <style>
+        .comment { margin: 20px 0; }
+        .selected { background-color: lightblue; }
+    </style>
+</head>
+<body>
+
+    <div class="comment">
+        <p>Comment 1: This is a great product!</p>
+        <button class="thumbs-up">👍 Thumbs Up</button>
+        <button class="thumbs-down">👎 Thumbs Down</button>
+    </div>
+
+    <div class="comment">
+        <p>Comment 2: I didn’t like this product much.</p>
+        <button class="thumbs-up">👍 Thumbs Up</button>
+        <button class="thumbs-down">👎 Thumbs Down</button>
+    </div>
+
+    <div class="comment">
+        <p>Comment 3: Worth the price!</p>
+        <button class="thumbs-up">👍 Thumbs Up</button>
+        <button class="thumbs-down">👎 Thumbs Down</button>
+    </div>
+
+    <button id="checkRatings">Check Ratings</button>
+
+    <div id="ratingSummary"></div>
+
+    <script>
+        document.querySelectorAll('.thumbs-up, .thumbs-down').forEach(button => {
+            button.addEventListener('click', () => {
+                const isUp = button.classList.contains('thumbs-up');
+                const sibling = button.nextElementSibling || button.previousElementSibling;
+                button.classList.toggle('selected');
+                sibling.classList.remove('selected');
+            });
+        });
+
+        document.getElementById('checkRatings').addEventListener('click', () => {
+            const thumbsUpCount = document.querySelectorAll('.thumbs-up.selected').length;
+            const thumbsDownCount = document.querySelectorAll('.thumbs-down.selected').length;
+            document.getElementById('ratingSummary').textContent = `Thumbs Up: ${thumbsUpCount}, Thumbs Down: ${thumbsDownCount}`;
+        });
+    </script>
+</body>
+</html>

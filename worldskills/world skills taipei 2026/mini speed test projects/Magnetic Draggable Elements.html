@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Drag and Drop</title>
+    <style>
+        * { box-sizing: border-box; }
+        body, html {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+            background: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: sans-serif;
+            user-select: none;
+        }
+        #container {
+            position: relative;
+            width: 90vw;
+            max-width: 900px;
+            height: 600px;
+            background: #333;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.7);
+            overflow: hidden;
+        }
+        .draggable {
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: grab;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.7);
+            transition: box-shadow 0.2s ease;
+        }
+        .draggable:active { cursor: grabbing; }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="item1" class="draggable" style="background-color: #E91E63;">One</div>
+        <div id="item2" class="draggable" style="background-color: #03A9F4;">Two</div>
+        <div id="item3" class="draggable" style="background-color: #4CAF50;">Three</div>
+    </div>
+
+    <script>
+        const container = document.getElementById('container');
+        const draggableItems = document.querySelectorAll('.draggable');
+        let activeItem = null;
+        let containerRect;
+        let offsetX, offsetY;
+        const itemSize = 110;
+
+        function initializePositions() {
+            containerRect = container.getBoundingClientRect();
+            const spacing = (containerRect.width - itemSize) / (draggableItems.length - 1);
+            draggableItems.forEach((item, index) => {
+                const initialX = spacing * index;
+                const initialY = (containerRect.height - itemSize) / 2;
+                item.style.transform = `translate3d(${initialX}px, ${initialY}px, 0)`;
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', initializePositions);
+        window.addEventListener('resize', initializePositions);
+
+        draggableItems.forEach(item => {
+            item.addEventListener('mousedown', dragStart);
+            item.addEventListener('touchstart', dragStart, { passive: true });
+        });
+
+        function dragStart(e) {
+            e.preventDefault();
+            activeItem = e.currentTarget;
+            activeItem.style.zIndex = 1000;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            const itemRect = activeItem.getBoundingClientRect();
+            offsetX = clientX - itemRect.left;
+            offsetY = clientY - itemRect.top;
+            window.addEventListener('mousemove', dragMove);
+            window.addEventListener('touchmove', dragMove, { passive: false });
+            window.addEventListener('mouseup', dragEnd);
+            window.addEventListener('touchend', dragEnd);
+            window.addEventListener('touchcancel', dragEnd);
+        }
+
+        function dragMove(e) {
+            if (!activeItem) return;
+            e.preventDefault();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            containerRect = container.getBoundingClientRect(); 
+            let newX = clientX - containerRect.left - offsetX;
+            let newY = clientY - containerRect.top - offsetY;
+            newX = Math.min(Math.max(0, newX), containerRect.width - itemSize);
+            newY = Math.min(Math.max(0, newY), containerRect.height - itemSize);
+            activeItem.style.transform = `translate3d(${newX}px, ${newY}px, 0)`;
+        }
+
+        function dragEnd() {
+            if (!activeItem) return;
+            activeItem.style.zIndex = '';
+            activeItem = null;
+            window.removeEventListener('mousemove', dragMove);
+            window.removeEventListener('touchmove', dragMove);
+            window.removeEventListener('mouseup', dragEnd);
+            window.removeEventListener('touchend', dragEnd);
+            window.removeEventListener('touchcancel', dragEnd);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Infinite Quotes Viewer</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 30px;
+    background-color: #f7f7f7;
+  }
+  #quotes-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .quote {
+    background: white;
+    margin: 10px 0;
+    padding: 16px 20px;
+    border-radius: 6px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  }
+  .quote-text {
+    font-style: italic;
+    font-size: 1.1em;
+    margin-bottom: 8px;
+  }
+  .quote-author {
+    text-align: right;
+    font-weight: bold;
+    color: #555;
+  }
+  #loading-message,
+  #end-message {
+    text-align: center;
+    margin: 20px 0;
+    color: #777;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<div id="quotes-container"></div>
+<div id="loading-message" style="display:none;">Loading more quotes...</div>
+<div id="end-message" style="display:none;">No more quotes available.</div>
+
+<script>
+  const container = document.getElementById('quotes-container');
+  const loadingMessage = document.getElementById('loading-message');
+  const endMessage = document.getElementById('end-message');
+
+  let quotes = [];
+  let currentIndex = 0;
+  const batchSize = 10;
+
+  // Fetch quotes.json on load
+  fetch('quotes.json')
+    .then(response => response.json())
+    .then(data => {
+      quotes = data;
+      loadBatch();
+      // Add scroll event listener
+      window.addEventListener('scroll', onScroll);
+    })
+    .catch(err => {
+      loadingMessage.style.display = 'none';
+      container.innerHTML = '<p style="color:red; text-align:center;">Failed to load quotes.</p>';
+      console.error('Error loading quotes:', err);
+    });
+
+  function createQuoteElement(quote) {
+    const div = document.createElement('div');
+    div.className = 'quote';
+    div.innerHTML = `
+      <div class="quote-text">"${quote.text}"</div>
+      <div class="quote-author">— ${quote.author}</div>
+    `;
+    return div;
+  }
+
+  function loadBatch() {
+    if (currentIndex >= quotes.length) {
+      loadingMessage.style.display = 'none';
+      endMessage.style.display = 'block';
+      window.removeEventListener('scroll', onScroll); // Stop listening for scroll
+      return;
+    }
+
+    loadingMessage.style.display = 'block';
+
+    // Simulate loading time with setTimeout (optional)
+    setTimeout(() => {
+      const batch = quotes.slice(currentIndex, currentIndex + batchSize);
+      batch.forEach(quote => {
+        container.appendChild(createQuoteElement(quote));
+      });
+      currentIndex += batch.length;
+      loadingMessage.style.display = 'none';
+
+      if (currentIndex >= quotes.length) {
+        endMessage.style.display = 'block';
+        window.removeEventListener('scroll', onScroll);
+      }
+    }, 700);  // 700ms loading delay simulation
+  }
+
+  function onScroll() {
+    // If user scrolled near bottom (200px)
+    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 200)) {
+      if (loadingMessage.style.display === 'none' && endMessage.style.display === 'none') {
+        loadBatch();
+      }
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mouse Click Animation</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            cursor: none; /* إخفاء المؤشر الافتراضي */
+        }
+
+        .sky {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to top, #9ef7cb, #ffde83);
+        }
+
+        .custom-cursor {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            transition: transform 0.1s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .click-effect {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 2px solid rgba(158, 158, 158, 0.7);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: click-animation 0.5s ease forwards;
+        }
+        
+
+        @keyframes click-animation {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="scene" class="sky"></div>
+    <div id="cursor" class="custom-cursor"></div>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const scene = document.getElementById('scene');
+
+        // تحديث موقع المؤشر المخصص بناءً على حركة الماوس
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = `${e.pageX}px`;
+            cursor.style.top = `${e.pageY}px`;
+        });
+
+        // إضافة تأثير عند النقر
+        document.addEventListener('click', (e) => {
+            const effect = document.createElement('div');
+            effect.classList.add('click-effect');
+            effect.style.left = `${e.pageX}px`;
+            effect.style.top = `${e.pageY}px`;
+            scene.appendChild(effect);
+
+            // إزالة التأثير بعد انتهاء الحركة
+            setTimeout(() => {
+                effect.remove();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="main-menu">
+        <h1>Interactive Quiz</h1>
+        <button id="start-quiz">Start Quiz</button>
+        <input type="file" id="upload-questions" accept=".json">
+        <button id="settings">Settings</button>
+        <div id="high-scores"></div>
+    </div>
+
+    <div id="quiz-interface" class="hidden">
+        <div id="quiz-header">
+            <span id="question-counter"></span>
+            <span id="timer"></span>
+            <span id="score-display"></span>
+        </div>
+        <div id="question-area"></div>
+        <div id="answer-options"></div>
+        <button id="prev-question" class="hidden">Previous</button>
+        <button id="next-question">Next</button>
+    </div>
+
+    <div id="quiz-result" class="hidden">
+        <h2>Quiz Completed!</h2>
+        <p id="final-score"></p>
+        <button id="restart-quiz">Restart Quiz</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

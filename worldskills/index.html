@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معرض المسابقات المهنية - Organized Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #11192c;
+            --text-muted: #202327;
+            --border-color: #f3f4f5;
+            
+            --saudi-color: #afcab5;
+            --saudi-bg: #ecfdf5;
+            
+            --gcc-color: #afcab5;
+            --gcc-bg: #ecfdf5;
+            
+            --asia-color: #afcab5;
+            --asia-bg: #ecfdf5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            padding: 2rem 1rem;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        /* Level 1: 3 Main Competitions */
+        .competitions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto 2.5rem auto;
+        }
+
+        .main-comp-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+            text-align: center;
+        }
+
+        .main-comp-card:hover, .main-comp-card.active {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+        }
+
+        .main-comp-card.saudi.active, .main-comp-card.saudi:hover {
+            border-color: var(--saudi-color);
+            background-color: var(--saudi-bg);
+        }
+
+        .main-comp-card.gcc.active, .main-comp-card.gcc:hover {
+            border-color: var(--gcc-color);
+            background-color: var(--gcc-bg);
+        }
+
+        .main-comp-card.asia.active, .main-comp-card.asia:hover {
+            border-color: var(--asia-color);
+            background-color: var(--asia-bg);
+        }
+
+        .comp-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .comp-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 0.3rem; }
+        .comp-subtitle { font-size: 0.88rem; color: var(--text-muted); }
+
+        .tasks-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: none;
+        }
+
+        .tasks-container.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Level 2: Sub-Folders Navigation Tabs */
+        .subfolders-nav {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .folder-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1.25rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .folder-btn:hover {
+            border-color: #cbd5e1;
+            background: #f1f5f9;
+        }
+
+        .folder-btn.active {
+            background: #afcab5;
+            color: #ffffff;
+            border-color: #ecfdf5;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+        }
+
+        /* Sub-Folder Content Section */
+        .folder-content {
+            display: none;
+        }
+
+        .folder-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .folder-header {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 1.25rem;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Tasks Cards Grid */
+        .tasks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .task-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .task-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+        }
+
+        .task-tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            width: fit-content;
+        }
+
+        .tag-saudi { background: var(--saudi-bg); color: var(--saudi-color); }
+        .tag-gcc { background: var(--gcc-bg); color: var(--gcc-color); }
+        .tag-asia { background: var(--asia-bg); color: var(--asia-color); }
+
+        .task-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-main);
+        }
+
+        .rules-box {
+            background: #f1f5f9;
+            border-right: 3px solid #64748b;
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 1.25rem;
+            font-size: 0.85rem;
+        }
+
+        .rules-box h4 {
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            color: #334155;
+        }
+
+        .rules-box ul {
+            padding-right: 1.1rem;
+            color: #475569;
+        }
+
+        .rules-box li {
+            margin-bottom: 0.2rem;
+        }
+
+        .btn-open {
+            background-color: #5e7c69;
+            color: #ffffff;
+            border: none;
+            padding: 0.65rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            transition: background 0.2s;
+        }
+
+        .btn-open:hover {
+            background-color: #a3b1a6;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            width: 92%;
+            height: 88%;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            padding: 1rem 1.25rem;
+            background: #f1f5f9;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .modal-body { flex: 1; }
+        .modal-body iframe { width: 100%; height: 100%; border: none; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>معرض المسابقات المهنية</h1>
+        <p>اختر المسابقة ثم تصفح المجلدات الفرعية لعرض المهام وشروطها</p>
+    </header>
+
+    <!-- LEVEL 1: 3 Main Competitions -->
+    <div class="competitions-grid">
+        <div class="main-comp-card saudi active" onclick="switchCompetition('saudi', this)">
+            <div class="comp-icon">🇸🇦</div>
+            <div class="comp-title">المسابقة السعودية</div>
+            <div class="comp-subtitle">SaudiSkills 2025</div>
+        </div>
+
+        <div class="main-comp-card gcc" onclick="switchCompetition('gcc', this)">
+            <div class="comp-icon">🌴</div>
+            <div class="comp-title">المسابقة الخليجية</div>
+            <div class="comp-subtitle">GCC Skills</div>
+        </div>
+
+        <div class="main-comp-card asia" onclick="switchCompetition('asia', this)">
+            <div class="comp-icon">🌏</div>
+            <div class="comp-title">المسابقة الآسيوية</div>
+            <div class="comp-subtitle">WorldSkills Asia</div>
+        </div>
+    </div>
+
+    <!-- 1. SAUDI COMPETITION -->
+    <div id="saudi" class="tasks-container active">
+        
+        <!-- Sub-Folders Navigation -->
+        <div class="subfolders-nav">
+            <button class="folder-btn active" onclick="switchFolder('saudi', 'folder-speed', this)">
+                 (Speed Tests)
+            </button>
+            <button class="folder-btn" onclick="switchFolder('saudi', 'folder-task-a', this)">
+                   Interactive Quiz Development Task
+            </button>
+            <button class="folder-btn" onclick="switchFolder('saudi', 'folder-task-b', this)">
+Online Shop
+            </button>
+        </div>
+
+        <!-- Folder 1: Speed Tests -->
+        <div id="folder-speed" class="folder-content active">
+            <div class="folder-header">Speed Tests</div>
+            <div class="tasks-grid">
+                
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-saudi">Speed Test</span>
+                        <div class="task-title">RGB slider</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul>
+                                <li>Implement the RGB slider as follows. There are 3 sliders to adjust the values of red, green and blue colors.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Speed Test: B2', './saudiskills 2025/speed test saudi skills/B2/index.html')">معاينة المهمة</button>
+                </div>
+
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-saudi">Speed Test</span>
+                        <div class="task-title">A flower shape</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul>
+
+                                <li>Create a CSS-based flower shape consisting of 10 petals.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Speed Test: Flower Shape', './saudiskills 2025/speed test saudi skills/a flower shape.html')">معاينة المهمة</button>
+                </div>
+
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-saudi">Speed Test</span>
+                        <div class="task-title">SCC Grid</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul>
+                                <li>Implement the grid using CSS grid</li>
+                                <li>Observing colors</li>
+                                <li>fonts and internal indentation is not required </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Speed Test: Grid', './saudiskills 2025/speed test saudi skills/grid.html')">معاينة المهمة</button>
+                </div>
+
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-saudi">Speed Test</span>
+                        <div class="task-title"> Vector image of logo</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul>
+                                <li>You have been provided with a bitmap image of logo.png. Create a vector version of it. Save the
+resulting file in one of the formats ai, svg, eps. The resulting file should not contain raster elements.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Python Logo A2', './saudiskills 2025/speed test saudi skills/pythonlogoA2.html')">معاينة المهمة</button>
+                </div>
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-saudi">Speed Test</span>
+                        <div class="task-title"> Flag Animation </div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul>
+                                <li>Make the flag moving using html and CSS</li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Flag Animation', './saudiskills 2025/speed test saudi skills/vactor image of logo.png/flag1.html')">معاينة المهمة</button>
+                </div>
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-saudi">Speed Test</span>
+                        <div class="task-title">Preparing a web page for printing </div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul>
+                                <li>You will need to change the provided html and css code so that when preparing for printing (for
+example, when we press Ctrl+P):</li>
+                                <li>- all information should be in black and white (grayscale is allowed),- there is only one color area (fragment/element) on the page- the logo</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Preparing a web page for printing', './saudiskills 2025/speed test saudi skills/Preparing a web page for printing/Preparing a web page for printing.html')">معاينة المهمة</button>
+                </div>
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-saudi">Speed Test</span>
+                        <div class="task-title">Solution of equation </div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul>
+                                <li>You are provided with an html page that contains fields for entering two real numbers k and b. Write a
+script that will run on the server and that will solve an equation of the form kx + b = 0.
+The solution of the equation should be displayed on the page</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Solution of equation ', './saudiskills 2025/speed test saudi skills/solution of equation.html')">معاينة المهمة</button>
+                </div>
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-saudi">Speed Test</span>
+                        <div class="task-title">Rounds </div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul>
+                                <li>reate a page containing 5 circles. Each circle contains one of the following words: «Web»,
+«PHP», «Javascript», «HTML», «CSS». The words are centered both horizontally and vertically.
+The position of the circles on the page is arbitrary, but overlap is not allowed. The entire area
+of the circle should be visible. The page has an offset of 20 pixels from the edges of the screen. The
+size of the circles is also random, from 300 to 400 pixels. The position and size of the circles are
+random at each load.
+The colors of the circles are: #1F2041, #4B3F72, #417B5A, #D0CEBA, #E9D2C0.</li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Rounds ', './saudiskills 2025/speed test saudi skills/rounds.html')">معاينة المهمة</button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Folder 2: Task A & UX -->
+        <div id="folder-task-a" class="folder-content">
+            <div class="folder-header">Interactive Quiz Development Task</div>
+            <div class="tasks-grid">
+                
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-saudi">Interactive Quiz Development Task</span>
+                        <div class="task-title">Interactive Quiz Development Task</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul>
+                               <li>This task involves creating a client-side interactive quiz application. The application includes question
+management, a responsive user interface, and animations to enhance the user experience. It is
+designed to work efficiently in modern browsers, with features like local storage, accessibility, and
+mobile responsiveness.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Task A PDF Document', './saudiskills 2025/TASK C saudiskills/index.html')">معاينة المهمة</button>
+                </div>
+
+
+            </div>
+        </div>
+
+        <!-- Folder 3: Task B -->
+        <div id="folder-task-b" class="folder-content">
+            <div class="folder-header">Online Shop</div>
+            <div class="tasks-grid">
+                
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-saudi">Task B</span>
+                        <div class="task-title">Online Shop</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul>
+                                <li>In this project, we create a web page of the online store "Online is fine". The page should be reachable at
+wsXX.domainname.org/module-f/ where XX is your seat number.
+The use of any CSS frameworks and libraries (Bootstrap, Tailwind, for example) is prohibited.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Solution of Equation', './saudiskills 2025/task d saudskills/index.html')">معاينة المهمة</button>
+                </div>
+
+            </div>
+        </div>
+        </div>
+
+    </div>
+
+    <!-- 2. GCC COMPETITION -->
+    <div id="gcc" class="tasks-container">
+        <div class="subfolders-nav">
+            <button class="folder-btn active" onclick="switchFolder('gcc', 'gcc-folder-speed', this)">Test Project </button>
+        </div>
+
+        <div id="gcc-folder-speed" class="folder-content active">
+            <div class="folder-header">Test Project </div>
+            <div class="tasks-grid">
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-gcc">Speed Test</span>
+                        <div class="task-title">9-Images</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>
+                                    Create an image grid container using CSS only. The maximum capacity of the container is 9. If the number 
+                                    of images is overload, the number of excess-images is displayed in the last grid. 
+                                    
+                                    You can only edit the style.css file. 
+                                    
+                                    Tips: the “Remove First Image” button is the function provided. </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Speed Test: B2', './worldskills doha2025/speed test doha/9-images/b11.html')">معاينة المهمة</button>
+                </div>
+
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-gcc">Speed Test</span>
+                        <div class="task-title">Rating star Animation</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>
+                                    Create a 5 Stars Rating UI using the provided "stars.png" image. (Use HTML/CSS ) When you hover your 
+mouse over a star, an animation that smoothly fills in from the left to the star's score proceeds. Score 0.5 
+point unit: 0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5  </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Speed Test: B2', './worldskills doha2025/speed test doha/Rating star Animation.html')">معاينة المهمة</button>
+                </div>
+
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-gcc">Speed Test</span>
+                        <div class="task-title">Mouse style</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>
+                                    Change the style of the mouse. 
+• When clicked, it should display an animation. 
+See mouse.mp4 in the given folder to understand the functionality.  </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Speed Test: B2', './worldskills doha2025/speed test doha/Mouse style.html')">معاينة المهمة</button>
+                </div>
+
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-gcc">Speed Test</span>
+                        <div class="task-title">Sunrise and Sunset</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>
+                                   Create a sunrise and sunset, follow the video Sunrise.mp4 as an example of how it should work and look. 
+The images are located in the images folder. </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Speed Test: B2', './worldskills doha2025/speed test doha/Sunrise and Sunset/b4.html')">معاينة المهمة</button>
+                </div>
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-gcc">Speed Test</span>
+                        <div class="task-title">Accessibility</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>
+                                    Any time you are developing a web site or web application you should ensure you follow any applicable 
+guidelines for accessibility. This will help ensure it can be used by people with disabilities including visual 
+disability. You have been provided with a single HTML page named accessibility.html in the provided-assets 
+folder that has five common accessibility issues. Your task is to identify and implement a fix for these 
+issues. Save your solution as accessibility-fixed.html inside of a new folder. </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Speed Test: B2', './worldskills doha2025/speed test doha/accessibility.html')">معاينة المهمة</button>
+                </div>
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-gcc">Speed Test</span>
+                        <div class="task-title">Responsive grid layout </div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>
+                                    The mobile version is tested with a 480px width. The Desktop version is tested with a 1280px width. </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Speed Test: B2', './worldskills doha2025/speed test doha/Responsive grid layout.html')">معاينة المهمة</button>
+                </div>
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-gcc">Speed Test</span>
+                        <div class="task-title">Particle Button</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>
+                                    Create an interactive animation using CSS only. When user click the “Click Me!” Button, many particles 
+with diffusion effect will be displayed around the button. 
+You can only edit the style.css file.</li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Speed Test: B2', './worldskills doha2025/speed test doha/Particle Button.html')">معاينة المهمة</button>
+                </div>
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-gcc">Speed Test</span>
+                        <div class="task-title">Night Mode</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>
+                                    You are to create a webpage that supports night mode. Characters should be shown at the centre of the 
+webpage. When light mode is selected, the background is to be white (#ffffff), and the characters are to be 
+black (#000000). The typeface is not to be changed in any other way. The characters “Light Mode Test” is to 
+be shown (at the centre of the webpage). When night mode is selected, the background is to be black 
+(#000000), and the characters are to be white (#ffffff). The typeface is not to be changed in any other way. 
+The characters “Night Mode Test” is to be shown (at the centre of the webpage). (No media files)</li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Speed Test: B2', './worldskills doha2025/speed test doha/night mode.html')">معاينة المهمة</button>
+                </div>
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-gcc">Speed Test</span>
+                        <div class="task-title">Roman Converter</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>
+                                    Create a function that will take either a string containing a roman numeral, or an integer. 
+I ➞ 1 
+V ➞ 5 
+X➞10 
+L➞50 
+C➞100 
+D➞500 
+M ➞ 1000 
+Given a string, return the integer value of that roman numeral. 
+Given an integer, return the equivalent roman numeral. 
+No media are provided.</li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Speed Test: B2', './worldskills doha2025/speed test doha/Roman Converter.html')">معاينة المهمة</button>
+                </div>
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-gcc">Speed Test</span>
+                        <div class="task-title">Get the data type </div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>
+                                    Create a function, that when you enter a value, it returns the type of the input data. You can only add 
+your code in the “getType” function in index.html. The test code is in test.js. </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Speed Test: B2', './worldskills doha2025/speed test doha/get the data type.html')">معاينة المهمة</button>
+                </div>
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-gcc">Speed Test</span>
+                        <div class="task-title">Answer Checker</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>
+                                    You are provided with two CSV files. One file contains the actual answers, and the other file contains the 
+submitted answers. You are expected to develop a web page, displaying a table showing the question 
+number, actual answer and submitted answer. At the bottom of the table, display the scores for this 
+submission. Eg, if there are 8 correct answers and there are 10 questions. Display the score as “8/10”.  </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Speed Test: B2', './worldskills doha2025/speed test doha/answer checker/answer checker.html')">معاينة المهمة</button>
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+
+    <!-- 3. ASIAN COMPETITION -->
+    <div id="asia" class="tasks-container">
+        <div class="subfolders-nav">
+            <button class="folder-btn active" onclick="switchFolder('asia', 'asia-folder-speed', this)">mini speed test projects</button>
+            <button class="folder-btn" onclick="switchFolder('asia', 'asia-folder-tasks', this)">SlideShow</button>
+        </div>
+
+        <div id="asia-folder-speed" class="folder-content active">
+            <div class="folder-header">Speed Test Project </div>
+            <div class="tasks-grid">
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">It's Rainy </div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Create a rain animation effect using only HTML and CSS. 
+Randomly generated raindrops should fall continuously from the top of the screen to the bottom. </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Asian Speed Challenge', './world skills taipei 2026/mini speed test projects/it rainy.html')">معاينة المهمة</button>
+                </div>
+
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">Wave Text</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Create a wave animation effect on text using only HTML and CSS. 
+The text should animate up and down sequentially, giving the illusion of a wave. </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Wave Text', './world skills taipei 2026/mini speed test projects/wave text.html')">معاينة المهمة</button>
+                </div>
+
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">Barcode Scanner Animation</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Create a barcode design with a moving red scanner line using only HTML and CSS. 
+</li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Asian Speed Challenge', './world skills taipei 2026/mini speed test projects/Barcode Scanner Animation.html')">معاينة المهمة</button>
+                </div>
+
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">Tunnel Animation</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Create a 3D tunnel animation effect using only HTML and CSS. 
+Multiple rings should appear to move continuously towards the viewer, giving a sense of traveling through a 
+tunnel.</li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Tunnel Animation', './world skills taipei 2026/mini speed test projects/Tunnel Animation.html')">معاينة المهمة</button>
+                </div>
+
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">Multi-Step Form</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Create a multi-step form using only HTML and CSS. The form should allow users to navigate between steps 
+without JavaScript, relying purely on CSS. </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Multi-Step Form', './world skills taipei 2026/mini speed test projects/Multiple Counters.html')">معاينة المهمة</button>
+                </div>
+
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">Loading Animation</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>CSS - Implement a loading animation similar to the provided GIF </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Loading Animation', './world skills taipei 2026/mini speed test projects/Loading Animation.html')">معاينة المهمة</button>
+                </div>
+
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">Loading Animation </div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Implement the symbol using HTML and CSS. </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Tunnel Animation', './world skills taipei 2026/mini speed test projects/Loading Animationn.html')">معاينة المهمة</button>
+                </div>
+
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">Create a functional loading animation</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Watch the video and recreate the spinner loading animation. The animation should only run while the provided HTML 
+page is loading. The browser must be settled with a slow 3G connection and 6x slowdown CPU to test this.</li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Create a functional loading animation', './world skills taipei 2026/mini speed test projects/Create a functional loading animation.html')">معاينة المهمة</button>
+                </div>
+
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">Drip</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>No code is provided. Please implement a looping drip effect only using HTML and CSS, following the provided video. </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Drip', './world skills taipei 2026/mini speed test projects/Drip.html')">معاينة المهمة</button>
+                </div>
+
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">CSS Bar Chart </div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Please implement a bar chart using only HTML and CSS. 
+At first, the screen will be blank, but when you hover the mouse over the chart area, the bars will rise 
+sequentially from the bottom, starting from the left bar. 
+The values and colors of each data point are not important. You 
+can use html and css, but not javascript </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Asian Speed Challenge', './world skills taipei 2026/mini speed test projects/CSS Bar Chart.html')">معاينة المهمة</button>
+                </div>
+
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">Infinite Scroll Quotes Viewer</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Create a continuously loading quote viewer using HTML, CSS, and JavaScript. 
+</li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Asian Speed Challenge', './world skills taipei 2026/mini speed test projects/Infinite Scroll Quotes Viewer.html')">معاينة المهمة</button>
+                </div>
+
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">CSS Inspector</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Create an interactive CSS inspector tool using HTML, CSS, and JavaScript</li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Asian Speed Challenge', './world skills taipei 2026/mini speed test projects/CSS Inspector.html')">معاينة المهمة</button>
+                </div>
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">Lightning Strike</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Create an interactive lightning effect, clicking anywhere on the screen triggers a lightning strike from the 
+top of the screen down to the clicked X position.</li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Asian Speed Challenge', './world skills taipei 2026/mini speed test projects/Lightning Strike.html')">معاينة المهمة</button>
+                </div><div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">ASCII Real-Time Drawing </div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Build an interactive dual-canvas app where freehand drawing on one canvas is transformed into ASCII 
+art in real time on the second canvas.</li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Asian Speed Challenge', './world skills taipei 2026/mini speed test projects/ASCII Real-Time Drawing.html')">معاينة المهمة</button>
+                </div><div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">Magnetic Draggable Elements</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Create an interactive UI with draggable elements that respond to the mouse pointer with a magnetic 
+attraction effect.</li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Asian Speed Challenge', './world skills taipei 2026/mini speed test projects/Magnetic Draggable Elements.html')">معاينة المهمة</button>
+                </div><div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">Dynamic Notebook</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Create a dynamic, multi-entry notebook interface where users can write notes in separate text areas. </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Asian Speed Challenge', './world skills taipei 2026/mini speed test projects/Dynamic Notebook.html')">معاينة المهمة</button>
+                </div><div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">Symbol Password Mask</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Requirement Notes 
+● The input must allow typing normally, but all visible characters should appear as randomly 
+assigned symbols. 
+● The real password value can be revealed when the user clicks a toggle button. 
+● Pressing Backspace must remove both the real character and its corresponding symbol 
+correctly, maintaining the correct cursor position. 
+● Pressing any regular key inserts the character at the cursor position and displays a new random 
+symbol at that position. </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Symbol Password Mask', './world skills taipei 2026/mini speed test projects/Symbol Password Mask.html')">معاينة المهمة</button>
+                </div><div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">Word Split Shuffle</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Create an interactive tool that splits a typed word into individual letters and allows users to shuffle them 
+randomly. </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Word Split Shuffle', './world skills taipei 2026/mini speed test projects/Word Split Shuffle.html')">معاينة المهمة</button>
+                </div><div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">Line Chart</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Create a line chart with visual effect for displaying website visits over the week. </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Line Chart', './world skills taipei 2026/mini speed test projects/Line Chart.html')">معاينة المهمة</button>
+                </div><div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title"> Image Compare </div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>The Image Compare container has a splitter 
+element. This element displays before.jpg on the left and after.jpg on the right. You can adjust the display ratio 
+of the two images by clicking on the container or dragging the splitter element. As you adjust the ratio, one 
+image will be displayed more prominently, while the other will be displayed less. </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Asian Speed Challenge', './world skills taipei 2026/mini speed test projects/Image Compare/b9.html')">معاينة المهمة</button>
+                </div><div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">Multiple Counters</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Using the provided video as a reference, complete the function using JavaScript.</li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Asian Speed Challenge', './world skills taipei 2026/mini speed test projects/Multiple Counters.html')">معاينة المهمة</button>
+                </div><div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Speed Test</span>
+                        <div class="task-title">Folder Zip</div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>Please implement a simple web page for compressing folders. Users can select a folder (not empty) and click the 
+"Compress" button to compress it into a zip file (The file name is the same as the uploaded folder name) and 
+automatically download it. If the uploaded folder contains empty subfolders, those subfolders will not be included in the 
+compressed archive. The folder for testing will be provided as media files </li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Asian Speed Challenge', './world skills taipei 2026/mini speed test projects/Folder Zip.html')">معاينة المهمة</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="asia-folder-tasks" class="folder-content">
+            <div class="folder-header">Frontend -Photos Slideshow </div>
+            <div class="tasks-grid">
+                <div class="task-card">
+                    <div>
+                        <span class="task-tag tag-asia">Module B</span>
+                        <div class="task-title">Frontend -Photos Slideshow </div>
+                        <div class="rules-box">
+                            <h4>شروط المهمة:</h4>
+                            <ul><li>In this project, a client asks you to create a photo slideshow tool. 
+User is able to load external photos, or load sample photos into the slideshow. Then, photos appear, stay for 
+several seconds, and disappear, one by one. There may have transition and animation for appearing and 
+disappearing of photos, depending on the theme applied.</li></ul>
+                        </div>
+                    </div>
+                    <button class="btn-open" onclick="openModal('Full Module: Asian Web Application', './world skills taipei 2026/slideshowv2/index.html')">معاينة المهمة</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal View -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">معاينة المهمة</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <iframe id="modalFrame" src=""></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Switch Between Main Competitions
+        function switchCompetition(compId, cardElement) {
+            document.querySelectorAll('.tasks-container').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.main-comp-card').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(compId).classList.add('active');
+            cardElement.classList.add('active');
+        }
+
+        // Switch Between Sub-Folders inside a Competition
+        function switchFolder(compId, folderId, btnElement) {
+            const compContainer = document.getElementById(compId);
+            
+            // Hide sub-folders of current competition
+            compContainer.querySelectorAll('.folder-content').forEach(el => el.classList.remove('active'));
+            // Deactivate buttons
+            compContainer.querySelectorAll('.folder-btn').forEach(el => el.classList.remove('active'));
+
+            // Show selected folder & activate button
+            document.getElementById(folderId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // Modal Controls
+        function openModal(title, url) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalFrame').src = url;
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+            document.getElementById('modalFrame').src = '';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('modalOverlay');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>

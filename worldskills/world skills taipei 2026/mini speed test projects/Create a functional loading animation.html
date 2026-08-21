@@ -1,0 +1,59 @@
+<!-- 8 min without internet -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #loaging-con{
+        position: fixed;   
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 1;
+        }
+        .spinner{
+            width: 60px;
+            height: 60px;
+            border:  6px solid #e0e0e0;
+            border-radius: 50%;
+            border-top: 6px solid #3498db;
+            animation: spain 0.5s linear infinite;
+        }
+        @keyframes spain {
+            0%{transform: rotate(0deg);}
+            100%{transform: rotate(360deg);}
+        }
+    </style>
+</head>
+<body>
+     <div id="loaging-con">
+        <div class="spinner"></div>
+     </div>
+    <script>
+document.addEventListener("DOMContentLoaded", function(){
+    const loagingCon = document.getElementById('loaging-con');
+    const pageCon = document.getElementById('page-con')
+    window.onload , function(){
+        loagingCon.style.opacity='0';
+        loagingCon.addEventListener('transitionend', function(){
+            loagingCon.style.display='none'
+            pageCon.style.display='block';
+        },{once:true}
+        )
+    }
+    setTimeout(()=>{
+        if(loagingCon.style.opacity !=='0'){
+            loagingCon.style.display='none'
+            pageCon.style.display='block'
+        }
+    },5000)
+})
+    </script>
+</body>
+</html>

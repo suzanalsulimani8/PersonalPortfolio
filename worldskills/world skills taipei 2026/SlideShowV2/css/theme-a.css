@@ -1,0 +1,6 @@
+.themeA .imgWrap.in,
+.themeA .imgWrap.out {
+  transition: none;
+  transform: none;
+  opacity: 1;
+}

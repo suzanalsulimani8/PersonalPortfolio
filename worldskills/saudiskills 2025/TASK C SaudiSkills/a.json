@@ -1,0 +1,40 @@
+{
+    "questions": [
+      {
+        "id": 1,
+        "question": "What is the capital of France?",
+        "type": "multiple",
+        "options": ["Paris", "Berlin", "Madrid", "Rome"],
+        "correctAnswer": 0
+      },
+      {
+        "id": 2,
+        "question": "True or False: The Earth is flat.",
+        "type": "truefalse",
+        "options": [],
+        "correctAnswer": false
+      },
+      {
+        "id": 3,
+        "question": "What is 5 + 3?",
+        "type": "multiple",
+        "options": ["5", "8", "10", "15"],
+        "correctAnswer": 1
+      },
+      {
+        "id": 4,
+        "question": "What is the chemical symbol for water?",
+        "type": "text",
+        "options": [],
+        "correctAnswer": "H2O"
+      },
+      {
+        "id": 5,
+        "question": "Which of the following is a programming language?",
+        "type": "multiple",
+        "options": ["Python", "Elephant", "Cheetah", "Panda"],
+        "correctAnswer": 0
+      }
+    ]
+  }
+  

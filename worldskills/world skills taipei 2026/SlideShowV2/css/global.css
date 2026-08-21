@@ -1,0 +1,550 @@
+/* Root variables for light and dark themes */
+:root {
+  --bg: #f7f7f8;
+  --fg: #16181d;
+  --muted: #8a8f98;
+  --accent: #3b82f6;
+  --danger: #ef4444;
+  --card: #ffffff;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  --caption-bg: rgba(0, 0, 0, 0.55);
+  --caption-fg: #fff;
+  --scrim: rgba(0, 0, 0, 0.5);
+  --speed: 0.6s; /* transition base (modifiable via JS) */
+}
+body.dark {
+  --bg: #0b0e12;
+  --fg: #f2f5f9;
+  --muted: #9aa3af;
+  --accent: #60a5fa;
+  --danger: #ef4444;
+  --card: #12161c;
+  --caption-bg: rgba(0, 0, 0, 0.65);
+  --caption-fg: #f9fafb;
+  --scrim: rgba(0, 0, 0, 0.6);
+}
+*,
+:before,
+:after {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.4;
+}
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  flex-wrap: wrap;
+}
+.bar h1 {
+  font-size: 1rem;
+  margin: 0 0.5rem 0 0;
+  white-space: nowrap;
+}
+
+button.btn,
+label.btn {
+  appearance: none;
+  cursor: pointer;
+  border-radius: 0.6rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: var(--card);
+  color: var(--fg);
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+body.dark button.btn,
+body.dark label.btn {
+  border-color: #2a323e;
+}
+button.btn.accent {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+button.btn.ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--fg);
+}
+button.btn.secondary {
+  background: transparent;
+  border-color: rgba(0, 0, 0, 0.15);
+}
+button.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-group {
+  margin-left: auto;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+/* quick controls */
+.quick {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  background: rgba(0, 0, 0, 0.04);
+}
+body.dark .quick {
+  background: rgba(255, 255, 255, 0.06);
+}
+.quick label {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.quick input[type="number"] {
+  width: 4rem;
+  padding: 0.35rem 0.4rem;
+  border-radius: 0.4rem;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: transparent;
+  color: var(--fg);
+  font-size: 0.9rem;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 64px);
+  overflow: hidden;
+  padding-left: 106px;
+  padding-right: 106px;
+}
+#drop {
+  flex-shrink: 0;
+  margin: 1rem;
+  border: 2px dashed rgba(0, 0, 0, 0.15);
+  border-radius: 1rem;
+  padding: 1rem;
+  text-align: center;
+  color: var(--muted);
+  min-height: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.2s;
+  cursor: pointer; /* clickable drop area */
+}
+#drop.hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+.status {
+  margin: 0.4rem 1rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.stage {
+  position: relative;
+  flex: 1;
+  margin: 0 1rem 1rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.imgWrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.imgWrap img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  will-change: transform, opacity;
+}
+
+.caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--caption-bg);
+  color: var(--caption-fg);
+  font-weight: 600;
+  padding: 0.65rem 1rem;
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  min-height: 2rem;
+  z-index: 2;
+}
+.caption.empty::before {
+  content: "Click to add caption…";
+  color: rgba(255, 255, 255, 0.7);
+  margin-right: 0.5rem;
+}
+.caption span.editable {
+  outline: none;
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-width: 1rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.4);
+  cursor: text;
+}
+
+.hint {
+  position: absolute;
+  left: 50%;
+  bottom: 48px;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 0.9rem;
+  letter-spacing: 0.2px;
+  color: rgba(255, 255, 255, 0.85);
+  opacity: 0.9;
+  user-select: none;
+  pointer-events: none;
+  backdrop-filter: blur(6px) saturate(130%);
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 10px;
+  padding: 8px 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* Each key symbol */
+.hint .key {
+  display: inline-block;
+  min-width: 1.4em;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+  padding: 2px 6px 3px;
+  margin: 0 2px;
+  font-size: 0.82rem;
+  line-height: 1.2;
+  box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.2);
+  font-weight: 500;
+}
+
+/* Light mode variation */
+body:not(.dark) .hint {
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(53, 53, 53, 0.7);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+body:not(.dark) .hint .key {
+  background: rgba(255, 255, 255, 0.9);
+  color: #222;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Config panel */
+.panel {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 20;
+}
+.panel.show {
+  display: block;
+}
+.panel .scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim);
+}
+.panel .sheet {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: min(380px, 95vw);
+  background: var(--card);
+  padding: 1rem;
+  overflow-y: auto;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+}
+.panel h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+.group {
+  margin-bottom: 1rem;
+}
+label {
+  display: block;
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+}
+select,
+input[type="number"],
+input[type="text"],
+input[type="range"] {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: transparent;
+  color: var(--fg);
+  font-size: 0.95rem;
+}
+.row {
+  display: flex;
+  gap: 0.5rem;
+}
+.row > * {
+  flex: 1;
+}
+.switch {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.note {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.actions {
+  margin-top: auto;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+/* Reorder dialog */
+.dialog {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 20;
+}
+.dialog.show {
+  display: block;
+}
+.dialog .scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim);
+}
+.dialog .card {
+  position: absolute;
+  top: 6%;
+  bottom: 6%;
+  left: 6%;
+  right: 6%;
+  background: var(--card);
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow: hidden;
+}
+.grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.75rem;
+  overflow: auto;
+}
+.tile {
+  position: relative;
+  background: #111;
+  border-radius: 0.6rem;
+  overflow: hidden;
+  cursor: grab;
+}
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.tile .ttl {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  right: 6px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  padding: 0.25rem 0.4rem;
+  font-size: 0.75rem;
+  border-radius: 0.3rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tile.dragging {
+  outline: 2px dashed var(--accent);
+  opacity: 0.6;
+}
+.dialog .card h3 {
+  margin: 0 0 0.5rem;
+}
+.dialog .flex-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+/* Command bar */
+.cmd {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 30;
+}
+.cmd.show {
+  display: block;
+}
+.cmd .scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim);
+}
+.cmd .box {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(720px, 90vw);
+  background: var(--card);
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.cmd input {
+  width: 100%;
+  padding: 1rem;
+  border: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  outline: none;
+  background: transparent;
+  color: var(--fg);
+  font-size: 1rem;
+}
+.cmd ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 50vh;
+  overflow: auto;
+}
+.cmd li {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.cmd li.active {
+  background: rgba(0, 0, 0, 0.06);
+}
+.cmd .kbd {
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.08);
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.35rem;
+  font-size: 0.75rem;
+  margin-right: 0.25rem;
+  color: var(--muted);
+}
+body.dark .cmd li.active {
+  background: rgba(255, 255, 255, 0.1);
+}
+body.dark .cmd .kbd {
+  background: rgba(255, 255, 255, 0.12);
+}
+/* ---- Command bar shortcuts styling ---- */
+.shortcuts {
+  list-style: none;
+  margin: 0;
+  padding: 0.75rem 1rem 1rem;
+  text-align: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+body.dark .shortcuts {
+  border-color: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.shortcuts .label {
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--fg);
+  opacity: 0.85;
+  margin-right: 6px;
+}
+
+.shortcuts .key {
+  display: inline-block;
+  min-width: 1.4em;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+  padding: 2px 6px 3px;
+  margin: 0 2px;
+  font-size: 0.82rem;
+  line-height: 1.2;
+  font-weight: 500;
+  box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+/* macOS-style hover shine */
+.shortcuts .key:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+body:not(.dark) .shortcuts .key {
+  background: rgba(255, 255, 255, 0.95);
+  color: #222;
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.hidden {
+  display: none;
+}

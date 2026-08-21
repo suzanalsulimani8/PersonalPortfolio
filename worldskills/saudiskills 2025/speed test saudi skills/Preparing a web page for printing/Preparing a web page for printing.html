@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Page</title>
+    <style>
+      *{
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
+      p {
+        font-size: 30px;
+        color: rgb(9, 117, 131);
+      }
+        @media print {
+        /* 1. تغيير نوع الخط لكامل الصفحة */
+        body { 
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif !important; 
+        }
+
+        /* 2. تحويل كل شيء للأبيض والأسود باستثناء الشعار */
+        body *:not(.logo, .logo *) { 
+            filter: grayscale(100%) !important;
+            color: black !important;
+        }
+
+        /* 3. الحفاظ على ألوان الشعار الأصلية */
+        .logo { 
+            filter: none !important; 
+            -webkit-print-color-adjust: exact !important; 
+            print-color-adjust: exact !important;
+        }
+    }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <!-- ضعي الصورة أو SVG هنا وستبقى بألوانها الأصلية -->
+        <img src="saudiskills.png" alt="Logo" width="190">
+    </div>
+
+    <div class="content">
+        <p>Print Rules Applied:</p>
+        <p>- All text and blocks are forced to black and white (grayscale).</p>
+        <p>- Font family is changed to Arial.</p>
+        <p>- The SaudiSkills logo is the ONLY colored item on the printed page.</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!--8.07min with internet-->
+
+<html>
+
+<head>
+
+
+    
+    <style>
+       
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+ body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .add-co {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .add-button {
+            padding: 10px 20px;
+            background-color: #7eb58b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .add-button:hover {
+            background-color: #218838;
+        }
+
+        .counters-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: flex-start;
+        }
+
+        .counter {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            min-width: 200px;
+        }
+
+        .counter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .counter-title {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .remove-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .remove-btn:hover {
+            background-color: #c82333;
+        }
+
+        .counter-value {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        .counter-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .counter-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 4px;
+            font-size: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .decrease-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .decrease-btn:hover {
+            background-color: #c82333;
+        }
+
+        .increase-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .increase-btn:hover {
+            background-color: #218838;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="add-co">
+            <button class="add-button" onclick="addCounter()">add counter</button>
+        </div>
+
+        <div id="countersContainer" class="counters-container">
+            <div class="empty-message">no counters yet</div>
+        </div>
+    </div>
+
+    <script>
+        let counterCount = 0;
+        let counters = {};
+
+        function addCounter() {
+            counterCount++;
+            const counterId = `counter_${counterCount}`;
+            
+            counters[counterId] = {
+                id: counterId,
+                value: 0,
+                title: `Counter ${counterCount}`
+            };
+
+            renderCounters();
+        }
+
+        function removeCounter(counterId) {
+            delete counters[counterId];
+            renderCounters();
+        }
+        function incrementCounter(counterId) {
+            if (counters[counterId]) {
+                counters[counterId].value++;
+                document.getElementById(`value_${counterId}`).textContent = counters[counterId].value;
+            }
+        }
+        function decrementCounter(counterId) {
+            if (counters[counterId]) {
+                counters[counterId].value--;
+                document.getElementById(`value_${counterId}`).textContent = counters[counterId].value;
+            }
+        }
+
+        function renderCounters() {
+            const container = document.getElementById('countersContainer');
+            
+            if (Object.keys(counters).length === 0) {
+                container.innerHTML = '<div class="empty-message">no counters yet</div>';
+                return;
+            }
+            let html = '';
+            
+            for (const counterId in counters) {
+                const counter = counters[counterId];
+                html += `
+                    <div class="counter">
+                        <div class="counter-header">
+                            <span class="counter-title">${counter.title}</span>
+                            <button class="remove-btn" onclick="removeCounter('${counterId}')">×</button>
+                        </div>
+                        
+                        <div class="counter-value" id="value_${counterId}">${counter.value}</div>
+                        
+                        <div class="counter-controls">
+                            <button class="counter-btn decrease-btn" onclick="decrementCounter('${counterId}')">−</button>
+                            <button class="counter-btn increase-btn" onclick="incrementCounter('${counterId}')">+</button>
+                        </div>
+                    </div>
+                `;
+            } 
+            container.innerHTML = html;
+        }
+        renderCounters();
+    </script>
+</body>
+</html>

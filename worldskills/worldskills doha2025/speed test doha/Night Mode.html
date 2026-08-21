@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Light and Night Mode</title>
+    <style>
+       body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    transition: 0.3s;
+    background-color: #fff;
+    color: #000;
+}
+button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.night-mode {
+    background-color: #000;
+    color: #fff;
+}
+
+    </style>
+</head>
+
+<body class="light-mode">
+    <div class="content" id="content">Light Mode Test</div>
+    <button onclick="toggleMode()">Toggle Mode</button>
+
+    <script>
+       function toggleMode() {
+    const body = document.body;
+    body.classList.toggle('night-mode');
+    document.getElementById('content').textContent = body.classList.contains('night-mode') ? 'Night Mode Test' : 'Light Mode Test';
+}
+
+    </script>
+</body>
+</html>

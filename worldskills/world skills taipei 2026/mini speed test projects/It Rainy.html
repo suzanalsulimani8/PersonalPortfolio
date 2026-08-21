@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body { margin: 0; background: black; overflow: hidden; height: 100vh; }
+.raindrop { position: absolute; background: white; width: 1px; animation: fall linear infinite; }
+@keyframes fall { from { top: -200px; } to { top: 100vh; } }
+</style>
+</head>
+<body>
+<script>
+for (let i = 0; i < 100; i++) {
+  let drop = document.createElement('div');
+  drop.className = 'raindrop';
+  drop.style.left = Math.random() * 100 + '%';
+  drop.style.height = Math.random() * 190 + 10 + 'px';
+  drop.style.animationDuration = Math.random() * 2 + 1 + 's';
+  document.body.appendChild(drop);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!--4.57min with internet-->
+
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .drip-container {
+            position: relative;
+            width: 400px;
+            height: 300px;
+            background: #000;
+        }
+        .top-surface {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            height: 40px;
+            background: #fff;
+            border-radius: 20px;
+        }
+        .droplet {
+            position: absolute;
+            top: 55px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 25px;
+            height: 25px;
+            background: #fff;
+            border-radius: 50%;
+            animation: droplet-cycle 4s infinite ease-in-out;
+        }
+        .bottom-surface {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            height: 40px;
+            background: #fff;
+            border-radius: 20px;
+            overflow: visible;
+        }
+        @keyframes droplet-cycle {
+            0% {
+                transform: translateX(-50%) scale(0);
+                opacity: 0;
+                top: 55px;
+                border-radius: 50%;
+            }
+            
+            25% {
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+                top: 55px;
+                border-radius: 50%;
+            }
+            
+            50% {
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+                top: 55px;
+                border-radius: 50%;
+            }
+            
+            70% {
+                transform: translateX(-50%) scale(0.8);
+                opacity: 1;
+                top: 220px;
+                border-radius: 50%;
+            }
+            
+            72% {
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+                top: 235px;
+                border-radius: 50% 50% 0 0;
+            }
+            
+            75% {
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+                top: 235px;
+                border-radius: 50% 50% 0 0;
+            }
+            
+            100% {
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+                top: 235px;
+                border-radius: 50% 50% 0 0;
+            }
+        }
+        .center-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="drip-container">
+        <div class="top-surface"></div>
+        <div class="droplet"></div>
+        <div class="center-dot"></div>
+        <div class="bottom-surface"></div>
+    </div>
+</body>
+</html>

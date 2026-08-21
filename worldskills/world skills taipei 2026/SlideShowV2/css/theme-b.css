@@ -1,0 +1,37 @@
+/* Theme B: horizontal slide */
+.themeB .imgWrap.in {
+  animation: slideInL var(--speed) ease both;
+}
+.themeB .imgWrap.out {
+  animation: slideOutR var(--speed) ease both;
+}
+@keyframes slideInL {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes slideOutR {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+.themeB .caption {
+  animation: capB var(--speed) ease both;
+  animation-delay: 0.3s;
+}
+@keyframes capB {
+  from {
+    transform: translateX(-15%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}

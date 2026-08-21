@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+.chart-container {
+  padding: 20px;
+  background-color: #f5f5f5;
+  display: inline-block;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.line-chart {
+  filter: blur(5px); 
+  transition: filter 0.4s ease-out;
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.line-chart:hover {
+  filter: none; 
+}
+    </style>
+</head>
+<body>
+<div class="chart-container">
+  <img 
+    src="path/to/your/line_chart_image.png" 
+    alt="Website Visits Over the Week" 
+    class="line-chart"
+  >
+</div>
+</body>
+</html>

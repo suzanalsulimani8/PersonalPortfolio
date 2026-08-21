@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roman Numeral Converter</title>
+    <script>
+        const romanMap = {I:1, V:5, X:10, L:50, C:100, D:500, M:1000};
+        const romanToInt = roman => [...roman].reduce((sum, c, i, arr) => sum + (romanMap[c] < romanMap[arr[i + 1]] ? -romanMap[c] : romanMap[c]), 0);
+        
+        const intToRoman = num => {
+            const map = [['M',1000],['CM',900],['D',500],['CD',400],['C',100],['XC',90],['L',50],['XL',40],['X',10],['IX',9],['V',5],['IV',4],['I',1]];
+            return map.reduce((res, [roman, val]) => { while(num >= val) res += roman, num -= val; return res; }, '');
+        };
+
+        const convert = () => {
+            const input = document.getElementById('input').value.trim();
+            const result = isNaN(input) ? romanToInt(input) : intToRoman(+input);
+            document.getElementById('result').textContent = `Result: ${result}`;
+        };
+    </script>
+</head>
+<body>
+    <h1>Roman Numeral Converter</h1>
+    <input type="text" id="input" placeholder="Enter Roman numeral or number">
+    <button onclick="convert()">Convert</button>
+    <p id="result"></p>
+</body>
+</html>

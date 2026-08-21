@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .canvas-wrapper {
+            text-align: center;
+        }
+        h3 {
+            color: white;
+            margin-bottom: 10px;
+        }
+        canvas {
+            border: 2px solid #3498db;
+            cursor: crosshair;
+            display: block;
+        }
+        #drawCanvas {
+            background: white;
+        }
+        #asciiCanvas {
+            background: #0a0a0a;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="canvas-wrapper">
+            <h3>Draw Here</h3>
+            <canvas id="drawCanvas" width="400" height="400"></canvas>
+        </div>
+        <div class="canvas-wrapper">
+            <h3>Output</h3>
+            <canvas id="asciiCanvas" width="400" height="400"></canvas>
+        </div>
+    </div>
+    <script>
+        const drawCanvas = document.getElementById('drawCanvas');
+        const asciiCanvas = document.getElementById('asciiCanvas');
+        const drawCtx = drawCanvas.getContext('2d');
+        const asciiCtx = asciiCanvas.getContext('2d');
+
+        let isDrawing = false;
+        const gridSize = 10;
+        const drawnCells = new Set();
+
+        asciiCtx.fillStyle = '#0a0a0a';
+        asciiCtx.fillRect(0, 0, asciiCanvas.width, asciiCanvas.height);
+
+        drawCanvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            draw(e);
+        });
+
+        drawCanvas.addEventListener('mousemove', (e) => {
+            if (isDrawing) draw(e);
+        });
+
+        drawCanvas.addEventListener('mouseup', () => isDrawing = false);
+        drawCanvas.addEventListener('mouseleave', () => isDrawing = false);
+
+        function draw(e) {
+            const rect = drawCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            drawCtx.fillStyle = '#000';
+            drawCtx.beginPath();
+            drawCtx.arc(x, y, 5, 0, Math.PI * 2);
+            drawCtx.fill();
+
+            const gridX = Math.floor(x / gridSize);
+            const gridY = Math.floor(y / gridSize);
+            const cellKey = `${gridX},${gridY}`;
+
+            if (!drawnCells.has(cellKey)) {
+                drawnCells.add(cellKey);
+                drawASCII(gridX, gridY);
+            }
+        }
+
+        function drawASCII(gridX, gridY) {
+            const x = gridX * gridSize;
+            const y = gridY * gridSize;
+            asciiCtx.fillStyle = '#00ff00';
+            asciiCtx.font = `${gridSize}px Courier New`;
+            asciiCtx.fillText('@', x, y + gridSize);
+        }
+    </script>
+</body>
+</html>

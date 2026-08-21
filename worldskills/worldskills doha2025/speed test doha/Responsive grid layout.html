@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive Grid Layout</title>
+  <style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-container {
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+  width: 100%;
+  height: 100vh; /* ⬅️ يغطي كامل ارتفاع الشاشة */
+}
+
+/* 🖥️ Desktop */
+@media (min-width: 768px) {
+  .grid-container {
+    grid-template-areas:
+      "header header header"
+      "news-a news-b ad"
+      "news-c news-c ad"
+      "footer footer footer";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto 1fr auto;
+  }
+}
+
+/* 📱 Mobile */
+@media (max-width: 767px) {
+  .grid-container {
+    grid-template-areas:
+      "header"
+      "news-a"
+      "ad"
+      "news-b"
+      "news-c"
+      "footer";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto 1fr;
+  }
+}
+
+/* ✅ Block Styles */
+.header, .news-a, .news-b, .news-c, .ad, .footer {
+  padding: 20px;
+  border: 1px solid #ccc;
+  min-height: 80px;
+}
+
+.header  { grid-area: header;  background: #dfe6e9; }
+.news-a  { grid-area: news-a;  background: #ffeaa7; }
+.news-b  { grid-area: news-b;  background: #fab1a0; }
+.news-c  { grid-area: news-c;  background: #74b9ff; }
+.ad      { grid-area: ad;      background: #a29bfe; }
+.footer  { grid-area: footer;  background: #b2bec3; }
+
+  </style>
+</head>
+<body>
+
+  <div class="grid-container">
+    <div class="header">Header</div>
+    <div class="news-a">News A</div>
+    <div class="news-b">News B</div>
+    <div class="news-c">News C</div>
+    <div class="ad">Ad Space</div>
+    <div class="footer">Footer</div>
+  </div>
+
+</body>
+</html>

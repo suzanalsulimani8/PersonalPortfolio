@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Auto-Resizing Notebook</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            align-items: center;
+            user-select: none;
+        }
+        #notebookContainer {
+            width: 600px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 16px rgba(0,0,0,0.1);
+            padding: 16px;
+        }
+        #notebook {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        textarea.note {
+            width: 100%;
+            font-size: 16px;
+            font-family: inherit;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            resize: none;
+            overflow: hidden;
+            min-height: 38px;
+            box-sizing: border-box;
+            line-height: 1.4;
+            outline-offset: 2px;
+            transition: border-color 0.2s ease;
+        }
+        textarea.note:focus {
+            border-color: #3a86ff;
+            box-shadow: 0 0 6px #3a86ffAA;
+        }
+    </style>
+</head>
+<body>
+    <div id="notebookContainer">
+        <div id="notebook"></div>
+    </div>
+    <script>
+        (() => {
+            const notebook = document.getElementById('notebook');
+            function createNote() {
+                const textarea = document.createElement('textarea');
+                textarea.className = 'note';
+                textarea.rows = 1;
+                autoResize(textarea);
+                textarea.addEventListener('input', () => {
+                    autoResize(textarea);
+                });
+                textarea.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        const newNote = createNote();
+                        notebook.insertBefore(newNote, textarea.nextSibling);
+                        newNote.focus();
+                    }
+                });
+                return textarea;
+            }
+            function autoResize(textarea) {
+                textarea.style.height = 'auto';
+                textarea.style.height = textarea.scrollHeight + "px";
+            }
+            notebook.appendChild(createNote());
+        })();
+    </script>
+</body>
+</html>

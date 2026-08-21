@@ -1,0 +1,224 @@
+<!--7.59min with internet-->
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .compare-container {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            margin: 0 auto;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: ew-resize;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .image-before,
+        .image-after {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .image-before {
+            left: 0;
+            background-image: url('before.jpg');
+        }
+
+        .image-after {
+            right: 0;
+            background-image: url('after.jpg');
+            clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%);
+        }
+
+        .splitter {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background: white;
+            cursor: ew-resize;
+            z-index: 10;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .splitter::before,
+        .splitter::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .splitter::before {
+            top: 20px;
+        }
+
+        .splitter::after {
+            bottom: 20px;
+        }
+
+        .splitter-handle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: ew-resize;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .splitter-handle:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .splitter-handle::before {
+         
+            font-size: 16px;
+            color: #333;
+        }
+
+        .instructions {
+            margin-top: 20px;
+            color: #666;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .compare-container {
+                width: 100%;
+                max-width: 500px;
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> </h1>
+        <div class="compare-container" id="compareContainer">
+            <div class="image-before"></div>
+            <div class="image-after" id="imageAfter"></div>
+            <div class="splitter" id="splitter">
+                <div class="splitter-handle"></div>
+            </div>
+        </div>
+        <p class="instructions">
+        </p>
+    </div>
+
+    <script>
+        const compareContainer = document.getElementById('compareContainer');
+        const splitter = document.getElementById('splitter');
+        const imageAfter = document.getElementById('imageAfter');
+        let isDragging = false;
+        let containerRect;
+        function updatePosition(clientX) {
+            if (!containerRect) {
+                containerRect = compareContainer.getBoundingClientRect();
+            }
+            
+            const x = clientX - containerRect.left;
+            const percentage = Math.max(0, Math.min(100, (x / containerRect.width) * 100));
+            splitter.style.left = percentage + '%';
+            
+            imageAfter.style.clipPath = `polygon(${percentage}% 0%, 100% 0%, 100% 100%, ${percentage}% 100%)`;
+        }
+        compareContainer.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            containerRect = compareContainer.getBoundingClientRect();
+            updatePosition(e.clientX);
+            compareContainer.style.userSelect = 'none';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                updatePosition(e.clientX);
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            compareContainer.style.userSelect = '';
+            containerRect = null;
+        });
+
+        compareContainer.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            containerRect = compareContainer.getBoundingClientRect();
+            updatePosition(e.touches[0].clientX);
+            e.preventDefault();
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                updatePosition(e.touches[0].clientX);
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('touchend', () => {
+            isDragging = false;
+            containerRect = null;
+        });
+        compareContainer.addEventListener('click', (e) => {
+            if (!isDragging) {
+                containerRect = compareContainer.getBoundingClientRect();
+                updatePosition(e.clientX);
+                containerRect = null;
+            }
+        });
+
+        compareContainer.addEventListener('dragstart', (e) => {
+            e.preventDefault();
+        });
+        window.addEventListener('resize', () => {
+            containerRect = null;
+        });
+    </script>
+</body>
+</html>

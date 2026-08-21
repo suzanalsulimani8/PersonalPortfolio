@@ -1,0 +1,40 @@
+/* Theme C: vertical slide */
+.themeC .imgWrap.in {
+  animation: slideInB var(--speed) ease both;
+}
+.themeC .imgWrap.out {
+  animation: slideOutT var(--speed) ease both;
+}
+@keyframes slideInB {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes slideOutT {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+.themeC .caption span.word {
+  display: inline-block;
+  opacity: 0;
+}
+.themeC .caption.ready span.word {
+  animation: wordUp var(--speed) ease both;
+}
+@keyframes wordUp {
+  from {
+    transform: translateY(60%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}

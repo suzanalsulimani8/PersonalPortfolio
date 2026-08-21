@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Type Function</title>
+</head>
+<body>
+    <h2>Enter a value to check its type</h2>
+    <input type="text" id="inputValue" placeholder="Enter value">
+    <button onclick="test()">Check Type</button>
+    <p id="result"></p>
+
+    <script src="test.js"></script>
+    <script>
+        // دالة getType لإرجاع نوع المدخل
+        function getType(input) {
+            // التحقق من النوع باستخدام typeof أو بعض الشروط الخاصة
+            if (input === null) {
+                return "null";
+            }
+            if (Array.isArray(input)) {
+                return "array";
+            }
+            if (input instanceof RegExp) {
+                return "regexp";
+            }
+            return typeof input;
+        }
+
+        // دالة لاختبار النوع عند إدخال القيمة
+        function test() {
+            // تعريف المتغير الذي يحتوي على القيمة المدخلة من المستخدم
+            const value = document.getElementById('inputValue').value;
+            
+            // محاولة تحويل القيمة المدخلة إلى قيم من أنواع مختلفة (عدد، منطقي، إلخ)
+            // للتأكد من التعرف الصحيح على الأنواع
+            let convertedValue;
+            if (value === "true" || value === "false") {
+                convertedValue = value === "true"; // تحويل النص إلى قيمة منطقية
+            } else if (!isNaN(value)) {
+                convertedValue = Number(value); // تحويل النص إلى عدد
+            } else if (value === "null") {
+                convertedValue = null; // التعامل مع null
+            } else if (value === "undefined") {
+                convertedValue = undefined; // التعامل مع undefined
+            } else if (value.startsWith("[") && value.endsWith("]")) {
+                convertedValue = JSON.parse(value); // تحويل النص إلى مصفوفة إذا كان في شكل مصفوفة
+            } else {
+                convertedValue = value; // إذا كانت قيمة نصية عادية
+            }
+
+            // تعريف المتغير لتخزين النتيجة
+            let output = getType(convertedValue);
+            
+            // عرض النتيجة في الفقرة
+            document.getElementById('result').textContent = `The type of the input is: ${output}`;
+        }
+    </script>
+</body>
+</html>

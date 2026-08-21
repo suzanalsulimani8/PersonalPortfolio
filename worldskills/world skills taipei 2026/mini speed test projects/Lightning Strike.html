@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lightning Strike</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        height: 100vh;
+        background: #000;
+        overflow: hidden;
+        cursor: crosshair;
+    }
+    canvas {
+        display: block;
+    }
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+
+    function drawLightning(x, y) {
+        const strikes = Math.floor(Math.random() * 3) + 1;
+
+        for (let s = 0; s < strikes; s++) {
+            const offsetX = (Math.random() - 0.5) * 50;
+            ctx.strokeStyle = `rgba(200,200,255,${Math.random() * 0.5 + 0.5})`;
+            ctx.lineWidth = Math.random() * 3 + 1;
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#fff';
+
+            ctx.beginPath();
+            ctx.moveTo(x + offsetX, 0);
+
+            let currentY = 0;
+            let currentX = x + offsetX;
+
+            while (currentY < y) {
+                const nextY = currentY + Math.random() * 40 + 20;
+                const nextX = currentX + (Math.random() - 0.5) * 40;
+                ctx.lineTo(nextX, nextY);
+                currentY = nextY;
+                currentX = nextX;
+            }
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+
+        setTimeout(() => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }, 200);
+    }
+
+    canvas.addEventListener('click', e => drawLightning(e.clientX, e.clientY));
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="app, landing, corporate, Creative, Html Template, Template">
+    <meta name="author" content="web-themes">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>Saudi Arabia Flag</title>
+
+ 
+
+
+   <style>
+    * {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+button:focus, input:focus, textarea:focus {
+	outline: 0;
+}
+
+.saudi_arabia_flag {
+	height: 500px;
+	width: 700px;
+	background-image: url(./img/saudi.jpg);
+	background-size: cover;
+	background-position: center;
+	margin: 5% auto;
+	position: relative;
+}
+
+.saudi_arabia_flag .shape01 {
+	position: absolute;
+	bottom: -50px;
+	right: 0;
+	animation: wind 3s linear infinite;
+}
+
+.saudi_arabia_flag .shape02 {
+	position: absolute;
+	top: -50px;
+	right: 0;
+	animation: wind 3s linear infinite;
+}
+
+@keyframes wind {
+	0% {
+		transform: translateX(0px);
+	}
+	100% {
+		transform: translateX(200px);
+	}
+}
+   </style>
+</head>
+<body>
+    
+    <div class="saudi_arabia_flag">
+        <img class="shape01" src="img/shape01.png">
+        <img class="shape02" src="img/shape02.png">
+    </div>
+    
+    
+</body>
+</html>
