@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سوزان السليماني | Suzan Alsulaimani - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Readex+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-base: #0a0f1d;
+            --bg-surface: rgba(18, 26, 45, 0.7);
+            --bg-card: rgba(26, 38, 66, 0.5);
+            --border: rgba(56, 189, 248, 0.15);
+            --border-hover: rgba(56, 189, 248, 0.4);
+            --text-title: #f8fafc;
+            --text-body: #94a3b8;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.25);
+            --emerald: #10b981;
+            --card-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="light"] {
+            --bg-base: #f1f5f9;
+            --bg-surface: rgba(255, 255, 255, 0.85);
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --border: rgba(14, 165, 233, 0.2);
+            --border-hover: rgba(14, 165, 233, 0.5);
+            --text-title: #0f172a;
+            --text-body: #475569;
+            --accent: #0284c7;
+            --accent-glow: rgba(2, 132, 199, 0.15);
+            --emerald: #059669;
+            --card-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
+        body { background-color: var(--bg-base); color: var(--text-body); font-family: 'Readex Pro', 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; min-height: 100vh; position: relative; }
+
+        /* Canvas Particle Background */
+        #bgCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
+
+        /* UI Wrapper */
+        .app-container { position: relative; z-index: 2; }
+
+        /* Header Navigation */
+        nav { position: sticky; top: 0; backdrop-filter: blur(16px); background: var(--bg-surface); border-bottom: 1px solid var(--border); z-index: 100; padding: 1rem 2rem; }
+        .nav-inner { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .brand-badge { font-size: 1.25rem; font-weight: 700; color: var(--text-title); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
+        .brand-badge span { width: 10px; height: 10px; background: var(--accent); border-radius: 50%; display: inline-block; box-shadow: 0 0 10px var(--accent); }
+        .nav-actions { display: flex; gap: 0.6rem; align-items: center; }
+        .btn-action { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-title); padding: 0.55rem 1.1rem; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.85rem; text-decoration: none; font-family: inherit; backdrop-filter: blur(8px); display: inline-flex; align-items: center; gap: 0.4rem; }
+        .btn-action:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-primary { background: var(--accent); color: #ffffff; border: 1px solid var(--accent); box-shadow: 0 4px 15px var(--accent-glow); }
+        .btn-primary:hover { background: transparent; color: var(--accent); }
+
+        /* Hero Section */
+        .hero { max-width: 1280px; margin: 4rem auto; padding: 0 1.5rem; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3rem; align-items: center; }
+        @media (max-width: 900px) { .hero { grid-template-columns: 1fr; text-align: center; } }
+        .hero-tag { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent-glow); border: 1px solid var(--border-hover); padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.82rem; font-weight: 600; color: var(--accent); margin-bottom: 1.5rem; }
+        .hero-title { font-size: 3rem; font-weight: 800; color: var(--text-title); line-height: 1.2; margin-bottom: 0.8rem; letter-spacing: -1px; }
+        .hero-subtitle { font-size: 1.3rem; font-weight: 700; color: var(--accent); margin-bottom: 1.2rem; }
+        .hero-desc { font-size: 1rem; color: var(--text-body); max-width: 650px; margin-bottom: 2rem; line-height: 1.8; }
+        .hero-btns { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+        @media (max-width: 900px) { .hero-btns { justify-content: center; } }
+
+        /* Terminal Card */
+        .terminal-box { background: #090d16; border: 1px solid var(--border-hover); border-radius: 12px; overflow: hidden; box-shadow: var(--card-shadow); font-family: monospace; text-align: left; dir: ltr; }
+        .terminal-header { background: #111827; padding: 0.6rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 0.4rem; }
+        .term-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+        .term-red { background: #ef4444; } .term-yellow { background: #f59e0b; } .term-green { background: #10b981; }
+        .terminal-body { padding: 1.25rem; font-size: 0.85rem; color: #38bdf8; line-height: 1.6; min-height: 220px; }
+        .term-cmd { color: #f8fafc; }
+        .term-out { color: #94a3b8; margin-bottom: 0.8rem; }
+
+        .container { max-width: 1280px; margin: 0 auto 6rem auto; padding: 0 1.5rem; }
+
+        /* Metrics Grid */
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 4rem; }
+        .metric-card { background: var(--bg-surface); border: 1px solid var(--border); padding: 1.75rem; border-radius: 14px; box-shadow: var(--card-shadow); backdrop-filter: blur(12px); }
+        .metric-card:hover { border-color: var(--accent); }
+        .metric-num { font-size: 2.2rem; font-weight: 800; color: var(--text-title); margin-bottom: 0.3rem; }
+        .metric-lbl { font-size: 0.88rem; color: var(--text-body); font-weight: 600; }
+
+        /* Section Titles */
+        .sec-header { display: flex; justify-content: space-between; align-items: flex-end; margin: 4rem 0 2rem 0; flex-wrap: wrap; gap: 1rem; }
+        .sec-title { font-size: 1.6rem; font-weight: 800; color: var(--text-title); position: relative; padding-inline-start: 1rem; }
+        .sec-title::before { content: ''; position: absolute; start: 0; top: 15%; height: 70%; width: 4px; background: var(--accent); border-radius: 4px; }
+
+        /* Filter Controls */
+        .controls-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; background: var(--bg-surface); padding: 0.8rem 1.2rem; border-radius: 12px; border: 1px solid var(--border); }
+        .filter-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .tab-btn { background: transparent; border: 1px solid transparent; color: var(--text-body); padding: 0.45rem 1rem; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; font-family: inherit; }
+        .tab-btn.active { background: var(--accent); color: #ffffff; }
+        .search-input { background: var(--bg-base); border: 1px solid var(--border); color: var(--text-title); padding: 0.5rem 1rem; border-radius: 8px; font-family: inherit; font-size: 0.85rem; outline: none; width: 220px; }
+        .search-input:focus { border-color: var(--accent); }
+
+        /* Portfolio Cards */
+        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1.75rem; }
+        .portfolio-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: var(--card-shadow); display: flex; flex-direction: column; }
+        .portfolio-card:hover { border-color: var(--accent); }
+        .card-thumb { width: 100%; height: 210px; object-fit: cover; border-bottom: 1px solid var(--border); }
+        .card-content { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+        .card-category { font-size: 0.75rem; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 0.4rem; }
+        .card-title { font-size: 1.2rem; font-weight: 700; color: var(--text-title); margin-bottom: 0.6rem; }
+        .card-desc { font-size: 0.9rem; color: var(--text-body); margin-bottom: 1.25rem; flex: 1; line-height: 1.6; }
+        .card-techs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+        .tech-pill { background: var(--bg-base); border: 1px solid var(--border); color: var(--text-body); padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.78rem; font-weight: 600; }
+        .card-actions { display: flex; gap: 0.6rem; }
+        .btn-card { flex: 1; text-align: center; padding: 0.6rem; border-radius: 8px; font-size: 0.85rem; font-weight: 700; border: 1px solid var(--border); text-decoration: none; cursor: pointer; font-family: inherit; }
+
+        /* Skills Grid */
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
+        .skill-box { background: var(--bg-surface); border: 1px solid var(--border); padding: 1.5rem; border-radius: 12px; box-shadow: var(--card-shadow); }
+        .skill-box h3 { font-size: 1rem; color: var(--text-title); margin-bottom: 1rem; font-weight: 700; }
+
+        /* Direct Social Links Icons */
+        .channels-wrapper { display: flex; justify-content: center; align-items: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 1rem; }
+        .icon-btn { width: 64px; height: 64px; border-radius: 50%; background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-title); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; text-decoration: none; box-shadow: var(--card-shadow); transition: all 0.3s ease; }
+        .icon-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); transform: translateY(-3px); }
+
+        /* Modal Preview Overlay */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 15, 29, 0.88); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-window { background: var(--bg-surface); width: 92%; height: 90%; border-radius: 14px; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); }
+        .modal-header { padding: 1rem 1.5rem; background: var(--bg-base); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-size: 1.05rem; font-weight: 700; color: var(--text-title); }
+        .modal-close { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--text-body); line-height: 1; }
+        .modal-body { flex: 1; }
+        .modal-body iframe { width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Particle Canvas Background -->
+    <canvas id="bgCanvas"></canvas>
+
+    <div class="app-container">
+
+        <!-- Top Navigation -->
+        <nav>
+            <div class="nav-inner">
+                <a href="#" class="brand-badge"><span></span> <div data-i18n="brand">سوزان السليماني</div></a>
+                <div class="nav-actions">
+                    <button class="btn-action" onclick="toggleTheme()" id="themeBtn">الوضع الفاتح</button>
+                    <button class="btn-action" onclick="toggleLang()" id="langBtn">English</button>
+                    <button class="btn-action btn-primary" onclick="openCvModal()" data-i18n="nav_cv_view">السيرة الذاتية</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <header class="hero">
+            <div>
+                <div class="hero-tag" data-i18n="hero_badge">الفائزة بالمركز الأول - مسابقة المهارات السعودية</div>
+                <h1 class="hero-title" data-i18n="hero_name">سوزان مشهور السليماني</h1>
+                <div class="hero-subtitle" data-i18n="hero_role">مطورة ويب | أخصائية دعم فني</div>
+                <p class="hero-desc" data-i18n="hero_bio">
+                    مبرمجة متخصصة في تطوير الأنظمة الرقمية والحلول التفاعلية، بمهارات عالية في تصميم الواجهات، تطوير تطبيقات الجوال، وأتمتة العمليات الإدارية وخدمات الدعم الفني.
+                </p>
+                <div class="hero-btns">
+                    <a href="#projects" class="btn-action btn-primary" style="padding: 0.75rem 1.6rem;" data-i18n="btn_projects">المشاريع التفاعلية</a>
+                    <a href="#channels" class="btn-action" style="padding: 0.75rem 1.6rem;" data-i18n="btn_contact">التواصل المباشر</a>
+                </div>
+            </div>
+
+            <!-- Terminal Component -->
+            <div class="terminal-box">
+                <div class="terminal-header">
+                    <span class="term-dot term-red"></span>
+                    <span class="term-dot term-yellow"></span>
+                    <span class="term-dot term-green"></span>
+                    <span style="font-size:0.75rem; color:#64748b; margin-inline-start:auto;">suzan-profile.js</span>
+                </div>
+                <div class="terminal-body">
+                    <div><span class="term-cmd">const</span> developer = {</div>
+                    <div style="padding-inline-start: 1rem;"><span class="term-cmd">name:</span> <span style="color:#a5f3fc;">"Suzan Alsulaimani"</span>,</div>
+                    <div style="padding-inline-start: 1rem;"><span class="term-cmd">award:</span> <span style="color:#a5f3fc;">"Gold Medalist (SaudiSkills)"</span>,</div>
+                    <div style="padding-inline-start: 1rem;"><span class="term-cmd">skills:</span> [<span style="color:#a5f3fc;">"React"</span>, <span style="color:#a5f3fc;">"Laravel"</span>, <span style="color:#a5f3fc;">"React Native"</span>, <span style="color:#a5f3fc;">"SQL"</span>],</div>
+                    <div style="padding-inline-start: 1rem;"><span class="term-cmd">status:</span> <span style="color:#34d399;">"Available for High-Impact Roles"</span></div>
+                    <div>};</div>
+                    <br>
+                    <div class="term-cmd">> developer.getVision()</div>
+                    <div class="term-out">"Building seamless, robust, and modern web & mobile experiences."</div>
+                </div>
+            </div>
+        </header>
+
+        <main class="container">
+
+            <!-- Metrics Section -->
+            <section class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-num">1</div>
+                    <div class="metric-lbl" data-i18n="m1_lbl">المركز الأول - الميدالية الذهبية (SaudiSkills)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-num">%100</div>
+                    <div class="metric-lbl" data-i18n="m2_lbl">التزام بمعايير جودة الكود البرمجي</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-num">Full-Stack</div>
+                    <div class="metric-lbl" data-i18n="m3_lbl">تطوير شامل للويب وتطبيقات الجوال</div>
+                </div>
+            </section>
+
+            <!-- Technical Skills -->
+            <section>
+                <div class="sec-header">
+                    <h2 class="sec-title" data-i18n="sec_skills">الكفاءات والمهارات التقنية</h2>
+                </div>
+                <div class="skills-grid">
+                    <div class="skill-box">
+                        <h3 data-i18n="st_fe">تطوير الواجهات (Frontend)</h3>
+                        <div style="display:flex; flex-wrap:wrap; gap:0.4rem;">
+                            <span class="tech-pill">HTML5</span><span class="tech-pill">CSS3</span><span class="tech-pill">JavaScript</span><span class="tech-pill">React</span><span class="tech-pill">Tailwind CSS</span>
+                        </div>
+                    </div>
+                    <div class="skill-box">
+                        <h3 data-i18n="st_be">الخلفية وقواعد البيانات (Backend)</h3>
+                        <div style="display:flex; flex-wrap:wrap; gap:0.4rem;">
+                            <span class="tech-pill">PHP</span><span class="tech-pill">Laravel</span><span class="tech-pill">SQL</span><span class="tech-pill">MySQL</span><span class="tech-pill">REST APIs</span>
+                        </div>
+                    </div>
+                    <div class="skill-box">
+                        <h3 data-i18n="st_mob">تطبيقات الجوال (Mobile)</h3>
+                        <div style="display:flex; flex-wrap:wrap; gap:0.4rem;">
+                            <span class="tech-pill">React Native</span><span class="tech-pill">Expo Go</span>
+                        </div>
+                    </div>
+                    <div class="skill-box">
+                        <h3 data-i18n="st_tools">الأدوات والأتمتة (Tools)</h3>
+                        <div style="display:flex; flex-wrap:wrap; gap:0.4rem;">
+                            <span class="tech-pill">Git & GitHub</span><span class="tech-pill">VS Code</span><span class="tech-pill">Excel Automation</span><span class="tech-pill">IoT Dashboards</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Grid -->
+            <section id="projects">
+                <div class="sec-header">
+                    <h2 class="sec-title" data-i18n="sec_projects">المشاريع البرمجية التفاعلية</h2>
+                </div>
+
+                <div class="controls-bar">
+                    <div class="filter-tabs">
+                        <button class="tab-btn active" onclick="filterProjects('all', this)" data-i18n="f_all">جميع المشاريع</button>
+                        <button class="tab-btn" onclick="filterProjects('web', this)" data-i18n="f_web">منصات الويب</button>
+                        <button class="tab-btn" onclick="filterProjects('comp', this)" data-i18n="f_comp">المسابقات</button>
+                        <button class="tab-btn" onclick="filterProjects('auto', this)" data-i18n="f_auto">الأتمتة</button>
+                    </div>
+                    <input type="text" id="searchInput" class="search-input" oninput="searchProjects()" placeholder="بحث في المشاريع..." data-i18n-ph="ph_search">
+                </div>
+
+                <div class="portfolio-grid" id="portfolioGrid">
+
+                    <!-- CodeQuest -->
+                    <article class="portfolio-card" data-cat="web" data-title="codequest quest-code">
+                        <img src="hopetrack/logo.png" class="card-thumb" alt="CodeQuest">
+                        <div class="card-content">
+                            <div class="card-category" data-i18n="cat_web">منصة توعوية وعلاجية</div>
+                            <h3 class="card-title" data-i18n="p1_title">منصة مسار الأمل</h3>
+                            <p class="card-desc" data-i18n="p1_desc">منصة تفاعلية تهدف لدعم الراغبين في التعافي من الإدمان، وتوفير الاستشارات النفسية والبرامج التأهيلية بخصوصية وسرية تامة.</p>
+                            <div class="card-techs">
+                                <span class="tech-pill">JavaScript</span><span class="tech-pill">PHP</span><span class="tech-pill">Tailwind CSS</span><span class="tech-pill">MYSQL</span>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-card btn-primary" onclick="openModal('CodeQuest', './hopetrack/home.html')" data-i18n="btn_preview">معاينة تفاعلية</button>
+                                <a href="https://github.com/suzanalsulimani8/hopetrack" target="_blank" rel="noopener noreferrer" class="btn-card">GitHub</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- SaudiSkills -->
+                    <article class="portfolio-card" data-cat="comp" data-title="worldskills speed test">
+                        <img src="worldskillss.webp" class="card-thumb" alt="SaudiSkills">
+                        <div class="card-content">
+                            <div class="card-category" data-i18n="cat_comp">معرض مسابقات</div>
+                            <h3 class="card-title" data-i18n="p2_title">اختبارات ومهام WorldSkills</h3>
+                            <p class="card-desc" data-i18n="p2_desc">معرض برمجي يستعرض كافة وحدات اختبارات السرعة البرمجية والتحديات الخاصة بالمسابقة الوطنية.</p>
+                            <div class="card-techs">
+                                <span class="tech-pill">HTML5</span><span class="tech-pill">CSS Grid</span><span class="tech-pill">JavaScript</span>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-card btn-primary" onclick="openModal('SaudiSkills Tasks', './worldskills/index.html')" data-i18n="btn_preview">معاينة تفاعلية</button>
+                                <a href="https://github.com/suzanalsulimani8/worldskills" target="_blank" rel="noopener noreferrer" class="btn-card">GitHub</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Saudi Tourism Hub -->
+                    <article class="portfolio-card" data-cat="web" data-title="saudi tourism">
+                        <img src="saudi-tourism/ksa.png" class="card-thumb" alt="Saudi Tourism">
+                        <div class="card-content">
+                            <div class="card-category" data-i18n="cat_web">منصة تفاعلية</div>
+                            <h3 class="card-title" data-i18n="p3_title">منصة السياحة السعودية التفاعلية</h3>
+                            <p class="card-desc" data-i18n="p3_desc">
+                                موقع تفاعلي يتيح للمستخدمين استكشاف المعالم السياحية في المملكة العربية السعودية من خلال خرائط تفاعلية، مع معلومات مفصلة عن كل موقع.
+                            <div class="card-techs">
+                                <span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JavaScript</span><span class="tech-pill">Interactive Maps</span>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-card btn-primary" onclick="openModal('Saudi Tourism', './saudi-tourism/index.html')" data-i18n="btn_preview">معاينة تفاعلية</button>
+                                <a href="https://github.com/suzanalsulimani8/saudi-tourism" target="_blank" rel="noopener noreferrer" class="btn-card">GitHub</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Lamar Work Co -->
+                    <article class="portfolio-card" data-cat="web" data-title="lamar work co iot fleet">
+                        <img src="wep lamarpro/img/logo-blue.svg" class="card-thumb" alt="Lamar Work Co">
+                        <div class="card-content">
+                            <div class="card-category" data-i18n="cat_web">تتبع أسطول & IoT</div>
+                            <h3 class="card-title" data-i18n="p4_title">منصة شركة أعمال لمار (Lamar Work Co)</h3>
+                            <p class="card-desc" data-i18n="p4_desc">موقع شركة ولوحة تحكم لتتبع الأسطول وتقنيات IoT متعددة الصفحات مع دعم الوضع الفاتح والداكن.</p>
+                            <div class="card-techs">
+                                <span class="tech-pill">JavaScript</span><span class="tech-pill">IoT Dashboard</span><span class="tech-pill">CSS3</span>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-card btn-primary" onclick="openModal('Lamar Work Co', './wep lamarpro/index.html')" data-i18n="btn_preview">معاينة تفاعلية</button>
+                                <a href="https://github.com/suzanalsulimani8/lamar-pro" target="_blank" rel="noopener noreferrer" class="btn-card">GitHub</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Training Calculator & Certificate Automation -->
+                    <article class="portfolio-card" data-cat="auto" data-title="training calculator certificates">
+                        <img src="certificate/logo.png" class="card-thumb" alt="Calculators">
+                        <div class="card-content">
+                            <div class="card-category" data-i18n="cat_auto">أداة أتمتة</div>
+                            <h3 class="card-title" data-i18n="p5_title">مولد الشهادات</h3>
+                            <p class="card-desc" data-i18n="p5_desc"> نظام أتمتة توليد الشهادات والخطابات الرسمية.</p>
+                            <div class="card-techs">
+                                <span class="tech-pill">JavaScript</span><span class="tech-pill">Automation</span><span class="tech-pill">HTML5</span>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-card btn-primary" onclick="openModal('Calculators', './certificate/indexx.html')" data-i18n="btn_preview">معاينة تفاعلية</button>
+                                <a href="https://github.com/suzanalsulimani8/certificate-management-system" target="_blank" rel="noopener noreferrer" class="btn-card">GitHub</a>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </section>
+
+            <!-- Direct Social Channels Section -->
+            <section id="channels">
+                <div class="sec-header">
+                    <h2 class="sec-title" data-i18n="sec_channels">قنوات التواصل المهني</h2>
+                </div>
+                <div class="channels-wrapper">
+                    <!-- يمكنك تعديل الحسابات والإيميل إلى روابطك الفعلية -->
+                    <a href="https://github.com/suzanalsulimani8" target="_blank" rel="noopener noreferrer" class="icon-btn" title="GitHub">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/suzan-alsulimani/" target="_blank" rel="noopener noreferrer" class="icon-btn" title="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="mailto:suzan.alsulimani8@gmail.com" class="icon-btn" title="Direct Email">
+                        <i class="fa-solid fa-envelope"></i>
+                    </a>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modal Box -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-window">
+            <div class="modal-header">
+                <span class="modal-title" id="modalTitle">معاينة تفاعلية</span>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <iframe id="modalFrame" src=""></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Particle Canvas Logic
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 0.8 - 0.4;
+                this.speedY = Math.random() * 0.8 - 0.4;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.3)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Translation Dictionary
+        const i18n = {
+            ar: {
+                brand: "سوزان السليماني",
+                nav_cv_view: "السيرة الذاتية",
+                theme_dark: "الوضع الداكن",
+                theme_light: "الوضع الفاتح",
+                hero_badge: "الفائزة بالمركز الأول - مسابقة المهارات السعودية",
+                hero_name: "سوزان مشهور السليماني",
+                hero_role: "مطورة ويب وتطبيقات | أخصائية دعم فني",
+                hero_bio: "مطورة برمجيات متخصصة في تطوير الأنظمة الرقمية والحلول التفاعلية، بمهارات عالية في تصميم الواجهات، تطوير تطبيقات الجوال، وأتمتة العمليات الإدارية وخدمات الدعم الفني.",
+                btn_projects: "المشاريع التفاعلية",
+                btn_contact: "التواصل المباشر",
+                m1_lbl: "المركز الأول - الميدالية الذهبية (WorldSkills)",
+                m2_lbl: "التزام بمعايير جودة الكود البرمجي",
+                m3_lbl: "تطوير شامل للويب وتطبيقات الجوال",
+                sec_skills: "الكفاءات والمهارات التقنية",
+                st_fe: "تطوير الواجهات (Frontend)",
+                st_be: "الخلفية وقواعد البيانات (Backend)",
+                st_mob: "تطبيقات الجوال (Mobile)",
+                st_tools: "الأدوات والأتمتة (Tools)",
+                sec_projects: "المشاريع البرمجية التفاعلية",
+                f_all: "جميع المشاريع",
+                f_web: "منصات الويب",
+                f_comp: "المسابقات",
+                f_auto: "الأتمتة",
+                ph_search: "بحث في المشاريع...",
+                cat_web: "منصة تعليمية",
+                cat_web: "منصة توعوية وعلاجية",
+                cat_comp: "معرض مسابقات",
+                cat_auto: "أداة أتمتة",
+                p1_title: "منصة مسار الأمل",
+                p1_desc: "منصة تفاعلية تهدف لدعم الراغبين في التعافي من الإدمان، وتوفير الاستشارات النفسية والبرامج التأهيلية بخصوصية وسرية تامة.",
+                p2_title: "اختبارات ومهام WorldSkills",
+                p2_desc: "معرض برمجي يستعرض كافة وحدات اختبارات السرعة البرمجية والتحديات الخاصة بالمسابقة الوطنية.",
+                p3_title: "منصة السياحة السعودية التفاعلية",
+                p3_desc: "منصة سياحية معلوماتية تهدف إلى تقديم نظرة شاملة على أبرز أماكن المملكة العربية السعودية.",
+                p4_title: "منصة شركة أعمال لمار (Lamar Work Co)",
+                p4_desc: "موقع شركة ولوحة تحكم لتتبع الأسطول وتقنيات IoT متعددة الصفحات مع دعم الوضع الفاتح والداكن.",
+                p5_title: "مولد الشهادات",
+                p5_desc: "نظام أتمتة توليد الشهادات والخطابات الرسمية.",
+                btn_preview: "معاينة تفاعلية",
+                sec_channels: "قنوات التواصل المهني"
+            },
+            en: {
+            brand: "Suzan Alsulaimani",
+            nav_cv_view: "Resume / CV",
+            theme_dark: "Dark Mode",
+            theme_light: "Light Mode",
+            hero_badge: "1st Place Winner - SaudiSkills Competition",
+            hero_name: "Suzan Mashhoor Alsulaimani",
+            hero_role: "Web & App Developer | Technical Support Specialist",
+            hero_bio: "Software developer specializing in digital systems and interactive solutions, skilled in UI design, mobile application development, administrative workflow automation, and technical support services.",
+            btn_projects: "Interactive Projects",
+            btn_contact: "Direct Contact",
+            m1_lbl: "1st Place - Gold Medal (SaudiSkills)",
+            m2_lbl: "Commitment to High Code Quality Standards",
+            m3_lbl: "Full-Stack Web & Mobile App Development",
+            sec_skills: "Technical Competencies & Skills",
+            st_fe: "Frontend Development",
+            st_be: "Backend & Databases",
+            st_mob: "Mobile Development",
+            st_tools: "Tools & Automation",
+            sec_projects: "Interactive Software Projects",
+            f_all: "All Projects",
+            f_web: "Web Platforms",
+            f_comp: "Competitions",
+            f_auto: "Automation",
+            ph_search: "Search projects...",
+            cat_web: "Awareness & Rehabilitation Platform",
+            cat_comp: "Competitions Showcase",
+            cat_auto: "Automation Tool",
+            p1_title: "Masar Al-Amal Platform",
+            p1_desc: "An interactive platform aimed at supporting individuals seeking recovery from addiction, providing psychological consultations and rehabilitation programs with complete privacy and confidentiality.",
+            p2_title: "WorldSkills Tests & Tasks",
+            p2_desc: "A software showcase displaying all speed programming test modules and challenges for the national competition.",
+            p3_title: "Interactive Saudi Tourism Platform",
+            p3_desc: "An informational tourism platform designed to provide a comprehensive overview of top destinations in Saudi Arabia.",
+            p4_title: "Lamar Work Co Platform",
+            p4_desc: "A multi-page corporate website and IoT fleet tracking dashboard with light and dark mode support.",
+            p5_title: "Certificate Generator",
+            p5_desc: "An automation system for generating official certificates and letters.",
+            btn_preview: "Interactive Preview",
+            sec_channels: "Professional Channels"
+        }
+        };
+
+        let currentLang = localStorage.getItem('lang') || 'ar';
+
+        function updateLang() {
+            document.documentElement.setAttribute('lang', currentLang);
+            document.documentElement.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+            document.getElementById('langBtn').innerText = currentLang === 'ar' ? 'English' : 'العربية';
+
+            const activeTheme = document.documentElement.getAttribute('data-theme');
+            document.getElementById('themeBtn').innerText = activeTheme === 'dark' 
+                ? i18n[currentLang].theme_light 
+                : i18n[currentLang].theme_dark;
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[currentLang][key]) el.innerText = i18n[currentLang][key];
+            });
+
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+                const key = el.getAttribute('data-i18n-ph');
+                if (i18n[currentLang][key]) el.placeholder = i18n[currentLang][key];
+            });
+
+            localStorage.setItem('lang', currentLang);
+        }
+
+        function toggleLang() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            updateLang();
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const nextTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', nextTheme);
+            document.getElementById('themeBtn').innerText = nextTheme === 'dark' 
+                ? i18n[currentLang].theme_light 
+                : i18n[currentLang].theme_dark;
+            localStorage.setItem('theme', nextTheme);
+        }
+
+        function filterProjects(cat, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            document.querySelectorAll('.portfolio-card').forEach(card => {
+                if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function searchProjects() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.portfolio-card').forEach(card => {
+                const title = card.getAttribute('data-title').toLowerCase();
+                if (title.includes(term)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function openModal(title, url) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalFrame').src = url;
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+
+        function openCvModal() {
+            openModal(currentLang === 'ar' ? 'السيرة الذاتية' : 'Curriculum Vitae', 'CV.pdf');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+            document.getElementById('modalFrame').src = '';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateLang();
+        });
+
+        window.onclick = function(e) {
+            const overlay = document.getElementById('modalOverlay');
+            if (e.target === overlay) closeModal();
+        }
+    </script>
+</body>
+</html>
