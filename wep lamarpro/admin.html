@@ -1,0 +1,895 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة الإدارة — أعمال لمار</title>
+    <link rel="stylesheet" href="admin-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+<!-- ======= شاشة تسجيل الدخول ======= -->
+<div id="login-screen" class="login-screen">
+    <div class="login-card">
+        <div class="login-logo">
+            <img src="img/logo-white.png" alt="Lamar Pro">
+        </div>
+        <h2>لوحة إدارة المحتوى</h2>
+        <p class="login-sub">أدخل كلمة السر للوصول</p>
+        <div class="login-form">
+            <div class="input-wrap">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="login-pass" placeholder="كلمة السر" autocomplete="current-password">
+                <button type="button" id="toggle-pass"><i class="fa-solid fa-eye"></i></button>
+            </div>
+            <div id="login-error" class="login-error" style="display:none"></div>
+            <button id="login-btn" class="login-submit-btn">
+                <span>دخول</span> <i class="fa-solid fa-arrow-left"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ======= لوحة الإدارة ======= -->
+<div id="admin-panel" class="admin-panel" style="display:none">
+
+    <!-- الشريط الجانبي -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-logo">
+            <img src="img/logo-white.png" alt="Lamar">
+            <span>لوحة الإدارة</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-view="dashboard">
+                <i class="fa-solid fa-gauge"></i> لوحة التحكم
+            </a>
+            <a href="#" class="nav-item" data-view="add">
+                <i class="fa-solid fa-plus-circle"></i> إضافة محتوى
+            </a>
+            <a href="#" class="nav-item" data-view="messages">
+                <i class="fa-solid fa-envelope"></i> رسائل التواصل
+                <span class="msg-nav-badge" id="msg-nav-badge" style="display:none">0</span>
+            </a>
+            <a href="#" class="nav-item" data-view="careers">
+                <i class="fa-solid fa-briefcase"></i> طلبات التوظيف
+                <span class="msg-nav-badge" id="cv-nav-badge" style="display:none">0</span>
+            </a>
+            <a href="index.html" target="_blank" class="nav-item">
+                <i class="fa-solid fa-globe"></i> معاينة الموقع
+            </a>
+        </nav>
+        <button id="logout-btn" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج
+        </button>
+    </aside>
+
+    <!-- المنطقة الرئيسية -->
+    <main class="admin-main">
+
+        <!-- ===== عرض: لوحة التحكم ===== -->
+        <div id="view-dashboard" class="admin-view active">
+            <div class="view-header">
+                <h1><i class="fa-solid fa-gauge"></i> لوحة التحكم</h1>
+            </div>
+
+            <!-- الإحصائيات -->
+            <div class="stats-row" id="stats-row">
+                <div class="stat-card">
+                    <i class="fa-solid fa-newspaper stat-icon news-icon"></i>
+                    <div>
+                        <h3 id="count-news">0</h3>
+                        <p>أخبار</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-calendar-star stat-icon events-icon"></i>
+                    <div>
+                        <h3 id="count-events">0</h3>
+                        <p>فعاليات</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-circle-play stat-icon videos-icon"></i>
+                    <div>
+                        <h3 id="count-videos">0</h3>
+                        <p>مقاطع</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-layer-group stat-icon total-icon"></i>
+                    <div>
+                        <h3 id="count-total">0</h3>
+                        <p>إجمالي</p>
+                    </div>
+                </div>
+                <div class="stat-card" style="cursor:pointer" onclick="document.querySelector('.nav-item[data-view=messages]').click()">
+                    <i class="fa-solid fa-envelope stat-icon messages-icon"></i>
+                    <div>
+                        <h3 id="count-messages">0</h3>
+                        <p>رسائل</p>
+                    </div>
+                </div>
+                <div class="stat-card" style="cursor:pointer" onclick="document.querySelector('.nav-item[data-view=careers]').click()">
+                    <i class="fa-solid fa-briefcase stat-icon" style="color:#7c3aed"></i>
+                    <div>
+                        <h3 id="count-careers">0</h3>
+                        <p>طلبات توظيف</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- فلتر + شبكة البطاقات -->
+            <div class="view-header" style="margin-top:28px">
+                <h2>المحتوى المنشور</h2>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-type="all">الكل</button>
+                    <button class="filter-tab" data-type="news">أخبار</button>
+                    <button class="filter-tab" data-type="events">فعاليات</button>
+                    <button class="filter-tab" data-type="videos">مقاطع</button>
+                </div>
+            </div>
+
+            <div class="items-grid" id="items-grid">
+                <div class="empty-state" id="empty-state">
+                    <i class="fa-solid fa-inbox"></i>
+                    <p>لا يوجد محتوى بعد — أضف أول بطاقة من قسم "إضافة محتوى"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== عرض: إضافة / تعديل ===== -->
+        <div id="view-add" class="admin-view">
+            <div class="view-header">
+                <h1 id="form-view-title"><i class="fa-solid fa-plus-circle"></i> إضافة محتوى جديد</h1>
+            </div>
+
+            <form id="media-form" class="media-form" novalidate>
+                <input type="hidden" id="edit-id">
+
+                <!-- نوع المحتوى -->
+                <div class="form-section">
+                    <label class="section-label">نوع المحتوى</label>
+                    <div class="type-selector">
+                        <label class="type-opt" data-type="news">
+                            <input type="radio" name="type" value="news" checked>
+                            <span><i class="fa-solid fa-newspaper"></i> خبر</span>
+                        </label>
+                        <label class="type-opt" data-type="events">
+                            <input type="radio" name="type" value="events">
+                            <span><i class="fa-solid fa-calendar-star"></i> فعالية</span>
+                        </label>
+                        <label class="type-opt" data-type="videos">
+                            <input type="radio" name="type" value="videos">
+                            <span><i class="fa-solid fa-circle-play"></i> مقطع</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- العنوان -->
+                <div class="form-group">
+                    <label for="f-title">العنوان <span class="req">*</span></label>
+                    <input type="text" id="f-title" placeholder="أدخل عنوان الخبر أو الفعالية...">
+                </div>
+
+                <!-- الملخص -->
+                <div class="form-group">
+                    <label for="f-summary">الملخص <span class="req">*</span></label>
+                    <textarea id="f-summary" rows="3" placeholder="أضف وصفاً قصيراً..."></textarea>
+                </div>
+
+                <!-- التاريخ -->
+                <div class="form-group">
+                    <label for="f-date">التاريخ <span class="req">*</span></label>
+                    <input type="month" id="f-date">
+                </div>
+
+                <!-- رفع الصورة / الفيديو -->
+                <div class="form-section">
+                    <label class="section-label">الصورة أو الفيديو</label>
+                    <div class="upload-zone" id="upload-zone">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <p>اسحب وأفلت الملف هنا، أو <span class="upload-browse">تصفح</span></p>
+                        <small>صور: JPG، PNG، WebP — فيديو: MP4، WebM — الحد الأقصى 30MB</small>
+                        <input type="file" id="file-input" accept="image/*,video/mp4,video/webm" style="display:none">
+                    </div>
+                    <div class="upload-preview" id="upload-preview" style="display:none">
+                        <img id="preview-img" src="" alt="معاينة" style="display:none">
+                        <video id="preview-video" controls style="display:none"></video>
+                        <button type="button" id="remove-file-btn"><i class="fa-solid fa-xmark"></i> إزالة الملف</button>
+                    </div>
+                    <div class="upload-progress" id="upload-progress" style="display:none">
+                        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+                        <span id="progress-text">جارٍ الرفع...</span>
+                    </div>
+                    <input type="hidden" id="f-image">
+                </div>
+
+                <!-- رابط يوتيوب (مقاطع فقط) -->
+                <div class="form-group" id="youtube-group" style="display:none">
+                    <label for="f-video-url">رابط يوتيوب (اختياري بدلاً من الرفع)</label>
+                    <input type="url" id="f-video-url" placeholder="https://youtube.com/watch?v=...">
+                </div>
+
+                <!-- أزرار -->
+                <div class="form-actions">
+                    <button type="submit" class="btn-save" id="save-btn">
+                        <i class="fa-solid fa-floppy-disk"></i> <span id="save-btn-text">حفظ ونشر</span>
+                    </button>
+                    <button type="button" class="btn-cancel" id="cancel-edit-btn" style="display:none">
+                        <i class="fa-solid fa-xmark"></i> إلغاء التعديل
+                    </button>
+                </div>
+
+                <div id="form-msg" class="form-msg" style="display:none"></div>
+            </form>
+        </div>
+
+        <!-- ===== عرض: طلبات التوظيف ===== -->
+        <div id="view-careers" class="admin-view">
+            <div class="view-header">
+                <h1><i class="fa-solid fa-briefcase"></i> طلبات التوظيف</h1>
+            </div>
+            <div class="messages-list" id="careers-list">
+                <div class="empty-state">
+                    <i class="fa-solid fa-inbox"></i>
+                    <p>لا توجد طلبات توظيف بعد</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== عرض: رسائل التواصل ===== -->
+        <div id="view-messages" class="admin-view">
+            <div class="view-header">
+                <h1><i class="fa-solid fa-envelope"></i> رسائل التواصل</h1>
+            </div>
+            <div class="messages-list" id="messages-list">
+                <div class="empty-state" id="messages-empty">
+                    <i class="fa-solid fa-inbox"></i>
+                    <p>لا توجد رسائل بعد</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script>
+// ====================================================
+//  أدوات مساعدة
+// ====================================================
+const $ = id => document.getElementById(id);
+const API_AUTH  = 'api/auth.php';
+const API_SAVE  = 'api/save-media.php';
+const API_UPLOAD= 'api/upload.php';
+
+let allItems   = [];
+let activeFilter = 'all';
+let uploadedPath = '';
+
+// ====================================================
+//  تسجيل الدخول
+// ====================================================
+const FETCH_OPTS = { credentials: 'include' };
+
+async function checkLogin() {
+    try {
+        const res  = await fetch(API_AUTH, FETCH_OPTS);
+        const data = await res.json();
+        if (data.logged_in) showPanel();
+    } catch(e) {}
+}
+
+$('toggle-pass').addEventListener('click', () => {
+    const inp = $('login-pass');
+    inp.type  = inp.type === 'password' ? 'text' : 'password';
+    $('toggle-pass').querySelector('i').className =
+        inp.type === 'password' ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+});
+
+$('login-pass').addEventListener('keydown', e => {
+    if (e.key === 'Enter') $('login-btn').click();
+});
+
+$('login-btn').addEventListener('click', async () => {
+    const pass = $('login-pass').value.trim();
+    if (!pass) return;
+    $('login-btn').disabled = true;
+    $('login-btn').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+    try {
+        const res  = await fetch(API_AUTH, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: pass })
+        });
+        const data = await res.json();
+        if (data.success) {
+            showPanel();
+        } else {
+            showLoginError(data.error || 'خطأ');
+        }
+    } catch(e) {
+        showLoginError('تعذّر الاتصال بالسيرفر');
+    }
+    $('login-btn').disabled = false;
+    $('login-btn').innerHTML = '<span>دخول</span> <i class="fa-solid fa-arrow-left"></i>';
+});
+
+function showLoginError(msg) {
+    const el = $('login-error');
+    el.textContent = msg;
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 3000);
+}
+
+function showPanel() {
+    $('login-screen').style.display = 'none';
+    $('admin-panel').style.display  = 'flex';
+    loadItems();
+    loadMessages();
+    loadApplications();
+}
+
+$('logout-btn').addEventListener('click', async () => {
+    await fetch(API_AUTH, { method: 'DELETE', credentials: 'include' });
+    location.reload();
+});
+
+// ====================================================
+//  التنقل بين الـ Views
+// ====================================================
+document.querySelectorAll('.nav-item[data-view]').forEach(link => {
+    link.addEventListener('click', e => {
+        e.preventDefault();
+        const view = link.dataset.view;
+        document.querySelectorAll('.nav-item').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        document.querySelectorAll('.admin-view').forEach(v => v.classList.remove('active'));
+        $('view-' + view).classList.add('active');
+        if (view === 'dashboard') loadItems();
+        if (view === 'messages')  loadMessages();
+        if (view === 'careers')   loadApplications();
+    });
+});
+
+// ====================================================
+//  جلب البيانات وعرضها
+// ====================================================
+async function loadItems() {
+    try {
+        const res  = await fetch(API_SAVE, FETCH_OPTS);
+        const data = await res.json();
+        allItems   = data.items || [];
+        renderStats();
+        renderGrid(activeFilter);
+    } catch(e) {
+        console.error(e);
+    }
+}
+
+function renderStats() {
+    const news   = allItems.filter(i => i.type === 'news').length;
+    const events = allItems.filter(i => i.type === 'events').length;
+    const videos = allItems.filter(i => i.type === 'videos').length;
+    $('count-news').textContent   = news;
+    $('count-events').textContent = events;
+    $('count-videos').textContent = videos;
+    $('count-total').textContent  = allItems.length;
+}
+
+function renderGrid(filter) {
+    const grid  = $('items-grid');
+    const items = filter === 'all' ? allItems : allItems.filter(i => i.type === filter);
+    grid.innerHTML = '';
+
+    if (items.length === 0) {
+        grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-inbox"></i><p>لا يوجد محتوى في هذه الفئة</p></div>`;
+        return;
+    }
+
+    items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'item-card';
+        card.innerHTML = `
+            <div class="item-thumb ${item.type}-thumb">
+                ${getThumb(item)}
+                <span class="item-badge badge-${item.type}">${typeLabel(item.type)}</span>
+            </div>
+            <div class="item-body">
+                <p class="item-date"><i class="fa-regular fa-calendar"></i> ${item.date || '—'}</p>
+                <h4>${item.title || 'بدون عنوان'}</h4>
+                <p class="item-summary">${item.summary || ''}</p>
+            </div>
+            <div class="item-actions">
+                <button class="btn-edit" onclick="editItem('${item.id}')"><i class="fa-solid fa-pen"></i> تعديل</button>
+                <button class="btn-delete" onclick="deleteItem('${item.id}')"><i class="fa-solid fa-trash"></i> حذف</button>
+            </div>`;
+        grid.appendChild(card);
+    });
+}
+
+function getThumb(item) {
+    if (item.image) {
+        if (item.image.match(/\.(mp4|webm|ogg)$/i)) {
+            return `<video src="${item.image}" class="thumb-media"></video>`;
+        }
+        return `<img src="${item.image}" class="thumb-media" alt="">`;
+    }
+    const icons = { news: 'fa-newspaper', events: 'fa-calendar-star', videos: 'fa-circle-play' };
+    return `<i class="fa-solid ${icons[item.type] || 'fa-image'} thumb-icon"></i>`;
+}
+
+function typeLabel(type) {
+    return { news: 'خبر', events: 'فعالية', videos: 'مقطع' }[type] || type;
+}
+
+// فلتر التبويبات
+document.querySelectorAll('.filter-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.type;
+        renderGrid(activeFilter);
+    });
+});
+
+// ====================================================
+//  نموذج الإضافة / التعديل
+// ====================================================
+// إظهار حقل يوتيوب عند اختيار "مقطع"
+document.querySelectorAll('input[name="type"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+        $('youtube-group').style.display = radio.value === 'videos' ? 'block' : 'none';
+        document.querySelectorAll('.type-opt').forEach(opt => opt.classList.remove('selected'));
+        radio.closest('.type-opt').classList.add('selected');
+    });
+});
+document.querySelector('.type-opt[data-type="news"]').classList.add('selected');
+
+// رفع الملف
+const uploadZone  = $('upload-zone');
+const fileInput   = $('file-input');
+
+uploadZone.addEventListener('click', () => fileInput.click());
+uploadZone.querySelector('.upload-browse').addEventListener('click', e => {
+    e.stopPropagation();
+    fileInput.click();
+});
+
+uploadZone.addEventListener('dragover', e => {
+    e.preventDefault();
+    uploadZone.classList.add('drag-over');
+});
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop', e => {
+    e.preventDefault();
+    uploadZone.classList.remove('drag-over');
+    if (e.dataTransfer.files[0]) handleFileUpload(e.dataTransfer.files[0]);
+});
+
+fileInput.addEventListener('change', () => {
+    if (fileInput.files[0]) handleFileUpload(fileInput.files[0]);
+});
+
+async function handleFileUpload(file) {
+    $('upload-progress').style.display = 'block';
+    $('progress-fill').style.width = '0%';
+    $('progress-text').textContent = 'جارٍ الرفع...';
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', API_UPLOAD);
+
+        xhr.upload.addEventListener('progress', e => {
+            if (e.lengthComputable) {
+                const pct = Math.round((e.loaded / e.total) * 100);
+                $('progress-fill').style.width = pct + '%';
+                $('progress-text').textContent = pct + '%';
+            }
+        });
+
+        xhr.onload = () => {
+            $('upload-progress').style.display = 'none';
+            try {
+                const res = JSON.parse(xhr.responseText);
+                if (res.success) {
+                    uploadedPath = res.path;
+                    $('f-image').value = res.path;
+                    showPreview(file, res.path);
+                } else {
+                    alert('خطأ: ' + res.error);
+                }
+            } catch(e) { alert('خطأ في الرفع'); }
+        };
+
+        xhr.onerror = () => {
+            $('upload-progress').style.display = 'none';
+            alert('فشل الاتصال');
+        };
+
+        xhr.send(formData);
+    } catch(e) {
+        $('upload-progress').style.display = 'none';
+        alert('خطأ: ' + e.message);
+    }
+}
+
+function showPreview(file, path) {
+    const preview = $('upload-preview');
+    const img     = $('preview-img');
+    const video   = $('preview-video');
+
+    preview.style.display = 'flex';
+    uploadZone.style.display = 'none';
+
+    if (file.type.startsWith('video/')) {
+        img.style.display   = 'none';
+        video.style.display = 'block';
+        video.src = path;
+    } else {
+        video.style.display = 'none';
+        img.style.display   = 'block';
+        img.src = path;
+    }
+}
+
+$('remove-file-btn').addEventListener('click', () => {
+    uploadedPath = '';
+    $('f-image').value = '';
+    $('upload-preview').style.display = 'none';
+    uploadZone.style.display = 'flex';
+    fileInput.value = '';
+    $('preview-img').src = '';
+    $('preview-video').src = '';
+});
+
+// حفظ النموذج
+$('media-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const title   = $('f-title').value.trim();
+    const summary = $('f-summary').value.trim();
+    const date    = $('f-date').value;
+
+    if (!title || !summary || !date) {
+        showFormMsg('يرجى ملء جميع الحقول الإلزامية', 'error');
+        return;
+    }
+
+    const type     = document.querySelector('input[name="type"]:checked').value;
+    const editId   = $('edit-id').value;
+    const videoUrl = $('f-video-url').value.trim();
+    const image    = $('f-image').value;
+
+    const payload = {
+        type,
+        title,
+        summary,
+        date: formatDate(date),
+        image,
+        videoUrl
+    };
+    if (editId) payload.id = editId;
+
+    $('save-btn').disabled = true;
+    $('save-btn-text').textContent = 'جارٍ الحفظ...';
+
+    try {
+        const res  = await fetch(API_SAVE, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (data.success) {
+            showFormMsg(editId ? 'تم التعديل بنجاح ✓' : 'تم النشر بنجاح ✓', 'success');
+            resetForm();
+            // الانتقال للوحة التحكم بعد ثانية
+            setTimeout(() => {
+                document.querySelector('.nav-item[data-view="dashboard"]').click();
+            }, 1200);
+        } else {
+            showFormMsg('حدث خطأ: ' + (data.error || ''), 'error');
+        }
+    } catch(e) {
+        showFormMsg('فشل الاتصال بالسيرفر', 'error');
+    }
+
+    $('save-btn').disabled = false;
+    $('save-btn-text').textContent = 'حفظ ونشر';
+});
+
+function formatDate(val) {
+    if (!val) return '';
+    const [y, m] = val.split('-');
+    const months = ['يناير','فبراير','مارس','أبريل','مايو','يونيو',
+                    'يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+    return (months[parseInt(m) - 1] || m) + ' ' + y;
+}
+
+function resetForm() {
+    $('media-form').reset();
+    $('edit-id').value = '';
+    $('f-image').value = '';
+    uploadedPath = '';
+    $('upload-preview').style.display = 'none';
+    uploadZone.style.display = 'flex';
+    $('preview-img').src = '';
+    $('preview-video').src = '';
+    $('youtube-group').style.display = 'none';
+    $('cancel-edit-btn').style.display = 'none';
+    $('form-view-title').innerHTML = '<i class="fa-solid fa-plus-circle"></i> إضافة محتوى جديد';
+    $('save-btn-text').textContent = 'حفظ ونشر';
+    document.querySelectorAll('.type-opt').forEach(opt => opt.classList.remove('selected'));
+    document.querySelector('.type-opt[data-type="news"]').classList.add('selected');
+    fileInput.value = '';
+}
+
+$('cancel-edit-btn').addEventListener('click', () => {
+    resetForm();
+    document.querySelector('.nav-item[data-view="dashboard"]').click();
+});
+
+function showFormMsg(msg, type) {
+    const el = $('form-msg');
+    el.textContent = msg;
+    el.className   = 'form-msg ' + type;
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 3000);
+}
+
+// ====================================================
+//  تعديل / حذف
+// ====================================================
+function editItem(id) {
+    const item = allItems.find(i => i.id === id);
+    if (!item) return;
+
+    // الانتقال لعرض الإضافة
+    document.querySelector('.nav-item[data-view="add"]').click();
+
+    $('edit-id').value    = item.id;
+    $('f-title').value    = item.title;
+    $('f-summary').value  = item.summary;
+    $('f-video-url').value = item.videoUrl || '';
+    $('f-image').value    = item.image || '';
+
+    // تحويل التاريخ
+    if (item.date) {
+        const months = { يناير:'01', فبراير:'02', مارس:'03', أبريل:'04',
+            مايو:'05', يونيو:'06', يوليو:'07', أغسطس:'08',
+            سبتمبر:'09', أكتوبر:'10', نوفمبر:'11', ديسمبر:'12' };
+        const parts = item.date.split(' ');
+        if (parts.length === 2) {
+            const m = months[parts[0]];
+            if (m) $('f-date').value = parts[1] + '-' + m;
+        }
+    }
+
+    // النوع
+    const radio = document.querySelector(`input[name="type"][value="${item.type}"]`);
+    if (radio) {
+        radio.checked = true;
+        radio.dispatchEvent(new Event('change'));
+    }
+
+    // معاينة الصورة إن وجدت
+    if (item.image) {
+        $('upload-preview').style.display = 'flex';
+        uploadZone.style.display = 'none';
+        if (item.image.match(/\.(mp4|webm|ogg)$/i)) {
+            $('preview-img').style.display   = 'none';
+            $('preview-video').style.display = 'block';
+            $('preview-video').src = item.image;
+        } else {
+            $('preview-video').style.display = 'none';
+            $('preview-img').style.display   = 'block';
+            $('preview-img').src = item.image;
+        }
+    }
+
+    $('cancel-edit-btn').style.display = 'inline-flex';
+    $('form-view-title').innerHTML = '<i class="fa-solid fa-pen"></i> تعديل المحتوى';
+    $('save-btn-text').textContent = 'حفظ التعديلات';
+}
+
+async function deleteItem(id) {
+    if (!confirm('هل تريدين حذف هذه البطاقة؟')) return;
+    try {
+        const res  = await fetch(API_SAVE, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+        });
+        const data = await res.json();
+        if (data.success) {
+            allItems = allItems.filter(i => i.id !== id);
+            renderStats();
+            renderGrid(activeFilter);
+        }
+    } catch(e) { alert('فشل الحذف'); }
+}
+
+// ====================================================
+//  رسائل التواصل
+// ====================================================
+const API_CONTACT = 'api/save-contact.php';
+let allMessages = [];
+
+async function loadMessages() {
+    try {
+        const res  = await fetch(API_CONTACT, FETCH_OPTS);
+        if (!res.ok) return;
+        const data = await res.json();
+        allMessages = data.messages || [];
+        renderMessages();
+        updateMsgBadge();
+    } catch(e) { console.error(e); }
+}
+
+function updateMsgBadge() {
+    const unread = allMessages.filter(m => !m.read).length;
+    const badge  = $('msg-nav-badge');
+    const stat   = $('count-messages');
+    if (badge) { badge.textContent = unread; badge.style.display = unread > 0 ? 'inline' : 'none'; }
+    if (stat)  stat.textContent = allMessages.length;
+}
+
+function renderMessages() {
+    const list = $('messages-list');
+    if (!list) return;
+
+    if (allMessages.length === 0) {
+        list.innerHTML = `<div class="empty-state"><i class="fa-solid fa-inbox"></i><p>لا توجد رسائل بعد</p></div>`;
+        return;
+    }
+
+    list.innerHTML = allMessages.map(msg => `
+        <div class="msg-card ${msg.read ? '' : 'unread'}" id="msg-${msg.id}">
+            <div class="msg-card-header">
+                <div class="msg-sender">
+                    <strong class="msg-name">${msg.name || '—'}</strong>
+                    <span class="msg-email">${msg.email || ''}</span>
+                    ${msg.phone ? `<span class="msg-email"><i class="fa-solid fa-phone" style="font-size:10px"></i> ${msg.phone}</span>` : ''}
+                </div>
+                <div class="msg-meta">
+                    <span class="msg-date"><i class="fa-regular fa-clock"></i> ${msg.date || ''}</span>
+                    ${!msg.read ? '<span class="unread-dot">جديد</span>' : ''}
+                </div>
+            </div>
+            ${msg.subject ? `<div class="msg-subject"><i class="fa-solid fa-tag"></i> ${msg.subject}</div>` : ''}
+            <div class="msg-body">${msg.message || ''}</div>
+            <div class="msg-actions">
+                ${!msg.read ? `<button class="btn-mark-read" onclick="markRead('${msg.id}')"><i class="fa-solid fa-check"></i> تحديد كمقروء</button>` : ''}
+                <button class="btn-delete" onclick="deleteMsg('${msg.id}')"><i class="fa-solid fa-trash"></i> حذف</button>
+            </div>
+        </div>`).join('');
+}
+
+async function markRead(id) {
+    try {
+        await fetch(API_CONTACT, {
+            method: 'PATCH',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+        });
+        const msg = allMessages.find(m => m.id === id);
+        if (msg) msg.read = true;
+        renderMessages();
+        updateMsgBadge();
+    } catch(e) { alert('فشل التحديث'); }
+}
+
+async function deleteMsg(id) {
+    if (!confirm('هل تريدين حذف هذه الرسالة؟')) return;
+    try {
+        const res  = await fetch(API_CONTACT, {
+            method: 'DELETE',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+        });
+        const data = await res.json();
+        if (data.success) {
+            allMessages = allMessages.filter(m => m.id !== id);
+            renderMessages();
+            updateMsgBadge();
+        }
+    } catch(e) { alert('فشل الحذف'); }
+}
+
+// ====================================================
+//  طلبات التوظيف
+// ====================================================
+const API_CV = 'api/save-cv.php';
+let allApplications = [];
+
+const positionLabels = {
+    'mobile-dev':    'مطوّر تطبيقات',
+    'software-eng':  'مهندس برمجيات',
+    'ai-specialist': 'متخصص ذكاء اصطناعي',
+    'other':         'أخرى'
+};
+
+async function loadApplications() {
+    try {
+        const res  = await fetch(API_CV, FETCH_OPTS);
+        if (!res.ok) return;
+        const data = await res.json();
+        allApplications = data.applications || [];
+        renderApplications();
+        updateCvBadge();
+    } catch(e) { console.error(e); }
+}
+
+function updateCvBadge() {
+    const unread = allApplications.filter(a => !a.read).length;
+    const badge  = $('cv-nav-badge');
+    const stat   = $('count-careers');
+    if (badge) { badge.textContent = unread; badge.style.display = unread > 0 ? 'inline' : 'none'; }
+    if (stat)  stat.textContent = allApplications.length;
+}
+
+function renderApplications() {
+    const list = $('careers-list');
+    if (!list) return;
+
+    if (allApplications.length === 0) {
+        list.innerHTML = `<div class="empty-state"><i class="fa-solid fa-inbox"></i><p>لا توجد طلبات توظيف بعد</p></div>`;
+        return;
+    }
+
+    list.innerHTML = allApplications.map(app => `
+        <div class="msg-card ${app.read ? '' : 'unread'}" id="app-${app.id}">
+            <div class="msg-card-header">
+                <div class="msg-sender">
+                    <strong class="msg-name">${app.name || '—'}</strong>
+                    <span class="msg-email">${app.email || ''}</span>
+                    ${app.phone ? `<span class="msg-email"><i class="fa-solid fa-phone" style="font-size:10px"></i> ${app.phone}</span>` : ''}
+                </div>
+                <div class="msg-meta">
+                    <span class="msg-date"><i class="fa-regular fa-clock"></i> ${app.date || ''}</span>
+                    ${!app.read ? '<span class="unread-dot">جديد</span>' : ''}
+                </div>
+            </div>
+            <div class="msg-subject">
+                <i class="fa-solid fa-briefcase"></i>
+                ${app.positionLabel || positionLabels[app.position] || app.position || 'غير محدد'}
+            </div>
+            <div class="msg-actions" style="margin-top:12px">
+                ${app.cv ? `<a href="${app.cv}" target="_blank" class="btn-mark-read" style="text-decoration:none"><i class="fa-solid fa-file-arrow-down"></i> تحميل السيرة الذاتية</a>` : '<span style="font-size:12px;color:#aab3c0">لا توجد سيرة ذاتية</span>'}
+                <button class="btn-delete" onclick="deleteApplication('${app.id}')"><i class="fa-solid fa-trash"></i> حذف</button>
+            </div>
+        </div>`).join('');
+}
+
+async function deleteApplication(id) {
+    if (!confirm('هل تريدين حذف هذا الطلب؟')) return;
+    try {
+        const res  = await fetch(API_CV, {
+            method: 'DELETE',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+        });
+        const data = await res.json();
+        if (data.success) {
+            allApplications = allApplications.filter(a => a.id !== id);
+            renderApplications();
+            updateCvBadge();
+        }
+    } catch(e) { alert('فشل الحذف'); }
+}
+
+// ====================================================
+//  تشغيل عند فتح الصفحة
+// ====================================================
+checkLogin();
+</script>
+</body>
+</html>

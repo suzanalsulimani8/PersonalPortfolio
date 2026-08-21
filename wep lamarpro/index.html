@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أعمال لمار لتقنية المعلومات | الحلول الرقمية المتكاملة</title>
+    <meta name="description" content="شركة أعمال لمار للاتصالات وتقنية المعلومات — حلول ذكية متكاملة لإدارة الأساطيل والتتبع والذكاء الاصطناعي وإنترنت الأشياء لدعم التحول الرقمي في المملكة العربية السعودية.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="stylesheet" href="lamar-style.css">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"></noscript>
+</head>
+<body>
+
+
+    <header class="navbar">
+    <div class="logo">
+        <img id="logo-img" src="img/logo-white.png" alt="Lamar Logo" style="height: 40px;">
+    </div>
+        
+        <nav class="nav-links">
+            <a href="#" class="active" id="nav-home">الرئيسية</a>
+            <a href="#about-section" id="nav-about">من نحن</a>
+            <a href="#projects-ecosystem" id="nav-solutions">حلولنا الذكية</a>
+            <a href="#services-section" id="nav-services">خدماتنا</a>
+            <a href="#media-section" id="nav-media">الإعلام</a>
+            <a href="#contact-section" id="nav-contact">اتصل بنا</a>
+        </nav>
+
+        <div class="controls">
+            <button id="mobile-menu-toggle" class="control-btn mobile-menu-btn" aria-label="القائمة">
+                <i class="fa-solid fa-bars" id="menu-icon" aria-hidden="true"></i>
+            </button>
+            <a href="admin.html" class="control-btn admin-access-btn" aria-label="لوحة الإدارة" title="لوحة الإدارة"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></a>
+            <button id="theme-toggle" class="control-btn" aria-label="تغيير المظهر"><i class="fa-solid fa-sun" aria-hidden="true"></i></button>
+            <div class="lang-selector" id="lang-selector">
+                <button class="control-btn-lang lang-selector-btn" id="lang-toggle" aria-label="تغيير اللغة">
+                    <i class="fa-solid fa-globe" aria-hidden="true"></i>
+                    <span id="lang-text">العربية</span>
+                    <i class="fa-solid fa-chevron-down lang-chevron" aria-hidden="true"></i>
+                </button>
+                <div class="lang-dropdown" id="lang-dropdown">
+                    <button class="lang-option active" data-lang="ar">
+                        <span class="lang-flag">🇸🇦</span> العربية
+                    </button>
+                    <button class="lang-option" data-lang="en">
+                        <span class="lang-flag">🇬🇧</span> English
+                    </button>
+                    <button class="lang-option" data-lang="ur">
+                        <span class="lang-flag">🇵🇰</span> اردو
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="lamar-hero">
+  
+    <div class="video-bg-container">
+    <video autoplay loop muted playsinline class="video-bg" aria-hidden="true">
+        <source src="backgraound.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+</div>
+    
+    <div class="hero-container">
+        
+        <div class="hero-overlay"></div>
+        <div class="hero-container">
+            <div class="hero-text-side">
+                <span class="company-badge" id="company-badge">شريكك الموثوق في التحول الرقمي</span>
+                <h1 id="main-title">شركة أعمال لمار <br><span class="text-gradient">لرسم مستقبل التقنية</span></h1>
+                <p id="main-desc">نبتكر الحلول البرمجية المتطورة، ونمكّن المنشآت من إدارة أصولها ومشاريعها بأحدث تقنيات الذكاء الاصطناعي وإنترنت الأشياء، لتقديم كفاءة تشغيلية لا مثيل لها.</p>
+                
+                <div class="cta-buttons">
+                    <a href="#services-section" class="btn btn-primary" id="btn-services">استكشف خدماتنا</a>
+                    <a href="https://wa.me/966556538999" class="btn btn-outline" id="btn-quote">طلب استشارة تقنية</a>
+                </div>
+            </div>
+
+            <div class="hero-visual-side">
+                <div class="tech-card-showcase">
+                    <div class="system-status">
+                        <span class="pulse-dot"></span> <span id="sys-status">الأنظمة الذكية نشطة</span>
+                    </div>
+                    <div class="preview-line"><span>EAGLE Fleet Platform</span> <strong class="neon-cyan">99.8%</strong></div>
+                    <div class="preview-line"><span>Smart IoT (+EAGLE)</span> <strong class="neon-purple" id="iot-status">متصل</strong></div>
+                    <div class="preview-line"><span>Cybersecurity Systems</span> <strong class="neon-green" id="sec-status">آمن</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+
+    
+
+
+<!-- قسم من نحن — رادار المسح -->
+<section class="about-section" id="about-section">
+    <div class="about-scan-layout">
+
+        <!-- الرادار الحي -->
+        <div class="about-radar-panel">
+            <div class="radar-wrap">
+                <div class="radar-ring rr1"></div>
+                <div class="radar-ring rr2"></div>
+                <div class="radar-ring rr3"></div>
+                <div class="radar-ring rr4"></div>
+                <div class="radar-cross-h"></div>
+                <div class="radar-cross-v"></div>
+                <div class="radar-sweep"></div>
+                <div class="radar-center-dot"></div>
+                <div class="radar-blip rb1"></div>
+                <div class="radar-blip rb2"></div>
+                <div class="radar-blip rb3"></div>
+                <div class="radar-blip rb4"></div>
+                <div class="radar-brand">
+                    <img id="radar-logo-img" src="img/logo-white.png" alt="Lamar Pro">
+                    <span>SINCE 2019</span>
+                </div>
+            </div>
+            <div class="radar-status-bar">
+                <span class="radar-pulse-dot"></span>
+                <span id="about-scan-status">النظام نشط — مسح مستمر</span>
+            </div>
+        </div>
+
+        <!-- لوحة البيانات -->
+        <div class="about-data-panel">
+
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <span class="tdot red"></span>
+                    <span class="tdot yellow"></span>
+                    <span class="tdot green"></span>
+                </div>
+                <span class="terminal-title" id="about-badge">LAMAR_PRO — من نحن</span>
+            </div>
+
+            <div class="terminal-body">
+
+                <h2 id="about-title">حلول ذكية لحياة <span class="text-gradient">أكثر أمانًا</span></h2>
+                <p id="about-intro">تأسست شركة أعمال لمار للاتصالات وتقنية المعلومات عام 2019 برؤية وطنية واضحة، تجمع بين الإتقان التقني والابتكار الإنساني لدعم التحول الرقمي وخدمة أهداف رؤية المملكة 2030.</p>
+
+                <div class="terminal-divider"></div>
+
+                <div class="scan-entry">
+                    <span class="entry-key" id="about-vision-title">الرؤية</span>
+                    <p class="entry-val" id="about-vision-desc">أن نكون الشريك التقني الأول في المملكة في تقديم حلول ذكية متكاملة تعزز جودة الحياة وتخدم أهداف رؤية 2030.</p>
+                </div>
+
+                <div class="scan-entry">
+                    <span class="entry-key" id="about-mission-title">الرسالة</span>
+                    <p class="entry-val" id="about-mission-desc">ابتكار أنظمة تقنية موثوقة ومستدامة تخدم الإنسان أولاً، وتدعم التحول الرقمي وتبني حلولاً فعالة تدعم القطاعات الحيوية بالمملكة.</p>
+                </div>
+
+                <div class="terminal-divider"></div>
+
+                <div class="scan-meta-row">
+                    <div class="scan-meta-item">
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <span><strong id="about-founded-label">تأسست</strong> 2019</span>
+                    </div>
+                    <div class="scan-meta-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span id="about-location-val">الرياض — حي العليا</span>
+                    </div>
+                    <div class="scan-meta-item">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span id="about-licensed-val">TGA · CST · NCA · SFDA</span>
+                    </div>
+                </div>
+
+                <div class="terminal-divider"></div>
+
+                <div class="scan-values-row">
+                    <span class="entry-key" id="about-values-title">القيم</span>
+                    <div class="scan-values-tags" id="about-values-list">
+                        <span class="value-tag">الإتقان في التنفيذ</span>
+                        <span class="value-tag">الابتكار المستمر</span>
+                        <span class="value-tag">التمكين التقني والإنساني</span>
+                        <span class="value-tag">الموثوقية</span>
+                        <span class="value-tag">المسؤولية الاجتماعية</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- الجهات المعتمدة -->
+<section class="partners-marquee-section">
+    <div class="partners-header">
+        <span class="partners-label" id="partners-label">معتمدون من قبل الجهات الرسمية</span>
+    </div>
+    <div class="marquee-container">
+        <div class="marquee-track" id="marquee-track">
+            <div class="partner-logo-only"><img src="img/cropped-شعار-وقف-المعرفة-.png" alt="Partner 1" loading="lazy" width="120" height="60"></div>
+            <div class="partner-logo-only"><img src="img/img2.png" alt="Partner 2" loading="lazy" width="120" height="60"></div>
+            <div class="partner-logo-only"><img src="img/tga_logo.webp" alt="Partner 3" loading="lazy" width="120" height="60"></div>
+            <div class="partner-logo-only"><img src="img/citc_logo.svg" alt="Partner 4" loading="lazy" width="120" height="60"></div>
+            <div class="partner-logo-only"><img src="img/NCALogoColorRight.svg" alt="Partner 5" loading="lazy" width="120" height="60"></div>
+            <div class="partner-logo-only"><img src="img/الهيئة الملكية.svg" alt="Partner 6" loading="lazy" width="120" height="60"></div>
+            <div class="partner-logo-only"><img src="img/Header-Logo.svg" alt="وزارة الحج والعمرة" loading="lazy" width="120" height="60"></div>
+        </div>
+    </div>
+</section>
+<!-- قسم المشاريع والمنتجات -->
+<section class="ecosystem-section" id="projects-ecosystem">
+    <div class="ecosystem-intro">
+        <span class="ecosystem-badge" id="ecosystem-badge">منظومة رقمية متكاملة</span>
+        <h2 id="ecosystem-title">حلولنا الذكية</h2>
+        <p id="ecosystem-desc">تحوم حول كفاءة واحدة.. استكشفي حلولنا الذكية بالتفاعل مع المنظومة</p>
+    </div>
+
+    <div class="ecosystem-container">
+        <div class="eco-node node-core active" data-project="eagle">
+            <div class="node-pulse"></div>
+            <div class="node-icon-wrapper">
+                <img src="img/eaglee.png" alt="منصة EAGLE" class="node-img theme-eagle-img" data-light="img/eaglee.png" data-dark="img/eagle-white.png" loading="lazy" width="80" height="80">
+            </div>
+            <span class="node-title" id="node-eagle-title">منصة EAGLE</span>
+        </div>
+
+        <div class="eco-node node-satellite sat-1" data-project="hemam">
+            <div class="node-icon-wrapper">
+                <img src="img/thwi.png" alt="منصة ذوي الإعاقة" class="node-img" loading="lazy" width="80" height="80">
+            </div>
+            <span class="node-title" id="node-hemam-title">منصة ذوي الإعاقة</span>
+        </div>
+
+        <div class="eco-node node-satellite sat-2" data-project="hajj">
+            <div class="node-icon-wrapper">
+                <img src="img/Frame-99-5.png" alt="حج وعمرة" class="node-img" loading="lazy" width="80" height="80">
+            </div>
+            <span class="node-title" id="node-hajj-title">حج وعمرة</span>
+        </div>
+
+        <div class="eco-node node-satellite sat-3" data-project="kullna" data-external-url="https://oppty.store/">
+            <div class="node-icon-wrapper">
+                <img src="img/klana.png" alt="كلنا معكم" class="node-img" loading="lazy" width="80" height="80">
+            </div>
+            <span class="node-title" id="node-kullna-title">كلنا معكم</span>
+        </div>
+
+        <div class="eco-node node-satellite sat-4" data-project="law">
+            <div class="node-icon-wrapper">
+               <img src="img/lss.png" alt="برنامج المحاماة" class="node-img" loading="lazy" width="80" height="80">
+            </div>
+            <span class="node-title" id="node-law-title">الخدمات القانونية المساندة </span>
+        </div>
+    </div>
+
+    <div class="ecosystem-display-panel">
+        <div class="display-content" id="project-display-content">
+            <h3 id="display-title">منصة EAGLE اللوجستية</h3>
+            <p id="display-desc">ريادة التحكم اللوجستي.. أمان شحناتك في شاشة واحدة. شريكك الذكي لإدارة الأسطول وحماية الأصول عبر مراقبة حية شاملة للأوزان والحرارة والرطوبة لضمان جودة الوصول.</p>
+            <a href="#" class="eco-visit-link" id="eco-visit-link" target="_blank" style="display:none">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                <span id="eco-visit-text">زيارة الموقع الرسمي</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- قسم الخدمات التشغيلية -->
+<section class="ops-services-section" id="services-section">
+    <div class="ops-header">
+        <span class="ops-badge" id="ops-badge">حلولنا التشغيلية</span>
+        <h2 id="services-title">خدماتنا الابتكارية</h2>
+        <div class="ops-accent-bar"></div>
+    </div>
+
+    <div class="ops-dashboard-container">
+        <div class="ops-tabs-sidebar">
+            <div class="ops-tab-btn active" data-service-tab="app-eagle">
+                <div class="tab-icon tab-icon-img">
+                    <img src="img/eaglee.png" alt="EAGLE" class="theme-eagle-img" data-light="img/eaglee.png" data-dark="img/eagle-white.png" loading="lazy" width="40" height="40">
+                </div>
+                <div class="tab-text-col">
+                    <span class="tab-app-name" id="app-eagle-tab-name">منصة EAGLE</span>
+                    <span class="tab-app-sub" id="app-eagle-tab-sub">تتبع · شحنات · أساطيل</span>
+                </div>
+            </div>
+            <div class="ops-tab-btn" data-service-tab="app-hajj">
+                <div class="tab-icon tab-icon-img">
+                    <img src="img/Frame-99-5.png" alt="حج وعمرة" loading="lazy" width="40" height="40">
+                </div>
+                <div class="tab-text-col">
+                    <span class="tab-app-name" id="app-hajj-tab-name">حج وعمرة</span>
+                    <span class="tab-app-sub" id="app-hajj-tab-sub">خدمات الحجاج الرقمية</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="ops-display-screen">
+            <div class="ops-screen-content display-fade-in" id="ops-screen-content">
+                <h3 id="ops-current-title">منصة EAGLE للتتبع والإدارة</h3>
+                <p id="ops-current-desc">منظومة تقنية ذكية متكاملة تجمع بين تتبع المركبات والشحنات وإدارة الأساطيل في تطبيق واحد شامل.</p>
+                <div class="ops-service-groups" id="ops-service-groups"></div>
+
+                <div class="eagle-demo-panel">
+                    <div class="demo-panel-header">
+                        <span class="demo-panel-dot"></span>
+                        <span class="demo-panel-label">بيانات الدخول التجريبية</span>
+                    </div>
+                    <div class="demo-panel-fields">
+                        <div class="demo-field">
+                            <span class="demo-field-key"><i class="fa-solid fa-user-circle"></i> اليوزر</span>
+                            <span class="demo-field-val">demoalt</span>
+                        </div>
+                        <div class="demo-field-divider"></div>
+                        <div class="demo-field">
+                            <span class="demo-field-key"><i class="fa-solid fa-key"></i> الباسورد</span>
+                            <span class="demo-field-val">Demo123</span>
+                        </div>
+                    </div>
+                    <a href="https://tracking.lamarpro.com" target="_blank" class="eagle-demo-btn" id="ops-demo-link">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        <span id="ops-demo-text">دخول المنصة التجريبية</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<!-- قسم التطبيقات الذكية -->
+
+<section class="app-download-section" id="download-section">
+    <div class="app-download-container">
+        
+        <div class="app-text-side">
+            <span class="app-mini-badge" id="app-mini-badge">تطبيق الهاتف الذكي</span>
+            <h2 id="app-title">تحكّم بأسطولك وسير مركبتك من شاشة هاتفك</h2>
+            <p id="app-desc">تابع تحركات مركباتك، استقبل التنبيهات الفورية، وراقب أداء الـ Dash Cam وحساسات الوزن مباشرة وبلمسة واحدة. تطبيق أعمال لمار مصمم ليمنحك السيطرة الكاملة أينما كنت.</p>
+            
+            <div class="download-badges-wrapper">
+                <a href="https://apps.apple.com/sa/app/lamar-pro/id6739206075?l=ar" target="_blank" class="store-badge-btn">
+                    <i class="fa-brands fa-apple"></i>
+                    <div class="badge-text">
+                        <span>Download on the</span>
+                        <strong>App Store</strong>
+                    </div>
+                </a>
+
+                <a href="https://play.google.com/store/apps/details?id=com.pmis.lamar&pcampaignid=web_share" target="_blank" class="store-badge-btn">
+                    <i class="fa-brands fa-google-play"></i>
+                    <div class="badge-text">
+                        <span>Get it on</span>
+                        <strong>Google Play</strong>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="app-visual-side">
+            <div class="phone-mockup-canvas" data-tilt data-tilt-max="4">
+                <div class="phone-internal-screen">
+                    
+                    <div class="app-ui-header">
+                        <div class="ui-status-bar">
+                            <span>EAGLE Mobile</span>
+                            <div class="ui-dot"></div>
+                        </div>
+                    </div>
+
+                    <div class="app-slideshow-container">
+                        <div class="app-screenshot-slide active">
+                            <img src="img/phone.png" alt="شاشة تطبيق EAGLE" loading="lazy" width="280" height="560">
+                        </div>
+
+                        <div class="app-screenshot-slide">
+                            <img src="img/phone1.png" alt="شاشة تطبيق EAGLE" loading="lazy" width="280" height="560">
+                        </div>
+
+                        <div class="app-screenshot-slide">
+                            <img src="img/phone7.png" alt="شاشة تطبيق EAGLE" loading="lazy" width="280" height="560">
+                        </div>
+
+                        <div class="app-screenshot-slide">
+                            <img src="img/phone6.png" alt="شاشة تطبيق EAGLE" loading="lazy" width="280" height="560">
+                        </div>
+
+                        <div class="app-screenshot-slide">
+                            <img src="img/phone5.png" alt="شاشة تطبيق EAGLE" loading="lazy" width="280" height="560">
+                        </div>
+
+                        <div class="app-screenshot-slide">
+                            <img src="img/phone2.png" alt="شاشة تطبيق EAGLE" loading="lazy" width="280" height="560">
+                        </div>
+
+                        <div class="app-screenshot-slide">
+                            <img src="img/phone4.png" alt="شاشة تطبيق EAGLE" loading="lazy" width="280" height="560">
+                        </div>
+
+                        <div class="app-screenshot-slide">
+                            <img src="img/phone3.png" alt="شاشة تطبيق EAGLE" loading="lazy" width="280" height="560">
+                        </div>
+                    </div>
+
+                    <div class="app-carousel-dots">
+                        <span class="carousel-dot active"></span>
+                        <span class="carousel-dot"></span>
+                        <span class="carousel-dot"></span>
+                        <span class="carousel-dot"></span>
+                        <span class="carousel-dot"></span>
+                        <span class="carousel-dot"></span>
+                        <span class="carousel-dot"></span>
+                        <span class="carousel-dot"></span>
+                    </div>
+
+                </div>
+                <div class="phone-glow-aura"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- قسم عملائنا -->
+ <section class="kinetic-clients-section" id="clients-section">
+    <div class="kinetic-mesh-container">
+        
+        <div class="mesh-wing wing-right">
+            <div class="mesh-logo-cell"><img src="img/jarir.png" alt="عميل أعمال لمار" loading="lazy" width="120" height="60"></div>
+            <div class="mesh-logo-cell"><img src="img/ikram.png" alt="عميل أعمال لمار" loading="lazy" width="120" height="60"></div>
+            <div class="mesh-logo-cell"><img src="img/Frame-107.webp" alt="عميل أعمال لمار" loading="lazy" width="120" height="60"></div>
+            <div class="mesh-logo-cell"><img src="img/rawasi.png" alt="عميل أعمال لمار" loading="lazy" width="120" height="60"></div>
+            <div class="mesh-logo-cell"><img src="img/kaak.png" alt="عميل أعمال لمار" loading="lazy" width="120" height="60"></div>
+            <div class="mesh-logo-cell"><img src="img/gse.webp" alt="عميل أعمال لمار" loading="lazy" width="120" height="60"></div>
+        </div>
+
+        <div class="mesh-core-metrics">
+            
+            <div class="mesh-stat-row">
+                <div class="stat-number-box">
+                    <h2 class="counter-number" data-target="200">0</h2><span>+</span>
+                </div>
+                <p id="stat-1-desc">شركة ومؤسسة تشرفنا بخدمتها</p>
+            </div>
+
+            <div class="mesh-divider-line"></div>
+
+            <div class="mesh-stat-row">
+                <div class="stat-number-box">
+                    <h2 class="counter-number" data-target="6000">0</h2><span>+</span>
+                </div>
+                <p id="stat-2-desc">مركبة تدار بأنظمتنا الذكية</p>
+            </div>
+        </div>
+
+        <div class="mesh-wing wing-left">
+            <div class="mesh-logo-cell"><img src="img/alnaiem.png" alt="عميل أعمال لمار" loading="lazy" width="120" height="60"></div>
+            <div class="mesh-logo-cell"><img src="img/abraj.jpg" alt="عميل أعمال لمار" loading="lazy" width="120" height="60"></div>
+            <div class="mesh-logo-cell"><img src="img/amjad.webp" alt="عميل أعمال لمار" loading="lazy" width="120" height="60"></div>
+            <div class="mesh-logo-cell"><img src="img/oi[.jpg" alt="عميل أعمال لمار" loading="lazy" width="120" height="60"></div>
+            <div class="mesh-logo-cell"><img src="img/ashraqat.png" alt="عميل أعمال لمار" loading="lazy" width="120" height="60"></div>
+            <div class="mesh-logo-cell"><img src="img/masah.jpg" alt="عميل أعمال لمار" loading="lazy" width="120" height="60"></div>
+            
+            </div>
+
+    </div>
+</section>
+
+<!-- قسم مركز الإعلام -->
+<section class="media-center-section" id="media-section">
+    <div class="media-header">
+        <span class="media-badge" id="media-badge">مركز الإعلام</span>
+        <h2 id="media-title">أخبار وفعاليات الشركة</h2>
+        <p id="media-desc">تابع آخر أخبارنا وفعالياتنا ومقاطعنا الإعلامية</p>
+    </div>
+
+    <div class="media-filters">
+        <button class="media-filter-btn active" data-filter="all" id="filter-all">الكل</button>
+        <button class="media-filter-btn" data-filter="news" id="filter-news">أخبار</button>
+        <button class="media-filter-btn" data-filter="events" id="filter-events">فعاليات</button>
+        <button class="media-filter-btn" data-filter="videos" id="filter-videos">مقاطع</button>
+    </div>
+
+    <div class="media-grid" id="media-grid">
+        <!-- تُملأ تلقائياً من media-data.json -->
+    </div>
+
+    <div class="media-more-wrap">
+        <button id="media-show-more" class="media-show-more-btn" style="display:none">
+            <i class="fa-solid fa-chevron-down"></i> عرض المزيد
+        </button>
+    </div>
+</section>
+
+<!-- قسم التواصل -->
+
+<section class="console-contact-section" id="contact-section">
+    <div class="console-container">
+        
+        <div class="contact-form-panel">
+            <div class="form-header">
+                <span class="form-badge" id="form-badge">تواصل مباشر</span>
+                <h2 id="contact-title">لنبدأ برسم مستقبلك التقني</h2>
+                <p id="contact-desc">يسعدنا استقبال استفساراتكِ، فريقنا التقني جاهز للرد عليكِ فوراً.</p>
+            </div>
+            
+            <form class="fluid-gate-form" id="contact-form">
+                <div class="form-group-fluid">
+                    <input type="text" id="form-name" required placeholder=" ">
+                    <label for="form-name" id="label-name">الاسم الكريم</label>
+                </div>
+
+                <div class="form-group-fluid">
+                    <input type="email" id="form-email" required placeholder=" ">
+                    <label for="form-email" id="label-email">البريد الإلكتروني</label>
+                </div>
+
+                <div class="form-group-fluid">
+                    <input type="tel" id="form-phone" placeholder=" ">
+                    <label for="form-phone" id="label-phone">رقم الجوال</label>
+                </div>
+
+                <div class="form-group-fluid">
+                    <input type="text" id="form-subject" required placeholder=" ">
+                    <label for="form-subject" id="label-subject">عنوان الرسالة</label>
+                </div>
+
+                <div class="form-group-fluid">
+                    <textarea id="form-message" required placeholder=" " rows="4"></textarea>
+                    <label for="form-message" id="label-message">تفاصيل استشارتكِ أو طلبكِ</label>
+                </div>
+
+                <button type="submit" class="form-submit-btn">
+                    <span id="form-submit-text">إرسال الطلب الآن</span> <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+
+        <div class="social-blocks-panel">
+            <div class="social-header">
+                <h3 id="social-title">منظومة التواصل الاجتماعي</h3>
+                <p id="social-desc">تابعونا على منصاتنا الرسمية لمواكبة أحدث حلول تتبع المركبات والذكاء الاصطناعي:</p>
+            </div>
+
+            <div class="social-magnetic-grid">
+                
+                <a href="https://api.whatsapp.com/send/?phone=966556538999" target="_blank" class="social-block-card wa-card">
+                    <div class="social-icon-box"><i class="fa-brands fa-whatsapp"></i></div>
+                    <div class="social-info-text">
+                        <h4 id="wa-title">الواتساب المباشر</h4>
+                        <p id="wa-desc">تواصل فوري مع الدعم الفني والتعاقدات</p>
+                    </div>
+                    <div class="social-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+                </a>
+
+                <a href="https://x.com/technologyx2030?s=20" target="_blank" class="social-block-card x-card">
+                    <div class="social-icon-box"><i class="fa-brands fa-x-twitter"></i></div>
+                    <div class="social-info-text">
+                        <h4 id="x-title">منصة X الرقمية</h4>
+                        <p id="x-desc">آخر أخبار ومستجدات أنظمتنا اللوجستية</p>
+                    </div>
+                    <div class="social-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+                </a>
+
+                <a href="https://www.linkedin.com/company/%D8%B4%D8%B1%D9%83%D8%A9-%D8%A7%D8%B9%D9%85%D8%A7%D9%84-%D9%84%D9%85%D8%A7%D8%B1-%D9%84%D9%84%D8%A7%D8%AA%D8%B5%D8%A7%D9%84%D8%A7%D8%AA-%D9%88%D8%AA%D9%82%D9%86%D9%8A%D9%87-%D8%A7%D9%84%D9%85%D8%B9%D9%84%D9%88%D9%85%D8%A7%D8%AA/" target="_blank" class="social-block-card li-card">
+                    <div class="social-icon-box"><i class="fa-brands fa-linkedin-in"></i></div>
+                    <div class="social-info-text">
+                        <h4 id="li-title">شبكة LinkedIn</h4>
+                        <p id="li-desc">التواصل المهني، الوظائف، والشراكات</p>
+                    </div>
+                    <div class="social-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+                </a>
+
+                <a href="https://www.instagram.com/mrdlhmdlshhn?igsh=ZjU3cW9mZWpjejN4" target="_blank" class="social-block-card ig-card">
+                    <div class="social-icon-box"><i class="fa-brands fa-instagram"></i></div>
+                    <div class="social-info-text">
+                        <h4 id="ig-title">حساب Instagram</h4>
+                        <p id="ig-desc">تغطيات بصرية مستمرة وهوية أعمالنا</p>
+                    </div>
+                    <div class="social-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+                </a>
+
+                <a href="https://www.tiktok.com/@lamarpro.sa?_r=1&_t=ZS-92UQ4uZ7C7x" target="_blank" class="social-block-card tt-card">
+                    <div class="social-icon-box"><i class="fa-brands fa-tiktok"></i></div>
+                    <div class="social-info-text">
+                        <h4 id="tt-title">منصة TikTok</h4>
+                        <p id="tt-desc">شروحات سريعة واستعراض تفاعلي للأنظمة</p>
+                    </div>
+                    <div class="social-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<footer class="minimal-footer">
+    <div class="footer-content">
+        <div class="footer-links-row">
+            <a href="#about-section" class="footer-link" id="footer-link-about">من نحن</a>
+            <a href="#contact-section" class="footer-link" id="footer-link-contact">اتصل بنا</a>
+            <button onclick="openCareersModal()" class="footer-link footer-careers-btn" id="footer-link-careers">انضم للفريق</button>
+        </div>
+        <p id="footer-text">جميع الحقوق محفوظة لشركة أعمال لمار للأتصالات و تقنية المعلومات 2026  ©. </p>
+    </div>
+</footer>
+
+
+    <!-- ===== نافذة التوظيف ===== -->
+    <div id="careers-modal" class="careers-modal-overlay" style="display:none" onclick="if(event.target===this)closeCareersModal()">
+        <div class="careers-modal-card">
+            <button class="modal-close-btn" onclick="closeCareersModal()" aria-label="إغلاق">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="modal-header">
+                <img src="img/logo-blue.svg" alt="Lamar Pro" class="modal-logo">
+                <h3 id="modal-title">انضم إلى فريق لمار</h3>
+                <p id="modal-subtitle">أرسل سيرتك الذاتية وسيتواصل معك فريق الموارد البشرية</p>
+            </div>
+
+            <form id="cv-form" novalidate>
+                <div class="form-group-fluid">
+                    <input type="text" id="cv-name" required placeholder=" ">
+                    <label for="cv-name" id="cv-label-name">الاسم الكريم</label>
+                </div>
+
+                <div class="form-group-fluid">
+                    <input type="email" id="cv-email" required placeholder=" ">
+                    <label for="cv-email" id="cv-label-email">البريد الإلكتروني</label>
+                </div>
+
+                <div class="form-group-fluid">
+                    <input type="tel" id="cv-phone" required placeholder=" ">
+                    <label for="cv-phone" id="cv-label-phone">رقم الجوال</label>
+                </div>
+
+                <div class="modal-form-group">
+                    <label class="modal-select-label" id="cv-label-position">المسمى الوظيفي</label>
+                    <select id="cv-position" class="modal-select">
+                        <option value="">-- اختر المسمى --</option>
+                        <option value="mobile-dev">مطوّر تطبيقات</option>
+                        <option value="software-eng">مهندس برمجيات</option>
+                        <option value="ai-specialist">متخصص ذكاء اصطناعي</option>
+                        <option value="other">أخرى</option>
+                    </select>
+                </div>
+
+                <div class="cv-upload-zone" id="cv-upload-zone">
+                    <i class="fa-solid fa-file-arrow-up"></i>
+                    <p>اسحب وأفلت السيرة الذاتية هنا أو <span class="cv-browse-link">تصفح</span></p>
+                    <small>PDF · DOC · DOCX — الحد الأقصى 5MB</small>
+                    <input type="file" id="cv-file-input" accept=".pdf,.doc,.docx" style="display:none">
+                </div>
+
+                <div class="cv-file-selected" id="cv-file-selected" style="display:none">
+                    <i class="fa-solid fa-file-check"></i>
+                    <span id="cv-selected-name"></span>
+                    <button type="button" id="cv-remove-file" class="cv-remove-btn">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div id="cv-form-msg" style="display:none"></div>
+
+                <button type="submit" class="cv-submit-btn" id="cv-submit-btn">
+                    <span id="cv-submit-text">إرسال الطلب</span>
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox-overlay" style="display:none" onclick="lbBgClick(event)">
+        <button class="lb-close" onclick="closeLightbox()" aria-label="إغلاق"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        <button class="lb-nav lb-prev" onclick="navLightbox(-1)" aria-label="السابق"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+        <div class="lb-main">
+            <img id="lb-img" src="" alt="" style="display:none">
+            <video id="lb-video" controls style="display:none"></video>
+        </div>
+        <button class="lb-nav lb-next" onclick="navLightbox(1)" aria-label="التالي"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+        <div class="lb-footer">
+            <span id="lb-counter" class="lb-counter"></span>
+            <div class="lb-thumbs" id="lb-thumbs"></div>
+        </div>
+    </div>
+
+    <div id="nav-overlay" class="nav-overlay"></div>
+    <script src="lamar-script.js"></script>
+</body>
+</html>
