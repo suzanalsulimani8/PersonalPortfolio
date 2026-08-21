@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="website icon" type="png" href="logo.png">
+  <title>متابعة التقدم</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* تنسيق الهيدر */
+    header {
+      width: 96.9%;
+      background-color: #4cafab;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100px;
+    }
+
+    header h1 {
+      color: #fff;
+      margin: 0;
+      font-size: 24px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    header img {
+      height: 80px;
+      width: auto;
+      position: absolute;
+      right: 40px;
+    }
+
+    header .home-icon {
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* تنسيق الفوتر */
+    footer {
+      width: 100%;
+      background-color: #4cafab;
+      padding: 20px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: auto;
+      color: #f9f9f9;
+    }
+
+    /* محتوى الصفحة */
+    .container {
+      width: 100%;
+      padding: 100px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex-grow: 1;
+    }
+
+    h1 {
+      color: #4cafab;
+    }
+
+    /* تنسيق البوكسات الخاصة بعدد الأيام والانتكاسات */
+    .stats-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .stat p {
+      margin: 0;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .stat h3 {
+      margin: 10px 0;
+      font-size: 24px;
+      color: #4cafab;
+    }
+
+    .calendar-section {
+      width: 100%;
+      max-width: 600px;
+      margin-top: 30px;
+    }
+
+    .notes-section {
+      width: 100%;
+      max-width: 600px;
+      margin-top: 30px;
+    }
+
+    .notes-section h3 {
+      color: #4cafab;
+    }
+
+    .notes-section textarea {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .notes-section button {
+      background-color: #4cafab;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .notes-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    .notes-list li {
+      background-color: #fff;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+  </style>
+</head>
+<body onload="loadProgress()">
+
+  <!-- الهيدر -->
+  <header>
+    <h1>Hope Track</h1>
+    <img src="logo.png" alt="Logo">
+    <a href="home.html" class="home-icon"><i class="fas fa-home"></i></a>
+  </header>
+
+  <!-- محتوى الصفحة -->
+  <div class="container">
+    <!-- عرض الأيام التي مرت منذ التوقف والانتكاسات -->
+    <div class="stats-container">
+      <div id="daysDisplay" class="stat" onclick="addRelapse()">
+        <h3 id="daysWithoutDrugs">0</h3>
+        <p>أيام منذ التوقف</p>
+      </div>
+
+      <div id="relapsesDisplay" class="stat">
+        <h3 id="relapseCount">0</h3>
+        <p>عدد مرات الانتكاس</p>
+      </div>
+    </div>
+
+    <!-- قسم تحديد تاريخ التوقف -->
+    <div class="calendar-section">
+      <h3>حدد تاريخ بدء التوقف عن التعاطي:</h3>
+      <div id="calendar"></div>
+    </div>
+
+    <!-- قسم الملاحظات -->
+    <div class="notes-section">
+      <h3>ملاحظات</h3>
+      <textarea id="noteContent" placeholder="أضف سبب انتكاستك..."></textarea>
+      <button onclick="addNote()">إضافة ملاحظة</button>
+
+      <ul id="notesList" class="notes-list"></ul>
+    </div>
+  </div>
+
+  <!-- الفوتر -->
+  <footer>Hope Track</footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+
+  <script>
+// التأكد من تحميل الصفحة بالكامل قبل تنفيذ الدوال
+window.addEventListener('DOMContentLoaded', function() {
+  console.log("تم تحميل الصفحة بالكامل");
+
+  // حساب عدد الأيام منذ تاريخ التوقف
+  calculateDays();
+
+  // إضافة حدث عند الضغط على العنصر المسؤول عن الانتكاسات
+  const relapseDisplay = document.getElementById('relapsesDisplay');
+  if (relapseDisplay) {
+    relapseDisplay.addEventListener('click', addRelapse);
+  } else {
+    console.error('عنصر الانتكاسات (#relapsesDisplay) غير موجود.');
+  }
+});
+
+// حساب عدد الأيام منذ تاريخ التوقف
+function calculateDays() {
+  const startDate = new Date("2023-01-01");
+  const today = new Date();
+  const timeDiff = today - startDate;
+  const daysWithoutDrugs = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+  const daysDisplay = document.getElementById('daysWithoutDrugs');
+  if (daysDisplay) {
+    daysDisplay.textContent = daysWithoutDrugs;
+    console.log(`تم حساب عدد الأيام بنجاح: ${daysWithoutDrugs}`);
+  } else {
+    console.error('عنصر عرض عدد الأيام (#daysWithoutDrugs) غير موجود.');
+  }
+}
+
+// إضافة انتكاسة جديدة
+function addRelapse() {
+  const relapseCountElement = document.getElementById('relapseCount');
+  if (relapseCountElement) {
+    let relapseCount = parseInt(relapseCountElement.textContent) || 0;
+    relapseCount++;
+    relapseCountElement.textContent = relapseCount;
+    alert('تم تسجيل انتكاسة جديدة.');
+  } else {
+    console.error('عنصر عرض عدد الانتكاسات (#relapseCount) غير موجود.');
+  }
+}
+
+// إضافة ملاحظة جديدة
+function addNote() {
+  const noteContent = document.getElementById('noteContent').value;
+  if (noteContent.trim() !== "") {
+    const notesList = document.getElementById('notesList');
+    if (notesList) {
+      const li = document.createElement('li');
+      li.textContent = noteContent;
+      notesList.appendChild(li);
+      document.getElementById('noteContent').value = ''; // تفريغ الحقل
+    } else {
+      console.error('قائمة الملاحظات (#notesList) غير موجودة.');
+    }
+  } else {
+    alert('يرجى كتابة ملاحظة قبل الإضافة.');
+  }
+}
+
+  </script>
+
+</body>
+</html>

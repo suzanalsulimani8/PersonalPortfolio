@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>صفحة البروفايل</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      width: 96.5%;
+      background-color: #4cafab;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100px;
+    }
+
+    header h1 {
+      color: #fff;
+      margin: 0;
+      font-size: 24px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    header img {
+      height: 80px;
+      width: auto;
+      position: absolute;
+      right: 40px;
+    }
+
+    header .home-icon {
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .profile-container {
+      background-color: #fff;
+      width: 90%;
+      max-width: 500px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .profile-container img {
+      border-radius: 50%;
+      width: 150px;
+      height: 150px;
+      cursor: pointer;
+    }
+
+    .bio-container {
+      margin-top: 20px;
+    }
+
+    .bio {
+      background-color: #f1f1f1;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    .edit-container {
+      display: none;
+    }
+
+    .progress-container {
+      margin-top: 20px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 20px;
+      background-color: #f3f3f3;
+      border-radius: 20px;
+      margin-top: 10px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0;
+      background-color: #4cafab;
+      border-radius: 20px;
+      text-align: center;
+      color: white;
+    }
+
+    .badge {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      background-color: #ddd;
+      border-radius: 50%;
+      margin: 5px;
+      opacity: 0.5;
+    }
+
+    .badge.active {
+      background-color: #4cafab;
+      opacity: 1;
+    }
+
+    .add-message-form {
+      margin-top: 20px;
+      display: none;
+    }
+
+    .add-message-form textarea,
+    .add-message-form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    .add-message-form button {
+      background-color: #4cafab;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .future-message {
+      background-color: #f1f1f1;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .logout-button {
+      background-color: #4cafab;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    footer {
+      width: 100%;
+      background-color: #4cafab;
+      padding: 20px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: auto;
+      color: #f9f9f9;
+    }
+  </style>
+  
+</head>
+<body>
+
+  <header>
+    <h1>Hope Track</h1>
+    <img src="logo.png" alt="Logo">
+    <a href="home.html" class="home-icon"><i class="fas fa-home"></i></a>
+  </header>
+
+  <div class="profile-container">
+    <!-- صورة المستخدم -->
+    <img src="https://via.placeholder.com/150" alt="صورة المستخدم" id="profileImage" onclick="uploadImage()">
+    <input type="file" id="imageInput" style="display:none" onchange="saveImage()" accept="image/*">
+    
+    <!-- اسم المستخدم والبريد الإلكتروني -->
+    <h2 id="usernameDisplay">اسم المستخدم</h2>
+    <p id="emailDisplay">email@example.com</p>
+
+    <!-- قسم النبذة عني -->
+    <div class="bio-container">
+      <h3>نبذة عني:</h3>
+      <p class="bio" id="profileBio">هذه نبذة عن المستخدم</p>
+      <textarea id="bioInput" placeholder="اكتب نبذتك هنا..." class="edit-container"></textarea>
+      <button id="editProfileBtn" onclick="toggleBioEdit()">تعديل</button>
+      <button id="saveProfileBtn" class="edit-container" onclick="saveProfile()">حفظ</button>
+    </div>
+
+    <!-- قسم تقدم المهام -->
+    <h3>تقدم المهام</h3>
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-bar-fill" id="tasksProgressBar">0%</div>
+      </div>
+    </div>
+
+    <!-- قسم الشارات المكتسبة -->
+    <h3>الشارات المكتسبة</h3>
+    <div id="badges">
+      <div class="badge" id="badge1"></div>
+      <div class="badge" id="badge2"></div>
+      <div class="badge" id="badge3"></div>
+      <div class="badge" id="badge4"></div>
+    </div>
+
+    <!-- قسم الرسائل المستقبلية -->
+    <h3>الرسائل المستقبلية:</h3>
+    <button onclick="toggleMessageForm()">إضافة رسالة مستقبلية</button>
+    <div class="add-message-form" id="messageForm">
+      <textarea id="messageContent" placeholder="اكتب رسالتك هنا..."></textarea>
+      <input type="date" id="scheduleDate">
+      <button onclick="addFutureMessage()">إضافة رسالة</button>
+    </div>
+
+    <div id="futureMessagesContainer"></div>
+
+    <br><br>
+    <button class="logout-button" onclick="logout()">تسجيل خروج</button>
+  </div>
+
+  <footer>Hope Track</footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // بيانات مؤقتة بدون تخزين
+      const username = 'اسم المستخدم';
+      const email = 'email@example.com';
+      const profileBio = 'هذه نبذة عن المستخدم';
+      const profileImage = 'https://via.placeholder.com/150';
+
+      // تحديث العرض بناءً على البيانات
+      document.getElementById('usernameDisplay').innerText = username;
+      document.getElementById('emailDisplay').innerText = email;
+      document.getElementById('profileBio').innerText = profileBio;
+      document.getElementById('profileImage').src = profileImage;
+    });
+
+    // حفظ صورة المستخدم (بدون تخزين)
+    function uploadImage() {
+      document.getElementById("imageInput").click(); // فتح نافذة اختيار الملفات
+    }
+
+    function saveImage() {
+      const fileInput = document.getElementById('imageInput');
+      const file = fileInput.files[0]; // الحصول على الملف المختار
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const imageUrl = e.target.result;
+          document.getElementById('profileImage').src = imageUrl;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // تعديل النبذة الشخصية (بدون تخزين)
+    function toggleBioEdit() {
+      const bio = document.getElementById("profileBio");
+      const bioInput = document.getElementById("bioInput");
+      const saveBtn = document.getElementById("saveProfileBtn");
+
+      if (bioInput.style.display === "none") {
+        bioInput.style.display = "block";
+        saveBtn.style.display = "inline";
+        bioInput.value = bio.innerText;
+      } else {
+        bioInput.style.display = "none";
+        saveBtn.style.display = "none";
+      }
+    }
+
+    function saveProfile() {
+      const bio = document.getElementById("profileBio");
+      const bioInput = document.getElementById("bioInput");
+      bio.innerText = bioInput.value;
+      bioInput.style.display = "none";
+      document.getElementById("saveProfileBtn").style.display = "none";
+    }
+
+    // إضافة الرسائل المستقبلية (بدون تخزين)
+    function toggleMessageForm() {
+      const form = document.getElementById("messageForm");
+      form.style.display = form.style.display === "none" ? "block" : "none";
+    }
+
+    function addFutureMessage() {
+      const messageContent = document.getElementById("messageContent").value;
+      const scheduleDate = document.getElementById("scheduleDate").value;
+
+      if (messageContent && scheduleDate) {
+        const futureMessagesContainer = document.getElementById("futureMessagesContainer");
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('future-message');
+        messageDiv.innerHTML = `<strong>تاريخ الإرسال:</strong> ${scheduleDate}<p>${messageContent}</p>`;
+        futureMessagesContainer.appendChild(messageDiv);
+
+        // إعادة تعيين الحقول
+        document.getElementById("messageContent").value = "";
+        document.getElementById("scheduleDate").value = "";
+      } else {
+        alert('يرجى إدخال الرسالة وتحديد التاريخ.');
+      }
+    }
+
+    // تسجيل الخروج (بدون تخزين)
+    function logout() {
+      alert("تم تسجيل الخروج");
+      window.location.href = 'home.html';
+    }
+  </script>
+
+</body>
+</html>

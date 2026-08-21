@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="website icon" type="png" href="logo.png">
+  <title>شريك التعافي - المختص</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      padding-top: 120px; /* تعديل المسافة العلوية بسبب الهيدر الثابت */
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #fff;
+    }
+
+    header {
+      background-color: #4cafab;
+      color: white;
+      width: 96.9%;
+      padding: 10px 20px;
+      text-align: center;
+      border-radius: 0;
+      position: fixed; /* الهيدر ثابت */
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    header h1 {
+      color: #fff;
+      margin: 0;
+      font-size: 24px;
+      order: 2;
+    }
+
+    header img {
+      height: 80px; /* ضبط ارتفاع اللوجو */
+      width: auto;
+      order: 3;
+      right: 40px;
+    }
+
+    header .home-icon {
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+      order: 1;
+    }
+
+    .intro {
+      margin: 20px 0;
+      font-size: 18px;
+      color: #333;
+      text-align: center;
+      max-width: 600px;
+    }
+
+    .users-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .users-list li {
+      background-color: #b3d4d3;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .users-list li:hover {
+      background-color: #99b3b2;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      max-width: 600px;
+      margin-top: 20px;
+    }
+
+    .button-group button {
+      padding: 10px;
+      background-color: #4cafab;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 48%;
+    }
+
+    .button-group button:hover {
+      background-color: #4cafab;
+    }
+ /* نافذة المحادثة */
+ .chat-container {
+      position: fixed;
+      top: 100px; /* تعديل المسافة العلوية لتجنب تداخل المحادثة مع الهيدر */
+      left: 0;
+      width: 100%;
+      height: calc(100% - 100px); /* تعديل ارتفاع المحادثة */
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .chat-box {
+      background-color: #fff;
+      width: 100%;
+      max-width: 400px;
+      height: 500px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      background-color: #4cafab;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .chat-body {
+      padding: 10px;
+      flex-grow: 1;
+      overflow-y: auto;
+      background-color: #e0f7fa;
+    }
+
+    .chat-message {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .chat-message img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .chat-message.sent {
+      justify-content: flex-end;
+    }
+
+    .chat-message.sent img {
+      margin-left: 10px;
+      margin-right: 0;
+    }
+
+    .chat-message p {
+      background-color: #4cafab;
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 60%;
+    }
+
+    .chat-message.sent p {
+      background-color: #4cafab;
+    }
+
+    .message-input {
+      display: flex;
+      padding: 10px;
+      background-color: #f1f1f1;
+      border-radius: 0 0 10px 10px;
+    }
+
+    .message-input input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+
+    .message-input button {
+      background-color: #4cafab;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .message-input button:hover {
+      background-color: #4cafab;
+    }
+
+    /* نافذة البحث عن المستخدمين */
+    .search-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .search-box {
+      background-color: #fff;
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .search-box ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .search-box ul li {
+      background-color: #e0f7fa;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<!-- الهيدر -->
+<header>
+  <h1>Hope Track</h1>
+  <img src="logo.png" alt="Logo">
+  <a href="home.html" class="home-icon"><i class="fas fa-home"></i></a>
+</header>
+<br><br>
+
+  <!-- قسم المختص -->
+  <div class="container">
+    <div class="intro">
+      مرحبًا، يمكنك الآن رؤية المستخدمين المتواجدين وطلبات الدعم الواردة. اختر حالة التواجد الخاصة بك للتفاعل مع المستخدمين.
+    </div>
+
+    <ul class="users-list">
+      <li onclick="startChat('أحمد خالد')">أحمد خالد</li>
+      <li onclick="startChat('سارة محمد')">سارة محمد</li>
+      <li onclick="startChat('خالد أحمد')">خالد أحمد</li>
+    </ul>
+
+    <div class="button-group">
+      <button onclick="toggleOnlineStatus()">حالة التواجد: <span id="statusText">أونلاين</span></button>
+      <button onclick="viewSupportRequests()">طلبات الدعم</button>
+    </div>
+  </div>
+
+  <!-- نافذة المحادثة -->
+  <div class="chat-container" id="chatContainer">
+    <div class="chat-box">
+      <div class="chat-header">
+        <h2>محادثة مع المستخدم</h2>
+        <button onclick="closeChat()">X</button>
+      </div>
+
+      <div class="chat-body" id="chatBody">
+        <!-- الرسائل ستظهر هنا -->
+      </div>
+
+      <div class="message-input">
+        <input type="text" id="messageInput" placeholder="...اكتب رسالتك">
+        <button onclick="sendMessage()">إرسال</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة طلبات الدعم -->
+  <div class="search-container" id="searchContainer">
+    <div class="search-box">
+      <h3>طلبات الدعم</h3>
+      <ul id="supportRequests">
+        <li onclick="startChat('أحمد خالد')">أحمد خالد (طلب دعم عاجل)</li>
+        <li onclick="startChat('سارة محمد')">سارة محمد (طلب دعم عاجل)</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    let currentUserName = ''; // اسم المستخدم الحالي الذي تجري معه المحادثة
+    let isOnline = true; // حالة التواجد الافتراضية: أونلاين
+
+    // دالة لتبديل حالة التواجد بين أونلاين وأوفلاين
+    function toggleOnlineStatus() {
+      isOnline = !isOnline;
+      document.getElementById('statusText').textContent = isOnline ? 'أونلاين' : 'أوفلاين';
+      alert('تم تغيير حالة التواجد إلى ' + (isOnline ? 'أونلاين' : 'أوفلاين'));
+    }
+
+    // عرض طلبات الدعم (بيانات ثابتة)
+    function viewSupportRequests() {
+      document.getElementById('searchContainer').style.display = 'flex';
+    }
+
+    // إغلاق نافذة طلبات الدعم
+    function closeSearch() {
+      document.getElementById('searchContainer').style.display = 'none';
+    }
+
+    // بدء محادثة مع مستخدم معين
+    function startChat(userName) {
+      currentUserName = userName; // تخزين اسم المستخدم الحالي
+      closeSearch();
+      document.getElementById('chatContainer').style.display = 'flex';
+      document.querySelector('.chat-header h2').textContent = `محادثة مع ${userName}`;
+
+      // عرض رسائل محادثة افتراضية (لا يتم حفظها)
+      const chatBody = document.getElementById('chatBody');
+      chatBody.innerHTML = ''; // تفريغ الرسائل السابقة
+      const defaultMessages = [
+        { message: `مرحبًا ${userName}، كيف يمكنني مساعدتك؟`, is_specialist_message: true },
+        { message: 'مرحبًا، أحتاج إلى دعم في الإقلاع عن التدخين.', is_specialist_message: false }
+      ];
+
+      defaultMessages.forEach(message => {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('chat-message', message.is_specialist_message ? 'sent' : '');
+        messageElement.innerHTML = `<img src="https://via.placeholder.com/40" alt="Avatar"><p>${message.message}</p>`;
+        chatBody.appendChild(messageElement);
+      });
+
+      chatBody.scrollTop = chatBody.scrollHeight; // الانتقال إلى أسفل المحادثة
+    }
+
+    // إرسال رسالة في المحادثة
+    function sendMessage() {
+      const messageText = document.getElementById('messageInput').value;
+      if (messageText.trim() === '') return; // التحقق من أن الرسالة ليست فارغة
+
+      const chatBody = document.getElementById('chatBody');
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('chat-message', 'sent');
+      messageElement.innerHTML = `<p>${messageText}</p><img src="https://via.placeholder.com/40" alt="User Image">`;
+
+      chatBody.appendChild(messageElement);
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      document.getElementById('messageInput').value = ''; // تفريغ حقل الإدخال بعد الإرسال
+    }
+
+    // إغلاق نافذة المحادثة
+    function closeChat() {
+      document.getElementById('chatContainer').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>

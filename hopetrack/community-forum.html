@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>المنتدى</title>
+  <link rel="website icon" type="png" href="logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .forum-container {
+      width: 90%;
+      max-width: 800px;
+      margin-top: 100px;
+      margin-bottom: 80px;
+      padding-bottom: 20px;
+    }
+
+    header {
+      background-color: #4cafab;
+      padding: 25px;
+      color: white;
+      position: relative;
+      width: 96%;
+    }
+
+    header .home-icon {
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .category-buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+
+    .category-buttons button {
+      background-color: #4cafab;
+      border: none;
+      padding: 10px 20px;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .topic {
+      background-color: #e0f7fa;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .topic p {
+      margin: 0;
+    }
+
+    .topic button {
+      background-color: #4cafab;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .create-topic {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .create-topic button {
+      background-color: #4cafab;
+      border: none;
+      padding: 10px 20px;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .sidebar {
+      position: fixed;
+      right: -100%;
+      top: 0;
+      width: 400px;
+      height: 100%;
+      background-color: #fff;
+      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      transition: 0.3s;
+      z-index: 100;
+      overflow-y: auto;
+    }
+
+    .sidebar.open {
+      right: 0;
+    }
+
+    .sidebar h3 {
+      margin-top: 0;
+    }
+
+    .close-sidebar {
+      background-color: #4cafab;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .messages {
+      max-height: 60%;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
+
+    .message {
+      background-color: #e0f7fa;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    .message img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .message-form textarea {
+      width: 100%;
+      height: 80px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+
+    .message-form button {
+      background-color: #4cafab;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    footer {
+      width: 100%;
+      background-color: #4cafab;
+      padding: 20px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: auto;
+      color: #f9f9f9;
+    }
+
+    .create-topic-form {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 200;
+    }
+
+    .create-topic-form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    .create-topic-form button {
+      background-color: #4cafab;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .create-topic-form .close-form {
+      background-color: #4cafab;
+    }
+
+    .popular-topics {
+      margin-top: 20px;
+    }
+
+    header img {
+      height: 80px;
+      width: auto;
+      position: absolute;
+      right: 40px;
+      top: -5px;
+    }
+
+    header h1 {
+      color: #fff;
+      margin: 0;
+      font-size: 24px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 25px;
+    }
+  </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="Logo">
+        <a href="home.html" class="home-icon"><i class="fas fa-home"></i></a>
+        <h1>Hope Track</h1>
+    </header>
+
+  <div class="forum-container">
+    <div class="category-buttons">
+      <button>التحفيز</button>
+      <button>قصص النجاح</button>
+      <button>الصحة النفسية</button>
+    </div>
+
+    <div id="topics-container">
+      <div class="topic" data-topic-id="1">
+        <p>كيفية الحفاظ على التعافي</p>
+        <p>بواسطة علي - <span class="reply-count">0</span> ردود</p>
+        <button onclick="openSidebar(this)">المزيد</button>
+      </div>
+    </div>
+
+    <div class="create-topic">
+      <button onclick="openCreateTopicForm()">إنشاء موضوع جديد</button>
+    </div>
+
+    <div class="popular-topics" id="popular-topics">
+      <h3>المواضيع الشائعة</h3>
+      <ul id="popular-topics-list">
+        <li>كيفية الحفاظ على التعافي - 5 ردود</li>
+        <li>قصص النجاح - 8 ردود</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sidebar" id="sidebar">
+    <button class="close-sidebar" onclick="closeSidebar()">إغلاق</button>
+    <h3>المحادثات</h3>
+    <div class="messages" id="messages">
+      <div class="message">
+        <img src="https://via.placeholder.com/40" alt="User Image">
+        <span>هذه رسالة تجريبية.</span>
+      </div>
+    </div>
+    <div class="message-form">
+      <textarea id="message-input" placeholder="اكتب رسالتك..."></textarea>
+      <button onclick="sendMessage()">إرسال</button>
+    </div>
+  </div>
+
+  <div class="create-topic-form" id="create-topic-form">
+    <h3>إنشاء موضوع جديد</h3>
+    <input type="text" id="topic-title" placeholder="عنوان الموضوع">
+    <input type="text" id="topic-author" placeholder="اسم الكاتب">
+    <button onclick="createTopic()">إضافة</button>
+    <button class="close-form" onclick="closeCreateTopicForm()">إغلاق</button>
+  </div>
+
+  <footer>Hope Track</footer>
+
+  <script>
+    let currentTopicId = null;
+
+    function openSidebar(button) {
+      document.getElementById('sidebar').classList.add('open');
+      currentTopicId = button.closest('.topic').getAttribute('data-topic-id');
+    }
+
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+    }
+
+    function sendMessage() {
+      const messageInput = document.getElementById('message-input');
+      const messageText = messageInput.value.trim();
+
+      if (messageText !== '') {
+        const messagesContainer = document.getElementById('messages');
+        const newMessage = document.createElement('div');
+        newMessage.classList.add('message');
+        newMessage.innerHTML = `
+          <img src="https://via.placeholder.com/40" alt="User Image">
+          <span>${messageText}</span>
+        `;
+        messagesContainer.appendChild(newMessage);
+        messageInput.value = ''; // تفريغ حقل الرسالة
+        messagesContainer.scrollTop = messagesContainer.scrollHeight; // التمرير إلى الأسفل
+      }
+    }
+
+    function openCreateTopicForm() {
+      document.getElementById('create-topic-form').style.display = 'block';
+    }
+
+    function closeCreateTopicForm() {
+      document.getElementById('create-topic-form').style.display = 'none';
+    }
+
+    function createTopic() {
+      const title = document.getElementById('topic-title').value;
+      const author = document.getElementById('topic-author').value;
+
+      if (title.trim() && author.trim()) {
+        const topicsContainer = document.getElementById('topics-container');
+        const newTopic = document.createElement('div');
+        newTopic.classList.add('topic');
+        newTopic.setAttribute('data-topic-id', Date.now()); // استخدام توقيت كمعرف فريد
+
+        newTopic.innerHTML = `
+          <p>${title}</p>
+          <p>بواسطة ${author} - <span class="reply-count">0</span> ردود</p>
+          <button onclick="openSidebar(this)">المزيد</button>
+        `;
+
+        topicsContainer.prepend(newTopic); // إضافة الموضوع إلى الصفحة
+        document.getElementById('topic-title').value = '';
+        document.getElementById('topic-author').value = '';
+        closeCreateTopicForm();
+      } else {
+        alert('يرجى إدخال عنوان الموضوع واسم الكاتب.');
+      }
+    }
+  </script>
+</body>
+</html>

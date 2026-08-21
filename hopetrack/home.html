@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+    <link rel="website icon" type="png" href="logo.png">
+    <title>Hope Track</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            direction: rtl;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            right: -250px;
+            background-color: #4cafab;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+        }
+
+        .sidebar a {
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #3b8b7c;
+        }
+
+        .header {
+            background-color: #4cafab;
+            padding: 20px;
+            color: white;
+            position: relative;
+        }
+
+        .menu-icon {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        .main-content img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        .main-content h1 {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+
+        .main-content p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .main-content button {
+            background-color: #4cafab;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .services {
+            margin-top: 30px;
+        }
+
+        .services h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .services .service-item {
+            display: inline-block;
+            width: 150px;
+            margin: 10px;
+            text-align: center;
+        }
+
+        .services .service-item img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+
+        .services .service-item p {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .content-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card {
+            max-width: 500px;
+            margin: 60px auto;
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #13212b;
+        }
+
+        .success-story {
+            margin-bottom: 20px;
+        }
+
+        .add-story-button {
+            background: #4cafab;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        footer {
+            width: 100%;
+            background-color: #4cafab;
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .contact-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .contact-icons a {
+            font-size: 24px;
+            color: #fff;
+            transition: color 0.3s ease;
+        }
+
+        .contact-icons a:hover {
+            color: #2ecc71;
+        }
+
+        .add-story-form {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .add-story-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .add-story-form button {
+            background:#4cafab;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- رأس الصفحة -->
+    <div class="header">
+        <div class="menu-icon" onclick="openSidebar()">☰</div>
+        <h1>Hope Track</h1>
+    </div>
+
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" onclick="closeSidebar()">&#10006; إغلاق</a>
+        <a href="propilee.html">ملف المستخدم</a>
+
+        <a href="متابعة التقدم.html">متابعة التقدم</a>
+        <!-- هذه الروابط تتغير بناءً على نوع المستخدم -->
+        <a href="user-recovery-partner.html" id="user-link">شريك التعافي للمستخدم</a>
+        <a href="specialist-recovery-partner.html" id="special-link">شريك التعافي للمختص</a>
+        <a href="goals.html">تحديد الأهداف</a>
+        <a href="community-forum.html">المنتدى المجتمعي</a>
+    </div>
+
+    <div class="main-content">
+        <img src="logo.png" alt="شعار">
+        <h1>مرحبًا بك في Hope Track</h1>
+        <p>ساعدنا على الإقلاع عن المخدرات لبدء حياة جديدة!</p>
+        <a href="login-sign.html"><button>انضم الآن</button></a>
+
+        <!-- قسم الخدمات -->
+        <div class="services">
+            <h2>الخدمات</h2>
+            <div class="service-item">
+                <img src="home1.png" alt="خدمة">
+                <p>متابعة التقدم</p>
+            </div>
+            <div class="service-item">
+                <img src="home2.png" alt="خدمة">
+                <p>شريك التعافي</p>
+            </div>
+            <div class="service-item">
+                <img src="home3.png" alt="خدمة">
+                <p>تحديد الأهداف</p>
+            </div>
+            <div class="service-item">
+                <img src="home4.png" alt="خدمة">
+                <p>المنتدى المجتمعي</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- كاردات الصفحة الرئيسية -->
+    <div class="card-container">
+        <!-- كارد قصص النجاح -->
+        <div class="card" id="success-stories-card">
+            <h3>قصص النجاح</h3>
+            <div id="success-stories">
+                <p class="success-story">قصة نجاح 1: نجحت في تجاوز التحديات والوصول إلى أهدافي.</p>
+            </div>
+            <button class="add-story-button" onclick="toggleAddStoryForm()">إضافة قصة جديدة</button>
+            <div class="add-story-form" id="add-story-form">
+                <textarea id="story-content" placeholder="اكتب قصتك هنا..."></textarea>
+                <button onclick="addStory()">حفظ القصة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- الفوتر للتواصل -->
+    <footer>
+        <div class="contact-icons">
+            <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="mailto:example@example.com"><i class="fas fa-envelope"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        // دوال التحكم في القائمة الجانبية
+        function openSidebar() {
+            document.getElementById("mySidebar").style.right = "0";
+        }
+
+        function closeSidebar() {
+            document.getElementById("mySidebar").style.right = "-250px";
+        }
+
+        // عرض نموذج إضافة القصة
+        function toggleAddStoryForm() {
+            const form = document.getElementById('add-story-form');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // إضافة قصة نجاح
+        function addStory() {
+            const storyContent = document.getElementById('story-content').value;
+            if (storyContent.trim() !== "") {
+                const successStories = document.getElementById('success-stories');
+                const newStory = document.createElement('p');
+                newStory.className = 'success-story';
+                newStory.textContent = storyContent;
+                successStories.appendChild(newStory);
+                document.getElementById('story-content').value = '';
+                toggleAddStoryForm();
+            } else {
+                alert('يرجى كتابة القصة قبل الحفظ.');
+            }
+        }
+    </script>
+</body>
+</html>
