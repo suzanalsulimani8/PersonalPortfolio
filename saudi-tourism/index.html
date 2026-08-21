@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>السياحة بالمملكة العربية السعودية</title>
+    <link rel="website icon" type="png" href="ksaa.png">
+    <style>
+        
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .comment-form {
+            display: none; /* النموذج مخفي بشكل افتراضي */
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .comment-form input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .comment-form input[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        .show-comment-form {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .comments-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .comments-list li {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<!-- اعلى راس الصفحة  -->
+    <header>
+        <img class="small-logo" src="KSA.png" alt="Logo" />
+        <nav class="navigation">
+            <a href="#services">الرؤية</a>
+            <a href="#projects">المناطق</a>
+            <a href="#contact">التواصل</a>
+        </nav>
+    </header>
+
+<!-- الصفحة الرئيسية -->
+    <section class="main">
+        <div>
+            <h2><span>السياحة في المملكة العربية السعودية</span></h2>
+            <h1>هي قطاع ناشئ ذو نمو سريع وتمثل أحد المحاور الهامة لرؤية المملكة 2030. تتميز السياحة في المملكة بالتنوع الطبيعي والثقافي والتاريخي والتراثي، وتشمل العديد من الوجهات السياحية المميزة. يمكن زيارة العديد من المتاحف والآثار والمناطق الطبيعية الخلابة في المملكة, يمكن الحصول على معلومات إضافية عن السياحة في المملكة من خلال زيارة موقعنا.</h1>
+            <a href="#projects" class="main-btn">المناطق السياحية</a>
+            <div class="social-icons">
+                <a href="https://x.com/SaudiTourism?s=20"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.linkedin.com/company/saudi-tourism-authority"><i class="fab fa-linkedin"></i></a>
+                <a href="http://www.youtube.com/@SaudiTourismAuthority"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </section>
+<!-- الكروت لخريطة العلا والرؤية -->
+    <section class="cards" id="services">
+        <h2 class="title">الرؤية</h2>
+        <div class="content">
+            <div class="card">
+                <div class="icon">
+                    <i class=" fas fa-map"></i>
+                </div>
+                <div class="info">
+                    <h3> خريطة محافظة العلا</h3> 
+                    <p>تعرف على العديد من الانجازات حول المملكة</p>
+                    <a href="mapp.html" class="more-details">more-details</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <div class="info">
+                    <h3> رؤية2030  </h3>
+                    <p></p>رؤية 2030 هي خطة جريئة قابلة للتحقيق لأمة طموحة . أنها تعبر عن أهدافنا وآمالنا على المدى البعيد , وتستند إلى مكامن القوة والقدرات الفريدة لوطننا</p>
+                    <a href="رؤية 2030.html" class="more-details">more-details</a>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- جزئية مناطق السياحة  -->
+    <section class="projects" id="projects">
+        <h2 class="title">السياحة في المملكة</h2>
+        <div class="content">
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="السياحة الطبيعية.jpg" />
+                </div>
+                <div class="project-info">
+                    <p class="project-category">Natural tourism</p>
+                    <strong class="project-title">
+                        <span> السياحة الطبيعية</span>
+                        <a href="السياحة الطبيعية.html" class="more-details">More details</a>
+                    </strong>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="السياحة الدينية.jpg" />
+                </div>
+                <div class="project-info">
+                    <p class="project-category">Religious tourism</p>
+                    <strong class="project-title">
+                        <span> السياحة الدينية</span>
+                        <a href="السياحة الدينية.html" class="more-details">More details</a>
+                    </strong>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="السياحة الرياضية والترفيهية.jpg" />
+                </div>
+                <div class="project-info">
+                    <p class="project-category">Sports & entertainment tourism</p>
+                    <strong class="project-title">
+                        <span>السياحة الرياضية والترفيهية</span>
+                        <a href="السياحة الرياضية والترفيهية.html" class="more-details">More details</a>
+                    </strong>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="السياحة الثقافية والتاريخية.jpg" />
+                </div>
+                <div class="project-info">
+                    <p class="project-category">Cultural & historical tourism</p>
+                    <strong class="project-title">
+                        <span>السياحة الثقافية والتاريخية</span>
+                        <a href="السياحة الثقافية والتاريخية.html" class="more-details">More details</a>
+                    </strong>
+                </div>
+            </div>
+            </div>
+            </div>
+        </div>
+    </section>
+<!-- جزئية تواصل معنا -->
+    <section class="cards contact" id="contact">
+        <h2 class="title">تواصل معنا</h2>
+        <div class="content">
+            <div class="card">
+                <div class="icon">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <div class="info">
+                    <h3>Phone</h3>
+                    <p>011-2896664</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="info">
+                    <h3>Email</h3>
+                    <p>cso@tvtc.gov.sa</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="info">
+                    <h3>comments</h3>
+
+                    <button class="show-comment-form" onclick="toggleCommentForm()">أضف تعليق</button>
+
+                    <!-- نموذج التعليق -->
+                    <form id="commentForm" class="comment-form" action="add_comment.php" method="post">
+                        <input type="text" name="username" placeholder="اسمك" required>
+                        <textarea name="comment" placeholder="تعليقك" required></textarea>
+                        <input type="submit" value="إرسال">
+                    </form>
+            
+                    <!-- قسم التعليقات -->
+                    <h3>التعليقات</h3>
+                    <ul class="comments-list">
+                    </ul>
+                </div>
+                <script>
+                    function toggleCommentForm() {
+                        var form = document.getElementById("commentForm");
+                        if (form.style.display === "none" || form.style.display === "") {
+                            form.style.display = "flex"; // إظهار النموذج
+                        } else {
+                            form.style.display = "none"; // إخفاء النموذج
+                        }
+                    }
+                </script>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer class="footer">
+        <p class="footer-title"><span>TVTC</span></p>
+        <div class="social-icons">
+            <a href="https://x.com/SaudiTourism?s=20"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.linkedin.com/company/saudi-tourism-authority"><i class="fab fa-linkedin"></i></a>
+            <a href="http://www.youtube.com/@SaudiTourismAuthority"><i class="fab fa-youtube"></i></a>
+        </div>
+    </footer>
+
+</body>
+</html>
